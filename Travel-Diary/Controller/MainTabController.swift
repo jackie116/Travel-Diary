@@ -42,15 +42,9 @@ class MainTabController: UITabBarController {
     func templateNavigationController(image: UIImage?, rootViewController: UIViewController) -> UINavigationController {
         let nav = UINavigationController(rootViewController: rootViewController)
         
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        nav.navigationBar.scrollEdgeAppearance = appearance
-        nav.navigationBar.standardAppearance = appearance
         nav.tabBarItem.image = image
         nav.tabBarItem.selectedImage = image?.withTintColor(UIColor.customBlue,
                                                             renderingMode: .alwaysOriginal)
-        nav.navigationBar.barTintColor = .white
-        
         return nav
     }
 }

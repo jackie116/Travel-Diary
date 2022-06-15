@@ -11,7 +11,7 @@ class DiaryController: UIViewController {
     
     private let journeyTableView = UITableView()
     
-    private let addButton: UIButton = {
+    private lazy var addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .blue
         button.addTarget(self, action: #selector(addJourney), for: .touchUpInside)
@@ -21,7 +21,7 @@ class DiaryController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+        navigationItem.title = "My Trips"
         setUI()
     }
     
@@ -42,6 +42,9 @@ class DiaryController: UIViewController {
     }
     
     @objc func addJourney() {
-        
+        let vc = NewTripController()
+        let navVC = UINavigationController(rootViewController: vc)
+        // navVC.modalPresentationStyle = .automatic
+        navigationController?.present(navVC, animated: true)
     }
 }

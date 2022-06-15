@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         FirebaseApp.configure()
         
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.configureWithDefaultBackground()
+        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
+        
         return true
     }
 
