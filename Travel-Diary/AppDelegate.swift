@@ -18,14 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         FirebaseApp.configure()
         
-        let barAppearance = UINavigationBarAppearance()
-        barAppearance.configureWithDefaultBackground()
-        barAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
-        UINavigationBar.appearance().standardAppearance = barAppearance
-        
         return true
     }
 
