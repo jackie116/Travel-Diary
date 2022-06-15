@@ -14,7 +14,4 @@ class MainPageViewController: UIViewController {
         
         view.backgroundColor = .yellow
     }
-
-
 }
-

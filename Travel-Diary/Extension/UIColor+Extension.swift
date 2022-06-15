@@ -23,17 +23,17 @@ private enum Color: String {
 
 extension UIColor {
 
-    static let deepPurple = Color(.deepPurple)
+    static let deepPurple = color(.deepPurple)
 
-    static let indigo = Color(.indigo)
+    static let indigo = color(.indigo)
 
-    static let orange = Color(.orange)
+    static let orange = color(.orange)
 
-    static let red = Color(.red)
+    static let red = color(.red)
 
-    static let green = Color(.green)
+    static let green = color(.green)
     
-    private static func Color(_ color: Color) -> UIColor {
+    private static func color(_ color: Color) -> UIColor {
 
         return UIColor.hexStringToUIColor(hex: color.rawValue)
     }
@@ -50,8 +50,8 @@ extension UIColor {
             return UIColor.gray
         }
 
-        var rgbValue: UInt32 = 0
-        Scanner(string: colorString).scanHexInt32(&rgbValue)
+        var rgbValue: UInt64 = 0
+        Scanner(string: colorString).scanHexInt64(&rgbValue)
 
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
