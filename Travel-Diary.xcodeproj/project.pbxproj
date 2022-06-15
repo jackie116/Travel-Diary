@@ -28,6 +28,7 @@
 		E7C69D442859B4CD004910AC /* ExpertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D432859B4CD004910AC /* ExpertController.swift */; };
 		E7C69D462859B4DC004910AC /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D452859B4DC004910AC /* ChatController.swift */; };
 		E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D472859E0F6004910AC /* NewTripController.swift */; };
+		E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		E7C69D432859B4CD004910AC /* ExpertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertController.swift; sourceTree = "<group>"; };
 		E7C69D452859B4DC004910AC /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		E7C69D472859E0F6004910AC /* NewTripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTripController.swift; sourceTree = "<group>"; };
+		E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaningController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				E7C69D432859B4CD004910AC /* ExpertController.swift */,
 				E7C69D452859B4DC004910AC /* ChatController.swift */,
 				E7C69D472859E0F6004910AC /* NewTripController.swift */,
+				E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
+				E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
 			);
