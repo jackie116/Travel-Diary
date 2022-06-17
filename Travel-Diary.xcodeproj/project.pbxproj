@@ -18,6 +18,7 @@
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
+		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */; };
 		E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2D28597C27004910AC /* UIFont+Extension.swift */; };
 		E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2F28597C83004910AC /* UIView+Extension.swift */; };
@@ -50,6 +51,7 @@
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
+		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2D28597C27004910AC /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2F28597C83004910AC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */,
+				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,
 				E7C69D442859B4CD004910AC /* ExpertController.swift in Sources */,
+				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* ChatController.swift in Sources */,
 				E7C69D3C28598707004910AC /* Constants.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,

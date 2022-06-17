@@ -12,13 +12,12 @@ enum ImageAsset: String {
 
     // tabbar - Tab
     case icons_36pt_Chat
-    case icons_36pt_Chat_Selected
     case icons_36pt_Expert
-    case icons_36pt_Expert_Selected
     case icons_36pt_Diary
-    case icons_36pt_Diary_Selected
     case icons_36pt_User
-    case icons_36pt_User_Selected
+    
+    // Annotation
+    case orderMarker
 }
 
 // swiftlint:enable identifier_name

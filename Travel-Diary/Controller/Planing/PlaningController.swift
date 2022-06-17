@@ -10,7 +10,7 @@ import MapKit
 import FloatingPanel
 
 protocol HandleScheduleDelegate: AnyObject {
-    
+    func passPlacemark(placemark: MKPlacemark)
 }
 
 class PlaningController: UIViewController {
@@ -18,6 +18,10 @@ class PlaningController: UIViewController {
     var tripName: String?
     var startTimeInterval: TimeInterval?
     var endTimeInterval: TimeInterval?
+    var spotInSchedule = [MKPlacemark]() {
+        didSet {
+        }
+    }
     
     // MARK: - search
     var resultSearchController: UISearchController?
@@ -92,6 +96,7 @@ class PlaningController: UIViewController {
     }
     
     func setScheduleUI() {
+        self.delegate = scheduleVC
         let panel = FloatingPanelController()
         panel.set(contentViewController: scheduleVC)
         panel.addPanel(toParent: self)
@@ -108,9 +113,11 @@ extension PlaningController: HandleMapSearchDelegate {
     func dropPinZoomIn(placemark: MKPlacemark) {
         // cache the pin
         selectedPin = placemark
-        // clear existing pins
         
-        //mapView.removeAnnotations(mapView.annotations)
+        // Add placemark to schedule array
+        self.delegate?.passPlacemark(placemark: placemark)
+        // clear existing pins
+        // mapView.removeAnnotations(mapView.annotations)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
