@@ -22,6 +22,18 @@ class NewTripController: UIViewController {
         return textField
     }()
     
+    let startDateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Start Date"
+        return label
+    }()
+    
+    let endDateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "End Date"
+        return label
+    }()
+    
     let startDatePicker = UIDatePicker()
     
     let endDatePicker = UIDatePicker()
@@ -44,7 +56,9 @@ class NewTripController: UIViewController {
     
     func setUI() {
         view.addSubview(tripNameTextField)
+        view.addSubview(startDateLabel)
         view.addSubview(startDatePicker)
+        view.addSubview(endDateLabel)
         view.addSubview(endDatePicker)
         view.addSubview(submitButton)
         
@@ -55,15 +69,21 @@ class NewTripController: UIViewController {
                                  paddingLeft: 32,
                                  paddingRight: 32)
         
+        startDateLabel.anchor(top: tripNameTextField.bottomAnchor,
+                              left: view.leftAnchor,
+                              paddingTop: 32, paddingLeft: 32)
+    
         startDatePicker.anchor(top: tripNameTextField.bottomAnchor,
-                               left: view.leftAnchor,
+                               left: startDateLabel.rightAnchor,
                                right: view.rightAnchor,
                                paddingTop: 32,
                                paddingLeft: 32,
                                paddingRight: 32)
         
+        endDateLabel.anchor(top: startDateLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 32, paddingLeft: 32)
+        
         endDatePicker.anchor(top: startDatePicker.bottomAnchor,
-                             left: view.leftAnchor,
+                             left: endDateLabel.leftAnchor,
                              right: view.rightAnchor,
                              paddingTop: 32,
                              paddingLeft: 32,
@@ -84,13 +104,21 @@ class NewTripController: UIViewController {
     
     @objc func submitTrip() {
         if self.tripNameTextField.text?.isEmpty == true {
-            let controller = UIAlertController(title: "Please input name of trip!", message: "Trip name is empty.", preferredStyle: .alert)
+            let controller = UIAlertController(title: "Please input name of trip!",
+                                               message: "Trip name is empty.",
+                                               preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             controller.addAction(okAction)
             present(controller, animated: true, completion: nil)
         } else {
-//            self.delegate?.returnValue(self, title: self.tripNameTextField.text!, startDate: <#T##TimeInterval#>, endDate: <#T##TimeInterval#>)
-            navigationController?.dismiss(animated: false)
+            guard let tripName = self.tripNameTextField.text else { return }
+            let startTimeInterval = self.startDatePicker.date.timeIntervalSince1970
+            let endTimeInterval = self.endDatePicker.date.timeIntervalSince1970
+            navigationController?.dismiss(animated: false, completion: {
+                self.delegate?.returnValue(self, title: tripName,
+                                           startDate: startTimeInterval,
+                                           endDate: endTimeInterval)
+            })
         }
     }
 }

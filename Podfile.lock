@@ -682,6 +682,7 @@ PODS:
   - FirebaseStorageInternal (9.0.0):
     - FirebaseCore (~> 9.0)
     - GTMSessionFetcher/Core (~> 1.7)
+  - FloatingPanel (2.5.2)
   - GoogleAppMeasurement (9.0.0):
     - GoogleAppMeasurement/AdIdSupport (= 9.0.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -801,6 +802,7 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseFirestoreSwift
   - FirebaseStorage
+  - FloatingPanel
   - IQKeyboardManagerSwift
   - lottie-ios
   - SwiftLint
@@ -824,6 +826,7 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseStorage
     - FirebaseStorageInternal
+    - FloatingPanel
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -856,6 +859,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: e693c0dfe404af44afbd553de42498b2ca1ca189
   FirebaseStorage: 7b70fce0c7a751017b2f749d161e4f4855f431d9
   FirebaseStorageInternal: 153685c8d9f67ee3007fed0414351c43487983c2
+  FloatingPanel: 935712d7a8076630135fbbd47f717700913efef9
   GoogleAppMeasurement: 2c2792d43ebdea0524adbc90cba9139721f3039b
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
@@ -870,6 +874,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
-PODFILE CHECKSUM: 53f4c1da2acbafa439945d237930d330f6f467ef
+PODFILE CHECKSUM: b0dacf35bdd81fd47896b769054108fc3247e78d
 
 COCOAPODS: 1.11.3

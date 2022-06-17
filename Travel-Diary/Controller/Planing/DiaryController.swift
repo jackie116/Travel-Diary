@@ -43,8 +43,21 @@ class DiaryController: UIViewController {
     
     @objc func addJourney() {
         let vc = NewTripController()
+        vc.delegate = self
         let navVC = UINavigationController(rootViewController: vc)
         // navVC.modalPresentationStyle = .automatic
         navigationController?.present(navVC, animated: true)
+    }
+}
+
+extension DiaryController: NewTripControllerDelegate {
+    func returnValue(_ sender: NewTripController, title: String, startDate: TimeInterval, endDate: TimeInterval) {
+        let vc = PlaningController()
+        vc.tripName = title
+        vc.startTimeInterval = startDate
+        vc.endTimeInterval = endDate
+        self.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+        self.hidesBottomBarWhenPushed = false
     }
 }
