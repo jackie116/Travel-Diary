@@ -97,6 +97,10 @@ class PlaningController: UIViewController {
     
     func setScheduleUI() {
         self.delegate = scheduleVC
+        scheduleVC.tripName = tripName
+        scheduleVC.startTimeInterval = startTimeInterval
+        scheduleVC.endTimeInterval = endTimeInterval
+        
         let panel = FloatingPanelController()
         panel.set(contentViewController: scheduleVC)
         panel.addPanel(toParent: self)

@@ -103,9 +103,18 @@ class NewTripController: UIViewController {
     }
     
     @objc func submitTrip() {
+        print(startDatePicker.date)
+        print(endDatePicker.date)
         if self.tripNameTextField.text?.isEmpty == true {
             let controller = UIAlertController(title: "Please input name of trip!",
                                                message: "Trip name is empty.",
+                                               preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            controller.addAction(okAction)
+            present(controller, animated: true, completion: nil)
+        } else if self.startDatePicker.date > endDatePicker.date {
+            let controller = UIAlertController(title: "Date Error!!!",
+                                               message: "Trip's end date is before start date.",
                                                preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             controller.addAction(okAction)

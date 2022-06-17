@@ -10,7 +10,20 @@ import MapKit
 
 class ScheduleController: UIViewController {
     
-    private let scheduleTableView = UITableView()
+    var tripName: String?
+    var startTimeInterval: TimeInterval?
+    var endTimeInterval: TimeInterval?
+    
+    private let scheduleTableView: UITableView = {
+        let table = UITableView()
+        
+        table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
+        
+        table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
+        
+        return table
+    }()
+    
     var spotInSchedule = [MKPlacemark]()
     
     override func viewDidLoad() {
@@ -21,8 +34,6 @@ class ScheduleController: UIViewController {
         
         scheduleTableView.dragDelegate = self
         scheduleTableView.dragInteractionEnabled = true
-        
-        scheduleTableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
         
         setUI()
     }
@@ -60,10 +71,25 @@ class ScheduleController: UIViewController {
         }
         return addressLine
     }
+    
+    func getTripDuration(start: TimeInterval, end: TimeInterval) -> String {
+        return timeIntervalToString(timestamp: start) + " - " + timeIntervalToString(timestamp: end)
+    }
+    
+    private func timeIntervalToString(timestamp: TimeInterval) -> String {
+        let timeInterval = TimeInterval(timestamp)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date)
+    }
 }
 
+// drag and reorder cell
 extension ScheduleController: UITableViewDragDelegate {
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    func tableView(_ tableView: UITableView,
+                   itemsForBeginning session: UIDragSession,
+                   at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
         dragItem.localObject = spotInSchedule[indexPath.row]
         return [dragItem]
@@ -71,7 +97,19 @@ extension ScheduleController: UITableViewDragDelegate {
 }
 
 extension ScheduleController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: ScheduleTableHeader.identifier) as? ScheduleTableHeader
+        
+        header?.titleLabel.text = tripName
+        header?.tripDateLabel.text = getTripDuration(start: startTimeInterval ?? 0.0, end: endTimeInterval ?? 0.0)
+        
+        return header
+    }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        150.0
+    }
 }
 
 extension ScheduleController: UITableViewDataSource {
@@ -86,21 +124,27 @@ extension ScheduleController: UITableViewDataSource {
         
         let selectedItem = spotInSchedule[indexPath.row]
         
-        var content = cell.defaultContentConfiguration()
-        content.image = UIImage(systemName: "mappin.and.ellipse")
-        content.text = selectedItem.name
-        content.secondaryText = parseAddress(selectedItem: selectedItem)
-        cell.contentConfiguration = content
-        cell.showsReorderControl = true
+//        var content = cell.defaultContentConfiguration()
+//        content.image = UIImage(systemName: "mappin.and.ellipse")
+//        content.text = selectedItem.name
+//        content.secondaryText = parseAddress(selectedItem: selectedItem)
+//        cell.contentConfiguration = content
+//        cell.showsReorderControl = true
+        cell.orderLabel.text = "\(indexPath.row)"
+        cell.titleLabel.text = selectedItem.name
+        cell.addressLabel.text = parseAddress(selectedItem: selectedItem)
         return cell
     }
     
+    // cell drag and change data array order
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        spotInSchedule.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-        print(spotInSchedule)
+        let mover = spotInSchedule.remove(at: sourceIndexPath.row)
+        spotInSchedule.insert(mover, at: destinationIndexPath.row)
+        scheduleTableView.reloadData()
     }
 }
 
+// get new spot
 extension ScheduleController: HandleScheduleDelegate {
     func passPlacemark(placemark: MKPlacemark) {
         spotInSchedule.append(placemark)

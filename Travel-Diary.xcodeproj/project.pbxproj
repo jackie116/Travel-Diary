@@ -19,6 +19,7 @@
 		E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
+		E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */; };
 		E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */; };
 		E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2D28597C27004910AC /* UIFont+Extension.swift */; };
 		E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2F28597C83004910AC /* UIView+Extension.swift */; };
@@ -52,6 +53,7 @@
 		E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableHeader.swift; sourceTree = "<group>"; };
 		E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2D28597C27004910AC /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2F28597C83004910AC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -137,8 +139,6 @@
 		E7131A712858F30A0034FE12 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */,
-				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -148,6 +148,9 @@
 			children = (
 				E7131A612858F2430034FE12 /* Main.storyboard */,
 				E7131A662858F2430034FE12 /* LaunchScreen.storyboard */,
+				E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */,
+				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
+				E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
+				E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +527,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -552,6 +557,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
