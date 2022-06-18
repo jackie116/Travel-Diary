@@ -11,7 +11,6 @@ class ScheduleCell: UITableViewCell {
     
     let labelView: UIView = {
         let view = UIView()
-        view.backgroundColor = .yellow
         return view
     }()
     
@@ -60,7 +59,7 @@ class ScheduleCell: UITableViewCell {
         contentView.addSubview(labelView)
         contentView.addSubview(orderLabel)
         
-        labelView.addSubview(timeLabel)
+//        labelView.addSubview(timeLabel)
         labelView.addSubview(titleLabel)
         labelView.addSubview(addressLabel)
         
@@ -85,9 +84,9 @@ class ScheduleCell: UITableViewCell {
                          paddingTop: 5, paddingLeft: 8,
                          paddingBottom: 5, paddingRight: 16)
         
-        timeLabel.anchor(top: labelView.topAnchor, left: labelView.leftAnchor, paddingTop: 5, paddingLeft: 5)
+//        timeLabel.anchor(top: labelView.topAnchor, left: labelView.leftAnchor, paddingTop: 5, paddingLeft: 5)
         
-        titleLabel.anchor(top: timeLabel.bottomAnchor,
+        titleLabel.anchor(top: labelView.topAnchor,
                           left: labelView.leftAnchor,
                           right: labelView.rightAnchor,
                           paddingTop: 5, paddingLeft: 5, paddingRight: 5)

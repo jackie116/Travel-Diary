@@ -15,6 +15,11 @@
 		E7131A652858F2430034FE12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7131A642858F2430034FE12 /* Assets.xcassets */; };
 		E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A662858F2430034FE12 /* LaunchScreen.storyboard */; };
 		E7131A792858F97A0034FE12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7131A782858F97A0034FE12 /* GoogleService-Info.plist */; };
+		E74D676A285DA70800700F09 /* CustomPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D6769285DA70800700F09 /* CustomPlacemark.swift */; };
+		E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D2285E1C5000700F09 /* SearchBarController.swift */; };
+		E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */; };
+		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
+		E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* NewTrip.swift */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
@@ -49,6 +54,11 @@
 		E7131A672858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7131A692858F2430034FE12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7131A782858F97A0034FE12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E74D6769285DA70800700F09 /* CustomPlacemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlacemark.swift; sourceTree = "<group>"; };
+		E74D67D2285E1C5000700F09 /* SearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarController.swift; sourceTree = "<group>"; };
+		E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSectionFooter.swift; sourceTree = "<group>"; };
+		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
+		E74D67D9285E465F00700F09 /* NewTrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrip.swift; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
@@ -139,6 +149,8 @@
 		E7131A712858F30A0034FE12 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E74D6769285DA70800700F09 /* CustomPlacemark.swift */,
+				E74D67D9285E465F00700F09 /* NewTrip.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -146,10 +158,10 @@
 		E7131A722858F3100034FE12 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E74D67D6285E403900700F09 /* Schedule */,
 				E7131A612858F2430034FE12 /* Main.storyboard */,
 				E7131A662858F2430034FE12 /* LaunchScreen.storyboard */,
 				E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */,
-				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
 				E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */,
 			);
 			path = View;
@@ -203,6 +215,16 @@
 			path = Utlis;
 			sourceTree = "<group>";
 		};
+		E74D67D6285E403900700F09 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
+				E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */,
+				E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */,
+			);
+			path = Schedule;
+			sourceTree = "<group>";
+		};
 		E75B5FAE285B1A5100B3A866 /* Planing */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +233,7 @@
 				E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */,
 				E75B5FAA285B05F000B3A866 /* ScheduleController.swift */,
 				E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */,
+				E74D67D2285E1C5000700F09 /* SearchBarController.swift */,
 			);
 			path = Planing;
 			sourceTree = "<group>";
@@ -354,7 +377,10 @@
 				E7C69D3428597D25004910AC /* Date+Extension.swift in Sources */,
 				E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */,
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
+				E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */,
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
+				E74D676A285DA70800700F09 /* CustomPlacemark.swift in Sources */,
+				E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
 				E7C69D422859B489004910AC /* UserController.swift in Sources */,
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
@@ -367,7 +393,9 @@
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
 				E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
+				E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
+				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */,

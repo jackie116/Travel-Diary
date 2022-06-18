@@ -8,10 +8,7 @@
 import UIKit
 
 protocol NewTripControllerDelegate: AnyObject {
-    func returnValue(_ sender: NewTripController,
-                     title: String,
-                     startDate: TimeInterval,
-                     endDate: TimeInterval)
+    func returnValue(_ sender: NewTripController, data: NewTrip)
 }
 
 class NewTripController: UIViewController {
@@ -34,9 +31,21 @@ class NewTripController: UIViewController {
         return label
     }()
     
-    let startDatePicker = UIDatePicker()
+    let startDatePicker: UIDatePicker = {
+        let dataPicker = UIDatePicker()
+        dataPicker.preferredDatePickerStyle = .compact
+        dataPicker.datePickerMode = .date
+        dataPicker.timeZone = .current
+        return dataPicker
+    }()
     
-    let endDatePicker = UIDatePicker()
+    let endDatePicker: UIDatePicker = {
+        let dataPicker = UIDatePicker()
+        dataPicker.preferredDatePickerStyle = .compact
+        dataPicker.datePickerMode = .date
+        dataPicker.timeZone = .current
+        return dataPicker
+    }()
     
     private lazy var submitButton: UIButton = {
         let button = UIButton()
@@ -95,16 +104,23 @@ class NewTripController: UIViewController {
                             paddingTop: 32,
                             paddingLeft: 32,
                             paddingRight: 32)
-        
-        startDatePicker.preferredDatePickerStyle = .compact
-        startDatePicker.datePickerMode = .date
-        endDatePicker.preferredDatePickerStyle = .compact
-        endDatePicker.datePickerMode = .date
+    }
+    
+    func getyyyyMMdd000000(date: Date) -> Date {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateToString = formatter.string(from: date)
+        formatter.dateFormat = "yyyy-MM-dd 00:00:00"
+        return formatter.date(from: dateToString) ?? Date()
+    }
+    
+    func daysBetween(start: Date, end: Date) -> Int {
+        let components = Calendar.current.dateComponents([.day], from: start, to: end)
+        return (components.day ?? 0) + 1
     }
     
     @objc func submitTrip() {
-        print(startDatePicker.date)
-        print(endDatePicker.date)
         if self.tripNameTextField.text?.isEmpty == true {
             let controller = UIAlertController(title: "Please input name of trip!",
                                                message: "Trip name is empty.",
@@ -121,12 +137,19 @@ class NewTripController: UIViewController {
             present(controller, animated: true, completion: nil)
         } else {
             guard let tripName = self.tripNameTextField.text else { return }
-            let startTimeInterval = self.startDatePicker.date.timeIntervalSince1970
-            let endTimeInterval = self.endDatePicker.date.timeIntervalSince1970
+            
+            let startDate = getyyyyMMdd000000(date: self.startDatePicker.date)
+            let endDate = getyyyyMMdd000000(date: self.endDatePicker.date)
+            
+            let days = daysBetween(start: startDate, end: endDate)
+
+            let startTimeInterval = startDate.timeIntervalSince1970
+            let endTimeInterval = endDate.timeIntervalSince1970
+            
+            let data = NewTrip(name: tripName, start: startTimeInterval, end: endTimeInterval, days: days)
+            
             navigationController?.dismiss(animated: false, completion: {
-                self.delegate?.returnValue(self, title: tripName,
-                                           startDate: startTimeInterval,
-                                           endDate: endTimeInterval)
+                self.delegate?.returnValue(self, data: data)
             })
         }
     }

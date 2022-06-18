@@ -10,7 +10,7 @@ import MapKit
 
 // MARK: - search
 protocol HandleMapSearchDelegate: AnyObject {
-    func dropPinZoomIn(placemark: MKPlacemark)
+    func dropPinZoomIn(placemark: CustomPlacemark)
 }
 
 class SearchPlaceController: UITableViewController {
@@ -95,7 +95,10 @@ extension SearchPlaceController {
 extension SearchPlaceController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
-        self.delegate?.dropPinZoomIn(placemark: selectedItem)
+        let spot = CustomPlacemark(name: selectedItem.name ?? "",
+                                   address: parseAddress(selectedItem: selectedItem),
+                                   coordinate: selectedItem.coordinate)
+        self.delegate?.dropPinZoomIn(placemark: spot)
         dismiss(animated: true, completion: nil)
     }
 }
