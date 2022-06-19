@@ -74,7 +74,7 @@ class ScheduleCell: UITableViewCell {
         orderLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             orderLabel.centerXAnchor.constraint(equalTo: pinView.centerXAnchor),
-            orderLabel.bottomAnchor.constraint(equalTo: pinView.bottomAnchor, constant: -17.5)
+            orderLabel.bottomAnchor.constraint(equalTo: pinView.bottomAnchor, constant: -16)
         ])
         
         labelView.anchor(top: contentView.topAnchor,

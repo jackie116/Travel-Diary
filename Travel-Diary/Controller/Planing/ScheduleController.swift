@@ -8,13 +8,19 @@
 import UIKit
 import MapKit
 
+protocol DrawAnnotationDelegate: AnyObject {
+    func redrawMap(placemarks: [[CustomPlacemark]])
+}
+
 class ScheduleController: UIViewController {
+    
+    weak var delegate: DrawAnnotationDelegate?
     
     var tripData: NewTrip?
     
     var scheduleMarks: [[CustomPlacemark]] = [] {
         didSet {
-            
+            self.delegate?.redrawMap(placemarks: scheduleMarks)
         }
     }
     
@@ -113,8 +119,6 @@ class ScheduleController: UIViewController {
     }
     
     @objc func searchPlace(sender: UIButton) {
-        print(sender.tag)
-            
         let vc = SearchBarController()
         vc.daySection = sender.tag
         vc.delegate = self
@@ -185,6 +189,7 @@ extension ScheduleController: UITableViewDataSource {
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         cell.titleLabel.text = scheduleMarks[indexPath.section][indexPath.row].name
         cell.addressLabel.text = scheduleMarks[indexPath.section][indexPath.row].address
+        cell.orderLabel.text = "\(indexPath.row)"
         return cell
     }
     

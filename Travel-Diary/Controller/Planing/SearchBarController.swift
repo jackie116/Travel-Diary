@@ -23,6 +23,7 @@ class SearchBarController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(mapView)
+        mapView.addConstraintsToFillView(view)
         setSearchBar()
     }
     
@@ -57,7 +58,7 @@ class SearchBarController: UIViewController {
 }
 
 extension SearchBarController: HandleMapSearchDelegate {
-    func dropPinZoomIn(placemark: CustomPlacemark) {
+    func getSearchResult(placemark: CustomPlacemark) {
         self.delegate?.returnMark(mark: placemark, section: daySection ?? 0)
         navigationController?.popViewController(animated: true)
     }

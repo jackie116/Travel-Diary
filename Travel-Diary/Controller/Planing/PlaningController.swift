@@ -17,6 +17,8 @@ class PlaningController: UIViewController {
     
     let mapView = MKMapView()
     
+    let lineColor: [UIColor] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
+    
     private lazy var scheduleVC = ScheduleController()
     
     var barAppearance = UINavigationBarAppearance()
@@ -24,6 +26,7 @@ class PlaningController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        mapView.delegate = self
         setUI()
     }
     
@@ -58,31 +61,88 @@ class PlaningController: UIViewController {
     }
     
     func setScheduleUI() {
+        scheduleVC.delegate = self
         scheduleVC.tripData = tripData
         
         let panel = FloatingPanelController()
         panel.set(contentViewController: scheduleVC)
         panel.addPanel(toParent: self)
     }
+    
+    func placeAnnotation(mark: CustomPlacemark) {
+        let annotation = CustomAnnotation(coordinate: mark.coordinate)
+        annotation.title = mark.name
+        mapView.addAnnotation(annotation)
+    }
+    
+    func mapZoomIn(coordinate: CLLocationCoordinate2D) {
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func drawOverlay(offset: Int, marks: [CustomPlacemark]) {
+        var coordinates = [CLLocationCoordinate2D]()
+        
+        for mark in marks {
+            coordinates.append(mark.coordinate)
+        }
+        
+        let overlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
+        overlay.title = "\(offset)"
+        self.mapView.addOverlay(overlay, level: .aboveRoads)
+    }
 }
 
-extension PlaningController: HandleMapSearchDelegate {
-    func dropPinZoomIn(placemark: CustomPlacemark) {
-        // cache the pin
-        // selectedPin = placemark
+extension PlaningController: DrawAnnotationDelegate {
+    func redrawMap(placemarks: [[CustomPlacemark]]) {
         
-        // Add placemark to schedule array
-        // self.delegate?.passPlacemark(placemark: placemark)
-        // clear existing pins
-        // mapView.removeAnnotations(mapView.annotations)
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = placemark.coordinate
-        annotation.title = placemark.name
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
         
-        mapView.addAnnotation(annotation)
-        // map zoom in
-        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
+        for marks in placemarks {
+            for mark in marks {
+                placeAnnotation(mark: mark)
+            }
+        }
+    
+        for (offset, marks) in placemarks.enumerated() {
+            drawOverlay(offset: offset, marks: marks)
+        }
+        
+        guard let zoomPoint = placemarks[0][safe: 0]?.coordinate else { return }
+        mapZoomIn(coordinate: zoomPoint)
+    }
+}
+
+extension PlaningController: MKMapViewDelegate {
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//
+//        guard let pin = annotation as? CustomAnnotation else { return MKAnnotationView() }
+//
+//        var view = mapView.dequeueReusableAnnotationView(withIdentifier: "Pins")
+//
+//        if view == nil {
+//            view = MKAnnotationView(annotation: pin, reuseIdentifier: "Pins")
+//            view?.image = UIImage(named: "pin")
+//            view?.canShowCallout = true
+//        }
+//
+//        return view
+//    }
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        
+        var colorTag = 0
+        
+        if let overlayTag = overlay.title {
+            colorTag = (Int(overlayTag ?? "0") ?? 0) % lineColor.count
+        }
+        
+        renderer.strokeColor = lineColor[colorTag]
+        renderer.lineCap = .round
+        renderer.lineWidth = 3.0
+        
+        return renderer
     }
 }
