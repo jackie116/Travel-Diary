@@ -74,8 +74,62 @@ class ScheduleController: UIViewController {
                                  left: view.leftAnchor,
                                  bottom: view.bottomAnchor,
                                  right: view.rightAnchor)
+        setScheduleTableHeaderFooter()
         
         setCollectionView()
+    }
+    
+    func setScheduleTableHeaderFooter() {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 150))
+        
+        let tripTitle: UILabel = {
+            let label = UILabel()
+            label.text = self.tripData?.name
+            return label
+        }()
+        
+        let tripDuration: UILabel = {
+            let label = UILabel()
+            label.text = self.getTripDuration(
+                start: self.tripData?.start ?? TimeInterval(),
+                end: self.tripData?.end ?? TimeInterval())
+            return label
+        }()
+        
+        headerView.addSubview(tripTitle)
+        headerView.addSubview(tripDuration)
+        
+        tripTitle.anchor(top: headerView.topAnchor,
+                         left: headerView.leftAnchor,
+                         right: headerView.rightAnchor,
+                         paddingTop: 8, paddingLeft: 16,
+                         paddingRight: 16)
+        
+        tripDuration.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tripDuration.topAnchor.constraint(equalTo: tripTitle.bottomAnchor, constant: 8),
+            tripDuration.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 16),
+            tripDuration.bottomAnchor.constraint(greaterThanOrEqualTo: headerView.bottomAnchor, constant: -16),
+            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: 16)
+        ])
+        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+        
+        let uploadButton: UIButton = {
+            let button = UIButton()
+            button.setTitle("Upload", for: .normal)
+            button.backgroundColor = .customBlue
+            button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
+            return button
+        }()
+        
+        footerView.addSubview(uploadButton)
+        uploadButton.centerX(inView: footerView)
+        uploadButton.centerY(inView: footerView)
+        uploadButton.setDimensions(width: 80, height: 40)
+        
+        scheduleTableView.tableHeaderView = headerView
+        scheduleTableView.tableFooterView = footerView
     }
     
     func setCollectionView() {
@@ -123,6 +177,10 @@ class ScheduleController: UIViewController {
         vc.daySection = sender.tag
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func uploadSchedule() {
+        
     }
 }
 
