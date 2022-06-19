@@ -50,7 +50,7 @@ class ScheduleController: UIViewController {
     
     func initSchedule() {
         guard let days = tripData?.days else { return }
-        for _ in 0...days {
+        for _ in 1...days {
             scheduleMarks.append([])
         }
     }
@@ -149,7 +149,8 @@ extension ScheduleController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // 刪除action
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive,
+                                              title: "Delete") { _, _, completionHandler in
             self.scheduleMarks[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
