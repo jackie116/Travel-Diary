@@ -145,6 +145,22 @@ extension ScheduleController: UITableViewDelegate {
         
         return view
     }
+    
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // 刪除action
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+            self.scheduleMarks[indexPath.section].remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            completionHandler(true)
+        }
+        // Action 圖片
+        deleteAction.image = UIImage(systemName: "trash")
+        let config = UISwipeActionsConfiguration(actions: [deleteAction])
+        // 防止滑到底觸發刪除
+        config.performsFirstActionWithFullSwipe = false
+        return config
+    }
 }
 
 // MARK: - UITableViewDataSource
