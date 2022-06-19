@@ -13,7 +13,7 @@ protocol HandleMapSearchDelegate: AnyObject {
     func getSearchResult(placemark: CustomPlacemark)
 }
 
-class SearchPlaceController: UITableViewController {
+class SearchResultController: UITableViewController {
     
     var matchingItems: [MKMapItem] = []
     var mapView: MKMapView?
@@ -51,7 +51,7 @@ class SearchPlaceController: UITableViewController {
     }
 }
 
-extension SearchPlaceController: UISearchResultsUpdating {
+extension SearchResultController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let mapView = mapView,
             let searchBarText = searchController.searchBar.text else { return }
@@ -69,7 +69,7 @@ extension SearchPlaceController: UISearchResultsUpdating {
     }
 }
 
-extension SearchPlaceController {
+extension SearchResultController {
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return matchingItems.count
@@ -92,7 +92,7 @@ extension SearchPlaceController {
     }
 }
 
-extension SearchPlaceController {
+extension SearchResultController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
         let spot = CustomPlacemark(name: selectedItem.name ?? "",

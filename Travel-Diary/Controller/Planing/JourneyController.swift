@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DiaryController: UIViewController {
+class JourneyController: UIViewController {
     
     private let journeyTableView = UITableView()
     
@@ -49,9 +49,9 @@ class DiaryController: UIViewController {
     }
 }
 
-extension DiaryController: NewTripControllerDelegate {
+extension JourneyController: NewTripControllerDelegate {
     func returnValue(_ sender: NewTripController, data: NewTrip ) {
-        let vc = PlaningController()
+        let vc = ScheduleMapController()
         vc.tripData = data
         navigationController?.pushViewController(vc, animated: true)
     }

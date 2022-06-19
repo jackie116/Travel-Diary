@@ -12,7 +12,7 @@
 		E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70ED9BA285F1F69004874B2 /* Collection+Extension.swift */; };
 		E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7131A5B2858F2430034FE12 /* AppDelegate.swift */; };
 		E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7131A5D2858F2430034FE12 /* SceneDelegate.swift */; };
-		E7131A602858F2430034FE12 /* DiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7131A5F2858F2430034FE12 /* DiaryController.swift */; };
+		E7131A602858F2430034FE12 /* JourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7131A5F2858F2430034FE12 /* JourneyController.swift */; };
 		E7131A632858F2430034FE12 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A612858F2430034FE12 /* Main.storyboard */; };
 		E7131A652858F2430034FE12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7131A642858F2430034FE12 /* Assets.xcassets */; };
 		E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A662858F2430034FE12 /* LaunchScreen.storyboard */; };
@@ -23,7 +23,7 @@
 		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
 		E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* NewTrip.swift */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
-		E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */; };
+		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */; };
@@ -36,11 +36,11 @@
 		E7C69D3C28598707004910AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3B28598707004910AC /* Constants.swift */; };
 		E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3D2859AAA1004910AC /* UIImage+Extension.swift */; };
 		E7C69D402859B164004910AC /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3F2859B164004910AC /* MainTabController.swift */; };
-		E7C69D422859B489004910AC /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D412859B489004910AC /* UserController.swift */; };
+		E7C69D422859B489004910AC /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D412859B489004910AC /* ProfileController.swift */; };
 		E7C69D442859B4CD004910AC /* ExpertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D432859B4CD004910AC /* ExpertController.swift */; };
 		E7C69D462859B4DC004910AC /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D452859B4DC004910AC /* ChatController.swift */; };
 		E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D472859E0F6004910AC /* NewTripController.swift */; };
-		E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */; };
+		E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,7 +52,7 @@
 		E7131A582858F2430034FE12 /* Travel-Diary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel-Diary.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7131A5B2858F2430034FE12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7131A5D2858F2430034FE12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E7131A5F2858F2430034FE12 /* DiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryController.swift; sourceTree = "<group>"; };
+		E7131A5F2858F2430034FE12 /* JourneyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyController.swift; sourceTree = "<group>"; };
 		E7131A622858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7131A642858F2430034FE12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7131A672858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
 		E74D67D9285E465F00700F09 /* NewTrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrip.swift; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
-		E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceController.swift; sourceTree = "<group>"; };
+		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableHeader.swift; sourceTree = "<group>"; };
@@ -77,11 +77,11 @@
 		E7C69D3B28598707004910AC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E7C69D3D2859AAA1004910AC /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D3F2859B164004910AC /* MainTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
-		E7C69D412859B489004910AC /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
+		E7C69D412859B489004910AC /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		E7C69D432859B4CD004910AC /* ExpertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertController.swift; sourceTree = "<group>"; };
 		E7C69D452859B4DC004910AC /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		E7C69D472859E0F6004910AC /* NewTripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTripController.swift; sourceTree = "<group>"; };
-		E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaningController.swift; sourceTree = "<group>"; };
+		E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleMapController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,7 +177,7 @@
 			children = (
 				E75B5FAE285B1A5100B3A866 /* Planing */,
 				E7C69D3F2859B164004910AC /* MainTabController.swift */,
-				E7C69D412859B489004910AC /* UserController.swift */,
+				E7C69D412859B489004910AC /* ProfileController.swift */,
 				E7C69D432859B4CD004910AC /* ExpertController.swift */,
 				E7C69D452859B4DC004910AC /* ChatController.swift */,
 			);
@@ -234,11 +234,11 @@
 		E75B5FAE285B1A5100B3A866 /* Planing */ = {
 			isa = PBXGroup;
 			children = (
-				E7131A5F2858F2430034FE12 /* DiaryController.swift */,
+				E7131A5F2858F2430034FE12 /* JourneyController.swift */,
 				E7C69D472859E0F6004910AC /* NewTripController.swift */,
-				E7CFD989285A0FD2004B5ED5 /* PlaningController.swift */,
+				E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */,
 				E75B5FAA285B05F000B3A866 /* ScheduleController.swift */,
-				E75B5FAC285B0FD900B3A866 /* SearchPlaceController.swift */,
+				E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */,
 				E74D67D2285E1C5000700F09 /* SearchBarController.swift */,
 			);
 			path = Planing;
@@ -379,7 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7131A602858F2430034FE12 /* DiaryController.swift in Sources */,
+				E7131A602858F2430034FE12 /* JourneyController.swift in Sources */,
 				E7C69D3428597D25004910AC /* Date+Extension.swift in Sources */,
 				E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */,
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
@@ -388,7 +388,7 @@
 				E74D676A285DA70800700F09 /* CustomPlacemark.swift in Sources */,
 				E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
-				E7C69D422859B489004910AC /* UserController.swift in Sources */,
+				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,
 				E7C69D442859B4CD004910AC /* ExpertController.swift in Sources */,
@@ -398,12 +398,12 @@
 				E7C69D3C28598707004910AC /* Constants.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
-				E75B5FAD285B0FD900B3A866 /* SearchPlaceController.swift in Sources */,
+				E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
-				E7CFD98A285A0FD2004B5ED5 /* PlaningController.swift in Sources */,
+				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,

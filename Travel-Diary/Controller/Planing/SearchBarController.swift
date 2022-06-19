@@ -39,7 +39,7 @@ class SearchBarController: UIViewController {
     
     // MARK: - search
     func setSearchBar() {
-        let searchTable = SearchPlaceController()
+        let searchTable = SearchResultController()
         resultSearchController = UISearchController(searchResultsController: searchTable)
         resultSearchController?.searchResultsUpdater = searchTable
         

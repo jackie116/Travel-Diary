@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import FloatingPanel
 
-class PlaningController: UIViewController {
+class ScheduleMapController: UIViewController {
     
     var tripData: NewTrip?
     
@@ -94,7 +94,7 @@ class PlaningController: UIViewController {
     }
 }
 
-extension PlaningController: DrawAnnotationDelegate {
+extension ScheduleMapController: DrawAnnotationDelegate {
     func redrawMap(placemarks: [[CustomPlacemark]]) {
         
         mapView.removeAnnotations(mapView.annotations)
@@ -115,7 +115,7 @@ extension PlaningController: DrawAnnotationDelegate {
     }
 }
 
-extension PlaningController: MKMapViewDelegate {
+extension ScheduleMapController: MKMapViewDelegate {
 //    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 //
 //        guard let pin = annotation as? CustomAnnotation else { return MKAnnotationView() }

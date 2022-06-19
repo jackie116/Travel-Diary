@@ -24,7 +24,7 @@ class MainTabController: UITabBarController {
     // MARK: - Helpers
 
     func configureViewControllers() {
-        let diary = DiaryController()
+        let diary = JourneyController()
         let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: diary)
 
         let expert = ExpertController()
@@ -33,7 +33,7 @@ class MainTabController: UITabBarController {
         let chat = ChatController()
         let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Chat), rootViewController: chat)
         
-        let user = UserController()
+        let user = ProfileController()
         let nav4 = templateNavigationController(image: UIImage.asset(.icons_36pt_User), rootViewController: user)
         
         viewControllers = [nav1, nav2, nav3, nav4]
