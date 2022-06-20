@@ -16,5 +16,6 @@ target 'Travel-Diary' do
   pod 'FirebaseStorage'
   pod 'lottie-ios'
   pod 'Firebase/Crashlytics'
+  pod 'FloatingPanel'
 
 end
