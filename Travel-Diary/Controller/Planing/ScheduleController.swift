@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 
 protocol DrawAnnotationDelegate: AnyObject {
-    func redrawMap(placemarks: [[CustomPlacemark]])
+    func redrawMap(placemarks: [DailySpot])
     func zoomSelectedRoute(day: Int)
 }
 
@@ -17,10 +17,11 @@ class ScheduleController: UIViewController {
     
     weak var delegate: DrawAnnotationDelegate?
     
-    var tripData: NewTrip?
+    var tripData: Journey?
     
-    var scheduleMarks: [[CustomPlacemark]] = [] {
+    var scheduleMarks: [DailySpot] = [] {
         didSet {
+            self.tripData?.data = scheduleMarks
             self.delegate?.redrawMap(placemarks: scheduleMarks)
         }
     }
@@ -58,7 +59,7 @@ class ScheduleController: UIViewController {
     func initSchedule() {
         guard let days = tripData?.days else { return }
         for _ in 1...days {
-            scheduleMarks.append([])
+            scheduleMarks.append(DailySpot())
         }
     }
     
@@ -85,15 +86,15 @@ class ScheduleController: UIViewController {
         
         let tripTitle: UILabel = {
             let label = UILabel()
-            label.text = self.tripData?.name
+            label.text = self.tripData?.title
             return label
         }()
         
         let tripDuration: UILabel = {
             let label = UILabel()
             label.text = self.getTripDuration(
-                start: self.tripData?.start ?? TimeInterval(),
-                end: self.tripData?.end ?? TimeInterval())
+                start: self.tripData?.start ?? 0,
+                end: self.tripData?.end ?? 0)
             return label
         }()
         
@@ -161,13 +162,12 @@ class ScheduleController: UIViewController {
         topView.addSubview(sectionCollectionView ?? UICollectionView())
     }
     
-    func getTripDuration(start: TimeInterval, end: TimeInterval) -> String {
-        return timeIntervalToString(timestamp: start) + " - " + timeIntervalToString(timestamp: end)
+    func getTripDuration(start: Int64, end: Int64) -> String {
+        return "\(int64ToyMd(start)) - \(int64ToyMd(end))"
     }
     
-    private func timeIntervalToString(timestamp: TimeInterval) -> String {
-        let timeInterval = TimeInterval(timestamp)
-        let date = Date(timeIntervalSince1970: timeInterval)
+    private func int64ToyMd(_ timestamp: Int64) -> String {
+        let date = Date(milliseconds: timestamp)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: date)
@@ -181,7 +181,7 @@ class ScheduleController: UIViewController {
     }
     
     @objc func uploadSchedule() {
-        
+        JourneyManager.shared.uploadJourney(journey: self.tripData!)
     }
 }
 
@@ -191,7 +191,7 @@ extension ScheduleController: UITableViewDragDelegate {
                    itemsForBeginning session: UIDragSession,
                    at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = scheduleMarks[indexPath.section][indexPath.row]
+        dragItem.localObject = scheduleMarks[indexPath.section].spot[indexPath.row]
         return [dragItem]
     }
 }
@@ -214,7 +214,7 @@ extension ScheduleController: UITableViewDelegate {
         // 刪除action
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: "Delete") { _, _, completionHandler in
-            self.scheduleMarks[indexPath.section].remove(at: indexPath.row)
+            self.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
         }
@@ -239,30 +239,30 @@ extension ScheduleController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        scheduleMarks[section].count
+        scheduleMarks[section].spot.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: ScheduleCell.identifier,
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
-        cell.titleLabel.text = scheduleMarks[indexPath.section][indexPath.row].name
-        cell.addressLabel.text = scheduleMarks[indexPath.section][indexPath.row].address
+        cell.titleLabel.text = scheduleMarks[indexPath.section].spot[indexPath.row].name
+        cell.addressLabel.text = scheduleMarks[indexPath.section].spot[indexPath.row].address
         cell.orderLabel.text = "\(indexPath.row)"
         return cell
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let mover = scheduleMarks[sourceIndexPath.section].remove(at: sourceIndexPath.row)
-        scheduleMarks[destinationIndexPath.section].insert(mover, at: destinationIndexPath.row)
+        let mover = scheduleMarks[sourceIndexPath.section].spot.remove(at: sourceIndexPath.row)
+        scheduleMarks[destinationIndexPath.section].spot.insert(mover, at: destinationIndexPath.row)
         tableView.reloadData()
     }
 }
 
 // MARK: - HandleScheduleDelegate
 extension ScheduleController: HandleScheduleDelegate {
-    func returnMark(mark: CustomPlacemark, section: Int) {
-        scheduleMarks[section].append(mark)
+    func returnMark(mark: Spot, section: Int) {
+        scheduleMarks[section].spot.append(mark)
         scheduleTableView.reloadData()
     }
 }

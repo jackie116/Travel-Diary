@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewTripControllerDelegate: AnyObject {
-    func returnValue(_ sender: NewTripController, data: NewTrip)
+    func returnValue(_ sender: NewTripController, data: Journey)
 }
 
 class NewTripController: UIViewController {
@@ -142,12 +142,10 @@ class NewTripController: UIViewController {
             let endDate = getyyyyMMdd000000(date: self.endDatePicker.date)
             
             let days = daysBetween(start: startDate, end: endDate)
+            
+            let data = Journey(title: tripName, start: startDate.millisecondsSince1970,
+                               end: endDate.millisecondsSince1970, days: days)
 
-            let startTimeInterval = startDate.timeIntervalSince1970
-            let endTimeInterval = endDate.timeIntervalSince1970
-            
-            let data = NewTrip(name: tripName, start: startTimeInterval, end: endTimeInterval, days: days)
-            
             navigationController?.dismiss(animated: false, completion: {
                 self.delegate?.returnValue(self, data: data)
             })

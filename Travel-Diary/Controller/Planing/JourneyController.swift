@@ -50,7 +50,7 @@ class JourneyController: UIViewController {
 }
 
 extension JourneyController: NewTripControllerDelegate {
-    func returnValue(_ sender: NewTripController, data: NewTrip ) {
+    func returnValue(_ sender: NewTripController, data: Journey ) {
         let vc = ScheduleMapController()
         vc.tripData = data
         navigationController?.pushViewController(vc, animated: true)

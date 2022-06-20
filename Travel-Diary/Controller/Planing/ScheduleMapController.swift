@@ -11,7 +11,7 @@ import FloatingPanel
 
 class ScheduleMapController: UIViewController {
     
-    var tripData: NewTrip?
+    var tripData: Journey?
     
     var selectedPin: MKPlacemark?
     
@@ -19,7 +19,7 @@ class ScheduleMapController: UIViewController {
     
     let lineColor: [UIColor] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
     
-    var annotationData = [[CustomPlacemark]]()
+    var annotationData = [DailySpot]()
     
     private lazy var scheduleVC = ScheduleController()
     
@@ -71,8 +71,8 @@ class ScheduleMapController: UIViewController {
         panel.addPanel(toParent: self)
     }
     
-    func placeAnnotation(mark: CustomPlacemark) {
-        let annotation = CustomAnnotation(coordinate: mark.coordinate)
+    func placeAnnotation(mark: Spot) {
+        let annotation = CustomAnnotation(coordinate: mark.coordinate.getCLLocationCoordinate2D())
         annotation.title = mark.name
         mapView.addAnnotation(annotation)
     }
@@ -83,11 +83,11 @@ class ScheduleMapController: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    func drawOverlay(offset: Int, marks: [CustomPlacemark]) {
+    func drawOverlay(offset: Int, marks: [Spot]) {
         var coordinates = [CLLocationCoordinate2D]()
         
         for mark in marks {
-            coordinates.append(mark.coordinate)
+            coordinates.append(mark.coordinate.getCLLocationCoordinate2D())
         }
         
         let overlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
@@ -98,26 +98,27 @@ class ScheduleMapController: UIViewController {
 
 extension ScheduleMapController: DrawAnnotationDelegate {
     func zoomSelectedRoute(day: Int) {
-        guard let zoomPoint = annotationData[safe: day]?[safe: 0]?.coordinate else { return }
+        
+        guard let zoomPoint = annotationData[safe: day]?.spot[safe: 0]?.coordinate.getCLLocationCoordinate2D() else { return }
         mapZoomIn(coordinate: zoomPoint)
     }
     
-    func redrawMap(placemarks: [[CustomPlacemark]]) {
+    func redrawMap(placemarks: [DailySpot]) {
         annotationData = placemarks
         mapView.removeAnnotations(mapView.annotations)
         mapView.removeOverlays(mapView.overlays)
         
         for marks in placemarks {
-            for mark in marks {
+            for mark in marks.spot {
                 placeAnnotation(mark: mark)
             }
         }
     
         for (offset, marks) in placemarks.enumerated() {
-            drawOverlay(offset: offset, marks: marks)
+            drawOverlay(offset: offset, marks: marks.spot)
         }
         
-        guard let zoomPoint = placemarks[0][safe: 0]?.coordinate else { return }
+        guard let zoomPoint = placemarks[0].spot[safe: 0]?.coordinate.getCLLocationCoordinate2D() else { return }
         mapZoomIn(coordinate: zoomPoint)
     }
 }

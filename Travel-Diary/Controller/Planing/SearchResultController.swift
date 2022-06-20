@@ -10,7 +10,7 @@ import MapKit
 
 // MARK: - search
 protocol HandleMapSearchDelegate: AnyObject {
-    func getSearchResult(placemark: CustomPlacemark)
+    func getSearchResult(placemark: Spot)
 }
 
 class SearchResultController: UITableViewController {
@@ -95,9 +95,9 @@ extension SearchResultController {
 extension SearchResultController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark
-        let spot = CustomPlacemark(name: selectedItem.name ?? "",
+        let spot = Spot(name: selectedItem.name ?? "",
                                    address: parseAddress(selectedItem: selectedItem),
-                                   coordinate: selectedItem.coordinate)
+                        coordinate: selectedItem.coordinate.getGeoPoint())
         self.delegate?.getSearchResult(placemark: spot)
         dismiss(animated: true, completion: nil)
     }

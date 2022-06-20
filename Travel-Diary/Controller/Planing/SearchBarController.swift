@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 
 protocol HandleScheduleDelegate: AnyObject {
-    func returnMark(mark: CustomPlacemark, section: Int)
+    func returnMark(mark: Spot, section: Int)
 }
 
 class SearchBarController: UIViewController {
@@ -58,7 +58,7 @@ class SearchBarController: UIViewController {
 }
 
 extension SearchBarController: HandleMapSearchDelegate {
-    func getSearchResult(placemark: CustomPlacemark) {
+    func getSearchResult(placemark: Spot) {
         self.delegate?.returnMark(mark: placemark, section: daySection ?? 0)
         navigationController?.popViewController(animated: true)
     }

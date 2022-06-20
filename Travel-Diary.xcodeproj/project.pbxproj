@@ -17,23 +17,23 @@
 		E7131A652858F2430034FE12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7131A642858F2430034FE12 /* Assets.xcassets */; };
 		E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A662858F2430034FE12 /* LaunchScreen.storyboard */; };
 		E7131A792858F97A0034FE12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7131A782858F97A0034FE12 /* GoogleService-Info.plist */; };
-		E74D676A285DA70800700F09 /* CustomPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D6769285DA70800700F09 /* CustomPlacemark.swift */; };
 		E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D2285E1C5000700F09 /* SearchBarController.swift */; };
 		E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */; };
 		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
-		E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* NewTrip.swift */; };
+		E74D67DA285E465F00700F09 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* Journey.swift */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */; };
+		E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9258528603A0D007F266C /* JourneyManager.swift */; };
+		E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */; };
 		E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */; };
 		E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2D28597C27004910AC /* UIFont+Extension.swift */; };
 		E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2F28597C83004910AC /* UIView+Extension.swift */; };
 		E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3128597CDD004910AC /* UIColor+Extension.swift */; };
 		E7C69D3428597D25004910AC /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3328597D25004910AC /* Date+Extension.swift */; };
 		E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3528597D44004910AC /* UITableViewCell+Extension.swift */; };
-		E7C69D3C28598707004910AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3B28598707004910AC /* Constants.swift */; };
 		E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3D2859AAA1004910AC /* UIImage+Extension.swift */; };
 		E7C69D402859B164004910AC /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D3F2859B164004910AC /* MainTabController.swift */; };
 		E7C69D422859B489004910AC /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D412859B489004910AC /* ProfileController.swift */; };
@@ -58,23 +58,23 @@
 		E7131A672858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7131A692858F2430034FE12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7131A782858F97A0034FE12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E74D6769285DA70800700F09 /* CustomPlacemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlacemark.swift; sourceTree = "<group>"; };
 		E74D67D2285E1C5000700F09 /* SearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarController.swift; sourceTree = "<group>"; };
 		E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSectionFooter.swift; sourceTree = "<group>"; };
 		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
-		E74D67D9285E465F00700F09 /* NewTrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrip.swift; sourceTree = "<group>"; };
+		E74D67D9285E465F00700F09 /* Journey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableHeader.swift; sourceTree = "<group>"; };
+		E7B9258528603A0D007F266C /* JourneyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyManager.swift; sourceTree = "<group>"; };
+		E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2D28597C27004910AC /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2F28597C83004910AC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D3128597CDD004910AC /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D3328597D25004910AC /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D3528597D44004910AC /* UITableViewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extension.swift"; sourceTree = "<group>"; };
-		E7C69D3B28598707004910AC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E7C69D3D2859AAA1004910AC /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D3F2859B164004910AC /* MainTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		E7C69D412859B489004910AC /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
@@ -153,8 +153,7 @@
 		E7131A712858F30A0034FE12 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E74D6769285DA70800700F09 /* CustomPlacemark.swift */,
-				E74D67D9285E465F00700F09 /* NewTrip.swift */,
+				E74D67D9285E465F00700F09 /* Journey.swift */,
 				E70ED9B8285F1079004874B2 /* CustomAnnotation.swift */,
 			);
 			path = Model;
@@ -202,6 +201,7 @@
 				E7C69D3128597CDD004910AC /* UIColor+Extension.swift */,
 				E7C69D3328597D25004910AC /* Date+Extension.swift */,
 				E70ED9BA285F1F69004874B2 /* Collection+Extension.swift */,
+				E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -209,6 +209,7 @@
 		E7131A762858F3280034FE12 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				E7B9258528603A0D007F266C /* JourneyManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -216,7 +217,6 @@
 		E7131A772858F3330034FE12 /* Utlis */ = {
 			isa = PBXGroup;
 			children = (
-				E7C69D3B28598707004910AC /* Constants.swift */,
 			);
 			path = Utlis;
 			sourceTree = "<group>";
@@ -385,7 +385,6 @@
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
 				E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */,
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
-				E74D676A285DA70800700F09 /* CustomPlacemark.swift in Sources */,
 				E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
@@ -395,12 +394,13 @@
 				E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* ChatController.swift in Sources */,
-				E7C69D3C28598707004910AC /* Constants.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
+				E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */,
+				E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */,
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
 				E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
-				E74D67DA285E465F00700F09 /* NewTrip.swift in Sources */,
+				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,

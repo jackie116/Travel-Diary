@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 extension Date {
     var millisecondsSince1970: Int64 {
@@ -20,7 +21,7 @@ extension Date {
         
         let formatter = DateFormatter()
         
-        formatter.dateFormat = "yyyy.MM.dd HH:mm"
+        formatter.dateFormat = "yyyy.MM.dd"
                 
         return formatter
         
