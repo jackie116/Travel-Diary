@@ -10,6 +10,7 @@ import MapKit
 
 protocol DrawAnnotationDelegate: AnyObject {
     func redrawMap(placemarks: [[CustomPlacemark]])
+    func zoomSelectedRoute(day: Int)
 }
 
 class ScheduleController: UIViewController {
@@ -271,6 +272,7 @@ extension ScheduleController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tablePath = IndexPath(row: NSNotFound, section: indexPath.item)
         scheduleTableView.scrollToRow(at: tablePath, at: .top, animated: true)
+        self.delegate?.zoomSelectedRoute(day: indexPath.item)
     }
 }
 

@@ -19,6 +19,8 @@ class ScheduleMapController: UIViewController {
     
     let lineColor: [UIColor] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
     
+    var annotationData = [[CustomPlacemark]]()
+    
     private lazy var scheduleVC = ScheduleController()
     
     var barAppearance = UINavigationBarAppearance()
@@ -95,8 +97,13 @@ class ScheduleMapController: UIViewController {
 }
 
 extension ScheduleMapController: DrawAnnotationDelegate {
+    func zoomSelectedRoute(day: Int) {
+        guard let zoomPoint = annotationData[safe: day]?[safe: 0]?.coordinate else { return }
+        mapZoomIn(coordinate: zoomPoint)
+    }
+    
     func redrawMap(placemarks: [[CustomPlacemark]]) {
-        
+        annotationData = placemarks
         mapView.removeAnnotations(mapView.annotations)
         mapView.removeOverlays(mapView.overlays)
         
