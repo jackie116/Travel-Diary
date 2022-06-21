@@ -23,6 +23,7 @@
 		E74D67DA285E465F00700F09 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* Journey.swift */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
+		E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7776292286193C800CC45B0 /* JourneyCell.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */; };
@@ -64,6 +65,7 @@
 		E74D67D9285E465F00700F09 /* Journey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
+		E7776292286193C800CC45B0 /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableHeader.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
 				E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */,
 				E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */,
+				E7776292286193C800CC45B0 /* JourneyCell.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
+				E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */,
 				E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

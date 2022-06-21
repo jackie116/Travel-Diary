@@ -8,37 +8,82 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import CoreImage
 
 class JourneyManager {
     static let shared = JourneyManager()
     
     let db = Firestore.firestore()
-
-    func uploadJourney(journey: Journey) {
-        
-        if let id = journey.id {
-            updateJourney(journey: journey, id: id)
-        } else {
-            addNewJourey(journey: journey)
-        }
-    }
+    let collectionRef = Firestore.firestore().collection("Journeys")
     
-    private func addNewJourey(journey: Journey) {
-        let collectionRef = db.collection("Journeys")
+    // MARK: - 新增旅程
+    func addNewJourey(journey: Journey, completion: @escaping (Result<String, Error>) -> Void) {
         do {
             let docRef = try collectionRef.addDocument(from: journey)
-            print(docRef)
+            completion(.success(docRef.documentID))
         } catch {
-            print(error)
+            completion(.failure(error))
         }
     }
     
-    private func updateJourney(journey: Journey, id: String) {
-        let docRef = db.collection("Journeys").document(id)
+    // MARK: - 整個旅程更新
+    func updateJourney(journey: Journey, completion: @escaping (Result<Void, Error>) -> Void) {
+        let docRef = collectionRef.document(journey.id!)
         do {
             try docRef.setData(from: journey)
+            completion(.success(()))
         } catch {
-          print(error)
+            completion(.failure(error))
         }
     }
+    
+    // MARK: - 抓取全部旅程
+    func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
+        collectionRef.getDocuments { snapshot, error in
+            
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var journeys = [Journey]()
+                for document in snapshot!.documents {
+                    do {
+                        let journey = try document.data(as: Journey.self)
+                        journeys.append(journey)
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                completion(.success(journeys))
+            }
+        }
+    }
+    
+    // MARK: - 抓特定旅程
+    func fetchSpecificJourney(id: String, completion: @escaping (Result<Journey, Error>) -> Void) {
+        let docRef = collectionRef.document(id)
+        
+        docRef.getDocument(as: Journey.self) { result in
+            switch result {
+            case .success(let journey):
+                completion(.success(journey))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 刪一個旅程
+    func deleteJourney(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        collectionRef.document(id).delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    // MARK: - 更新旅程名稱日期
+    
+    // MARK: - 更新旅程背景照片
 }

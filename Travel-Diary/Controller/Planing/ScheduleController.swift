@@ -26,40 +26,69 @@ class ScheduleController: UIViewController {
         }
     }
     
-    var sectionCollectionView: UICollectionView?
+    lazy var sectionCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        // 方向
+        layout.scrollDirection = .horizontal
+        // section 邊距
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        // size of each cell
+        layout.itemSize = CGSize(width: 60, height: 40)
+        // cell 間距
+        layout.minimumLineSpacing = CGFloat(10)
+        
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
+        
+        let collectionView = UICollectionView(frame: rect, collectionViewLayout: layout)
+        
+        collectionView.register(SectionCollectionCell.self,
+                                        forCellWithReuseIdentifier: SectionCollectionCell.identifier)
+
+        collectionView.backgroundColor = .clear
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        collectionView.isPagingEnabled = true
+        
+        return collectionView
+    }()
     
     private let topView: UIView = {
         let view = UIView()
         return view
     }()
     
-    private let scheduleTableView: UITableView = {
+    lazy var scheduleTableView: UITableView = {
         let table = UITableView()
         
         table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
         table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
         table.register(ScheduleSectionFooter.self, forHeaderFooterViewReuseIdentifier: ScheduleSectionFooter.identifier)
         
+        table.delegate = self
+        table.dataSource = self
+        table.dragDelegate = self
+        table.dragInteractionEnabled = true
+        
         return table
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        scheduleTableView.delegate = self
-        scheduleTableView.dataSource = self
-        
-        scheduleTableView.dragDelegate = self
-        scheduleTableView.dragInteractionEnabled = true
         
         initSchedule()
         setUI()
     }
     
     func initSchedule() {
-        guard let days = tripData?.days else { return }
-        for _ in 1...days {
-            scheduleMarks.append(DailySpot())
+        guard let tripData = tripData else { return }
+        
+        if tripData.data.isEmpty {
+            for _ in 1...tripData.days {
+                scheduleMarks.append(DailySpot())
+            }
+        } else {
+            scheduleMarks = tripData.data
         }
     }
     
@@ -135,31 +164,7 @@ class ScheduleController: UIViewController {
     }
     
     func setCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        
-        // 方向
-        layout.scrollDirection = .horizontal
-        // section 邊距
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        // size of each cell
-        layout.itemSize = CGSize(width: 60, height: 40)
-        // cell 間距
-        layout.minimumLineSpacing = CGFloat(10)
-        
-        let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
-        
-        sectionCollectionView = UICollectionView(frame: rect, collectionViewLayout: layout)
-        sectionCollectionView?.register(SectionCollectionCell.self,
-                                        forCellWithReuseIdentifier: SectionCollectionCell.identifier)
-
-        sectionCollectionView?.backgroundColor = .clear
-        
-        sectionCollectionView?.delegate = self
-        sectionCollectionView?.dataSource = self
-        // 分頁效果
-        sectionCollectionView?.isPagingEnabled = true
-        
-        topView.addSubview(sectionCollectionView ?? UICollectionView())
+        topView.addSubview(sectionCollectionView)
     }
     
     func getTripDuration(start: Int64, end: Int64) -> String {
@@ -181,7 +186,14 @@ class ScheduleController: UIViewController {
     }
     
     @objc func uploadSchedule() {
-        JourneyManager.shared.uploadJourney(journey: self.tripData!)
+        JourneyManager.shared.updateJourney(journey: self.tripData!) { result in
+            switch result {
+            case .success:
+                print("Upload success")
+            case .failure(let error):
+                print("Upload failure: \(error)")
+            }
+        }
     }
 }
 

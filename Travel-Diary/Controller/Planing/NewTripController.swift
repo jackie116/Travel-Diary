@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewTripControllerDelegate: AnyObject {
-    func returnValue(_ sender: NewTripController, data: Journey)
+    func returnValue(id: String)
 }
 
 class NewTripController: UIViewController {
@@ -145,10 +145,17 @@ class NewTripController: UIViewController {
             
             let data = Journey(title: tripName, start: startDate.millisecondsSince1970,
                                end: endDate.millisecondsSince1970, days: days)
-
-            navigationController?.dismiss(animated: false, completion: {
-                self.delegate?.returnValue(self, data: data)
-            })
+            
+            JourneyManager.shared.addNewJourey(journey: data) { [weak self] result in
+                switch result {
+                case .success(let id):
+                    self?.navigationController?.dismiss(animated: false, completion: {
+                        self?.delegate?.returnValue(id: id)
+                    })
+                case .failure(let error):
+                    print("Add Journey Failed \(error)")
+                }
+            }
         }
     }
 }
