@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 
+// TODO: - zoomSelectedSpot 
 protocol DrawAnnotationDelegate: AnyObject {
     func redrawMap(placemarks: [DailySpot])
     func zoomSelectedRoute(day: Int)

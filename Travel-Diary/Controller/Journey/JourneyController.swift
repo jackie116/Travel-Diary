@@ -65,6 +65,7 @@ class JourneyController: UIViewController {
         journeyTableView.addSubview(refreshControl)
         
         setConstraint()
+        setQRcodeButton()
     }
     
     func setConstraint() {
@@ -80,6 +81,15 @@ class JourneyController: UIViewController {
                          width: 60, height: 60)
     }
     
+    func setQRcodeButton() {
+        let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
+                                     style: .plain, target: self,
+                                     action: #selector(openQRcodeViewer))
+        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        navigationItem.rightBarButtonItem = button
+    }
+    
+    // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
@@ -136,6 +146,7 @@ class JourneyController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    // MARK: - objc func
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: journeyTableView)
         if let indexPath = journeyTableView.indexPathForRow(at: point) {
@@ -162,8 +173,13 @@ class JourneyController: UIViewController {
             }
         }
     }
+    
+    @objc func openQRcodeViewer() {
+        
+    }
 }
 
+// MARK: - NewTripControllerDelegate
 extension JourneyController: NewTripControllerDelegate {
     func returnValue(id: String) {
         let vc = ScheduleMapController()
@@ -179,6 +195,7 @@ extension JourneyController: NewTripControllerDelegate {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension JourneyController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ScheduleMapController()
@@ -187,6 +204,7 @@ extension JourneyController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension JourneyController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         journeys.count

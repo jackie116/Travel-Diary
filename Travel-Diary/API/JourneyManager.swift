@@ -86,4 +86,8 @@ class JourneyManager {
     // TODO: - 更新旅程名稱日期
     
     // TODO: - 更新旅程背景照片
+    
+    // TODO: - Copy 一個旅程
+    
+    // TODO: - Add user
 }
