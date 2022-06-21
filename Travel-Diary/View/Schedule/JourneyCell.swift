@@ -47,7 +47,7 @@ class JourneyCell: UITableViewCell {
     
     func setCellUI() {
         contentView.addSubview(coverPhoto)
-        coverPhoto.addSubview(functionButton)
+        contentView.addSubview(functionButton)
         coverPhoto.addSubview(titleLabel)
         coverPhoto.addSubview(dateLabel)
         setConstraint()
@@ -56,8 +56,8 @@ class JourneyCell: UITableViewCell {
     func setConstraint() {
         coverPhoto.anchor(top: contentView.topAnchor, left: contentView.leftAnchor,
                           bottom: contentView.bottomAnchor, right: contentView.rightAnchor,
-                          paddingTop: 8, paddingLeft: 32, paddingBottom: 8,
-                          paddingRight: 32, height: 200)
+                          paddingTop: 8, paddingLeft: 16, paddingBottom: 8,
+                          paddingRight: 16, height: 200)
         
         functionButton.anchor(top: coverPhoto.topAnchor, right: coverPhoto.rightAnchor,
                               paddingTop: 4, paddingRight: 4, width: 40, height: 40)

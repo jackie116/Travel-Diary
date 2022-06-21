@@ -83,7 +83,7 @@ class JourneyManager {
         }
     }
     
-    // MARK: - 更新旅程名稱日期
+    // TODO: - 更新旅程名稱日期
     
-    // MARK: - 更新旅程背景照片
+    // TODO: - 更新旅程背景照片
 }

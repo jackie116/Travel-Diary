@@ -178,7 +178,7 @@ class ScheduleController: UIViewController {
         return dateFormatter.string(from: date)
     }
     
-    @objc func searchPlace(sender: UIButton) {
+    @objc func searchPlace(_ sender: UIButton) {
         let vc = SearchBarController()
         vc.daySection = sender.tag
         vc.delegate = self
@@ -216,7 +216,7 @@ extension ScheduleController: UITableViewDelegate {
             return UITableViewHeaderFooterView()
         }
         view.button.tag = section
-        view.button.addTarget(self, action: #selector(searchPlace(sender:)), for: .touchUpInside)
+        view.button.addTarget(self, action: #selector(searchPlace), for: .touchUpInside)
         
         return view
     }
