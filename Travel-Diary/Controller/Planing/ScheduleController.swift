@@ -12,6 +12,7 @@ import MapKit
 protocol DrawAnnotationDelegate: AnyObject {
     func redrawMap(placemarks: [DailySpot])
     func zoomSelectedRoute(day: Int)
+    func zoomSelectedSpot(indexPath: IndexPath)
 }
 
 class ScheduleController: UIViewController {
@@ -237,6 +238,10 @@ extension ScheduleController: UITableViewDelegate {
         // 防止滑到底觸發刪除
         config.performsFirstActionWithFullSwipe = false
         return config
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.zoomSelectedSpot(indexPath: indexPath)
     }
 }
 
