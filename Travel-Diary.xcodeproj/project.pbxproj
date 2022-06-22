@@ -25,6 +25,7 @@
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
 		E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7776292286193C800CC45B0 /* JourneyCell.swift */; };
+		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */; };
@@ -68,6 +69,7 @@
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		E7776292286193C800CC45B0 /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
+		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E793AF86285CD5F300606CF7 /* ScheduleTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableHeader.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				E7131A5F2858F2430034FE12 /* JourneyController.swift */,
 				E7C69D472859E0F6004910AC /* NewTripController.swift */,
 				E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */,
+				E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */,
 			);
 			path = Journey;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
 				E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */,
 				E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */,
+				E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */,
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
 				E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */,
 				E74E191628622CEB00ADBF65 /* QRcodeViewerController.swift in Sources */,

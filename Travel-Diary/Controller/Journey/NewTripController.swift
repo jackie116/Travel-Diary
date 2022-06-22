@@ -106,15 +106,6 @@ class NewTripController: UIViewController {
                             paddingRight: 32)
     }
     
-    func getyyyyMMdd000000(date: Date) -> Date {
-        let formatter = DateFormatter()
-        formatter.locale = .current
-        formatter.dateFormat = "yyyy-MM-dd"
-        let dateToString = formatter.string(from: date)
-        formatter.dateFormat = "yyyy-MM-dd 00:00:00"
-        return formatter.date(from: dateToString) ?? Date()
-    }
-    
     func daysBetween(start: Date, end: Date) -> Int {
         let components = Calendar.current.dateComponents([.day], from: start, to: end)
         return (components.day ?? 0) + 1
@@ -138,13 +129,17 @@ class NewTripController: UIViewController {
         } else {
             guard let tripName = self.tripNameTextField.text else { return }
             
-            let startDate = getyyyyMMdd000000(date: self.startDatePicker.date)
-            let endDate = getyyyyMMdd000000(date: self.endDatePicker.date)
-            
+            let startDate = self.startDatePicker.date.formattedDate
+            let endDate = self.endDatePicker.date.formattedDate
+
             let days = daysBetween(start: startDate, end: endDate)
-            
-            let data = Journey(title: tripName, start: startDate.millisecondsSince1970,
+
+            var data = Journey(title: tripName, start: startDate.millisecondsSince1970,
                                end: endDate.millisecondsSince1970, days: days)
+            
+            for _ in 1...days {
+                data.data.append(DailySpot())
+            }
             
             JourneyManager.shared.addNewJourey(journey: data) { [weak self] result in
                 switch result {

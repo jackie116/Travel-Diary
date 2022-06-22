@@ -8,6 +8,8 @@ target 'Travel-Diary' do
   # Pods for Travel-Diary
   pod 'SwiftLint'
   pod 'IQKeyboardManagerSwift'
+  pod 'Kingfisher', '~> 7.2'
+  
   pod 'FirebaseAnalytics'
 
   pod 'FirebaseAuth'

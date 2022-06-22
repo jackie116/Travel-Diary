@@ -8,13 +8,19 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import CoreImage
+import FirebaseStorage
+import UIKit
 
 class JourneyManager {
     static let shared = JourneyManager()
     
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("Journeys")
+    let storageRef = Storage.storage().reference()
+    let coverImageRef = Storage.storage().reference().child("cover_images")
+    
+    let group = DispatchGroup()
+    let semaphore = DispatchSemaphore(value: 1)
     
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<String, Error>) -> Void) {
@@ -82,12 +88,35 @@ class JourneyManager {
             }
         }
     }
+    // MARK: - 更新旅程名稱日期
+    func updateJourneyWithCoverImage(journey: Journey, coverImage: UIImage?,
+                                     completion: @escaping (Result<Void, Error>) -> Void) {
+        var data = journey
+        
+        if let imageData = coverImage?.jpegData(compressionQuality: 0.1), let id = data.id {
+            
+            let imageRef = coverImageRef.child(id)
+            
+            imageRef.putData(imageData, metadata: nil) { _, error in
+                imageRef.downloadURL { url, error in
+                    if let coverImageUrl = url?.absoluteString {
+                        data.coverPhoto = coverImageUrl
+                    }
+                    
+                    self.updateJourney(journey: data) { result in
+                        switch result {
+                        case .success:
+                            completion(.success(()))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Copy 一個旅程
     
-    // TODO: - 更新旅程名稱日期
-    
-    // TODO: - 更新旅程背景照片
-    
-    // TODO: - Copy 一個旅程
-    
-    // TODO: - Add user
+    // MARK: - Add user
 }

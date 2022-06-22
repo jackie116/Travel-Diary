@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class JourneyController: UIViewController {
     
@@ -93,22 +94,33 @@ class JourneyController: UIViewController {
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
-        let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default)
+        // Detail
+        let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
+            self?.dismiss(animated: false) {
+                let vc = ModifyTripDetailController()
+                vc.journey = self?.journeys[indexPath.row]
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
         changeTripAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
         controller.addAction(changeTripAction)
         
+        // Group
         let groupAction = UIAlertAction(title: "Travel group", style: .default)
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
-
+        
+        // Privacy
         let privacyAction = UIAlertAction(title: "Privacy and share", style: .default)
         privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
         controller.addAction(privacyAction)
-
+        
+        // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default)
         copyAction.setValue(UIImage(systemName: "doc.on.doc"), forKey: "image")
         controller.addAction(copyAction)
-
+        
+        // Delete
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
             self?.dismiss(animated: true) {
                 self?.showDeleteAlert(indexPath: indexPath)
@@ -117,6 +129,7 @@ class JourneyController: UIViewController {
         deleteAction.setValue(UIImage(systemName: "trash"), forKey: "image")
         controller.addAction(deleteAction)
         
+        // Cancel
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
         controller.addAction(cancelAction)
@@ -219,6 +232,8 @@ extension JourneyController: UITableViewDataSource {
         cell.dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journeys[indexPath.row].start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journeys[indexPath.row].end))
         cell.functionButton.addTarget(self, action: #selector(didTapSetting), for: .touchUpInside)
+        let imageUrl = URL(string: journeys[indexPath.row].coverPhoto)
+        cell.coverPhoto.kf.setImage(with: imageUrl)
         
         return cell
     }
