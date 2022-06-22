@@ -97,6 +97,13 @@ class ScheduleMapController: UIViewController {
 }
 
 extension ScheduleMapController: DrawAnnotationDelegate {
+    func zoomSelectedSpot(indexPath: IndexPath) {
+        guard let zoomPoint = annotationData[safe: indexPath.section]?.spot[safe: indexPath.row]?
+            .coordinate.getCLLocationCoordinate2D()
+        else { return }
+        mapZoomIn(coordinate: zoomPoint)
+    }
+    
     func zoomSelectedRoute(day: Int) {
         
         guard let zoomPoint = annotationData[safe: day]?.spot[safe: 0]?.coordinate.getCLLocationCoordinate2D()
