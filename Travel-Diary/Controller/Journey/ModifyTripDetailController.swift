@@ -180,29 +180,33 @@ class ModifyTripDetailController: UIViewController {
             
             let dataCount = journey.data.count
             
-            if days != dataCount {
-                let min = min(days, dataCount)
-                let max = max(days, dataCount)
-                
-                for _ in (min + 1)...max {
+            if days > dataCount {
+                for _ in (dataCount + 1)...days {
                     journey.data.append(DailySpot())
+                }
+            } else if days < dataCount {
+                for _ in (days + 1)...dataCount {
+                    journey.data.removeLast()
                 }
             }
             
             if coverImage != nil {
-                JourneyManager.shared.updateJourneyWithCoverImage(journey: journey, coverImage: coverImage) { result in
+                JourneyManager.shared.updateJourneyWithCoverImage(
+                    journey: journey, coverImage: coverImage) { [weak self] result in
                     switch result {
                     case .success:
                         print("Update success.")
+                        self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
                         print("Update failed \(error)")
                     }
                 }
             } else {
-                JourneyManager.shared.updateJourney(journey: journey) { result in
+                JourneyManager.shared.updateJourney(journey: journey) { [weak self] result in
                     switch result {
                     case .success:
                         print("Update success.")
+                        self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
                         print("Update failed \(error)")
                     }

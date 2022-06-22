@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewTripControllerDelegate: AnyObject {
-    func returnValue(id: String)
+    func returnJourney(journey: Journey)
 }
 
 class NewTripController: UIViewController {
@@ -143,9 +143,9 @@ class NewTripController: UIViewController {
             
             JourneyManager.shared.addNewJourey(journey: data) { [weak self] result in
                 switch result {
-                case .success(let id):
+                case .success(let journey):
                     self?.navigationController?.dismiss(animated: false, completion: {
-                        self?.delegate?.returnValue(id: id)
+                        self?.delegate?.returnJourney(journey: journey)
                     })
                 case .failure(let error):
                     print("Add Journey Failed \(error)")

@@ -18,6 +18,8 @@ struct Journey: Codable, Identifiable {
     var end: Int64
     var days: Int
     var data: [DailySpot] = [DailySpot]()
+    var isPublic: Bool = false
+    var users: [String] = [String]()
     var owner: String = ""
 }
 

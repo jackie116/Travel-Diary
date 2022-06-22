@@ -23,10 +23,12 @@ class JourneyManager {
     let semaphore = DispatchSemaphore(value: 1)
     
     // MARK: - 新增旅程
-    func addNewJourey(journey: Journey, completion: @escaping (Result<String, Error>) -> Void) {
+    func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
         do {
             let docRef = try collectionRef.addDocument(from: journey)
-            completion(.success(docRef.documentID))
+            var data = journey
+            data.id = docRef.documentID
+            completion(.success(data))
         } catch {
             completion(.failure(error))
         }
@@ -88,7 +90,7 @@ class JourneyManager {
             }
         }
     }
-    // MARK: - 更新旅程名稱日期
+    // MARK: - 更新旅程名稱含封面照
     func updateJourneyWithCoverImage(journey: Journey, coverImage: UIImage?,
                                      completion: @escaping (Result<Void, Error>) -> Void) {
         var data = journey

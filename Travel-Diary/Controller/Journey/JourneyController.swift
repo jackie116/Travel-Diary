@@ -116,7 +116,11 @@ class JourneyController: UIViewController {
         controller.addAction(privacyAction)
         
         // Copy
-        let copyAction = UIAlertAction(title: "Copy", style: .default)
+        let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true) {
+                self?.showCopyAlert(indexPath: indexPath)
+            }
+        }
         copyAction.setValue(UIImage(systemName: "doc.on.doc"), forKey: "image")
         controller.addAction(copyAction)
         
@@ -137,16 +141,45 @@ class JourneyController: UIViewController {
         present(controller, animated: true)
     }
     
+    func showCopyAlert(indexPath: IndexPath) {
+        let controller = UIAlertController(title: "Copy",
+                                           message: "Are you sure you want to copy this trip?",
+                                           preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            var journey = self.journeys[indexPath.row]
+            journey.title += "_copy"
+            
+            JourneyManager.shared.addNewJourey(journey: journey) { [weak self] result in
+                switch result {
+                case .success(let journey):
+                    self?.journeys.insert(journey, at: 0)
+                    self?.journeyTableView.beginUpdates()
+                    self?.journeyTableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+                    self?.journeyTableView.endUpdates()
+                case .failure(let error):
+                    print("Delete failed \(error)")
+                }
+            }
+        }
+        controller.addAction(okAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        controller.addAction(cancelAction)
+        present(controller, animated: true, completion: nil)
+    }
+    
     func showDeleteAlert(indexPath: IndexPath) {
         let controller = UIAlertController(title: "Delete",
                                            message: "Are you sure you want to delete this trip?",
                                            preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-            JourneyManager.shared.deleteJourney(id: (self?.journeys[indexPath.row].id)!) { result in
+        let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            JourneyManager.shared.deleteJourney(id: (self.journeys[indexPath.row].id)!) { [weak self] result in
                 switch result {
                 case .success:
                     self?.journeys.remove(at: indexPath.row)
+                    self?.journeyTableView.beginUpdates()
                     self?.journeyTableView.deleteRows(at: [indexPath], with: .left)
+                    self?.journeyTableView.endUpdates()
                 case .failure(let error):
                     print("Delete failed \(error)")
                 }
@@ -194,17 +227,10 @@ class JourneyController: UIViewController {
 
 // MARK: - NewTripControllerDelegate
 extension JourneyController: NewTripControllerDelegate {
-    func returnValue(id: String) {
+    func returnJourney(journey: Journey) {
         let vc = ScheduleMapController()
-        JourneyManager.shared.fetchSpecificJourney(id: id) { [weak self] result in
-            switch result {
-            case .success(let journey):
-                vc.tripData = journey
-                self?.navigationController?.pushViewController(vc, animated: true)
-            case .failure(let error):
-                print("Get specific journey failed \(error)")
-            }
-        }
+        vc.tripData = journey
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
