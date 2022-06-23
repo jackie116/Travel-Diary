@@ -76,7 +76,8 @@ class DiaryController: UIViewController {
             self?.dismiss(animated: false) {
                 let vc = PrivacyController()
                 vc.journey = self?.journeys[indexPath.row]
-                self?.navigationController?.pushViewController(vc, animated: true)
+                let navVC = UINavigationController(rootViewController: vc)
+                self?.navigationController?.present(navVC, animated: true)
             }
         }
         privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
