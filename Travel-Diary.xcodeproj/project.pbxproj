@@ -35,6 +35,8 @@
 		E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EC2864151800F575DC /* EditDiaryController.swift */; };
 		E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EE2864178900F575DC /* DiaryCell.swift */; };
 		E7B975F12864348B00F575DC /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F02864348B00F575DC /* PrivacyController.swift */; };
+		E7B975F52864450B00F575DC /* DiscoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F42864450B00F575DC /* DiscoverCell.swift */; };
+		E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F62864475700F575DC /* ExpertJourneyController.swift */; };
 		E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */; };
 		E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2D28597C27004910AC /* UIFont+Extension.swift */; };
 		E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2F28597C83004910AC /* UIView+Extension.swift */; };
@@ -83,6 +85,8 @@
 		E7B975EC2864151800F575DC /* EditDiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryController.swift; sourceTree = "<group>"; };
 		E7B975EE2864178900F575DC /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		E7B975F02864348B00F575DC /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
+		E7B975F42864450B00F575DC /* DiscoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCell.swift; sourceTree = "<group>"; };
+		E7B975F62864475700F575DC /* ExpertJourneyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertJourneyController.swift; sourceTree = "<group>"; };
 		E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2D28597C27004910AC /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2F28597C83004910AC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 		E7B975EA28640AC200F575DC /* Discover */ = {
 			isa = PBXGroup;
 			children = (
+				E7B975F42864450B00F575DC /* DiscoverCell.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				E7C69D432859B4CD004910AC /* DiscoverController.swift */,
+				E7B975F62864475700F575DC /* ExpertJourneyController.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -465,6 +471,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7131A602858F2430034FE12 /* JourneyController.swift in Sources */,
+				E7B975F52864450B00F575DC /* DiscoverCell.swift in Sources */,
 				E7C69D3428597D25004910AC /* Date+Extension.swift in Sources */,
 				E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */,
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
@@ -497,6 +504,7 @@
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E793AF87285CD5F300606CF7 /* ScheduleTableHeader.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
+				E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */,
 				E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */,
 				E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */,
 				E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */,
