@@ -10,6 +10,9 @@ import UIKit
 class DiaryCell: UITableViewCell {
     let coverImageView: UIImageView = {
         let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.backgroundColor = .black
         return image
     }()
     
@@ -22,14 +25,14 @@ class DiaryCell: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont(name: "Helvetica-Light", size: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
     let dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont(name: "Helvetica-Light", size: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
     
