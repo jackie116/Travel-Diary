@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: - Deprecate
 class ScheduleTableHeader: UITableViewHeaderFooterView {
     static let identifier = "ScheduleTableHeader"
     

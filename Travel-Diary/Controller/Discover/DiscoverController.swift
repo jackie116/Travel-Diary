@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ExpertController: UIViewController {
+class DiscoverController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

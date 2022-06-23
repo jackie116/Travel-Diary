@@ -24,14 +24,14 @@ class MainTabController: UITabBarController {
     // MARK: - Helpers
 
     func configureViewControllers() {
-        let diary = JourneyController()
-        let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: diary)
-
-        let expert = ExpertController()
-        let nav2 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: expert)
+        let journey = JourneyController()
+        let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: journey)
         
-        let chat = ChatController()
-        let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Chat), rootViewController: chat)
+        let diary = DiaryController()
+        let nav2 = templateNavigationController(image: UIImage.asset(.icons_36pt_Chat), rootViewController: diary)
+
+        let discover = DiscoverController()
+        let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: discover)
         
         let user = ProfileController()
         let nav4 = templateNavigationController(image: UIImage.asset(.icons_36pt_User), rootViewController: user)

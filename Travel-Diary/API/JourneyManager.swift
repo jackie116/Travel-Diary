@@ -19,9 +19,6 @@ class JourneyManager {
     let storageRef = Storage.storage().reference()
     let coverImageRef = Storage.storage().reference().child("cover_images")
     
-    let group = DispatchGroup()
-    let semaphore = DispatchSemaphore(value: 1)
-    
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
         do {
@@ -117,8 +114,10 @@ class JourneyManager {
             }
         }
     }
-
-    // MARK: - Copy 一個旅程
-    
     // MARK: - Add user
+    
+    // MARK: - 上傳spot照片
+    func uploadSpotImage(image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
+        
+    }
 }

@@ -38,22 +38,22 @@ class JourneyCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
-        setCellUI()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCellUI() {
+    func configureUI() {
         contentView.addSubview(coverPhoto)
         contentView.addSubview(functionButton)
         coverPhoto.addSubview(titleLabel)
         coverPhoto.addSubview(dateLabel)
-        setConstraint()
+        configureConstraint()
     }
     
-    func setConstraint() {
+    func configureConstraint() {
         coverPhoto.anchor(top: contentView.topAnchor, left: contentView.leftAnchor,
                           bottom: contentView.bottomAnchor, right: contentView.rightAnchor,
                           paddingTop: 8, paddingLeft: 16, paddingBottom: 8,

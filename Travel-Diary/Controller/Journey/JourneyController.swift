@@ -37,13 +37,21 @@ class JourneyController: UIViewController {
         return refreshControl
     }()
     
+    private lazy var qrcodeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
+                                         style: .plain, target: self,
+                                         action: #selector(openQRcodeViewer))
+        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return button
+    }()
+    
     var journeys = [Journey]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.title = "My Trips"
-        setUI()
+        navigationItem.title = "Journey"
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,16 +68,16 @@ class JourneyController: UIViewController {
         }
     }
 
-    func setUI() {
+    func configureUI() {
+        navigationItem.rightBarButtonItem = qrcodeButton
         view.addSubview(journeyTableView)
         view.addSubview(addButton)
         journeyTableView.addSubview(refreshControl)
         
-        setConstraint()
-        setQRcodeButton()
+        configureConstraint()
     }
     
-    func setConstraint() {
+    func configureConstraint() {
         journeyTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 left: view.leftAnchor,
                                 bottom: view.safeAreaLayoutGuide.bottomAnchor,
@@ -80,14 +88,6 @@ class JourneyController: UIViewController {
                          paddingBottom: 32,
                          paddingRight: 32,
                          width: 60, height: 60)
-    }
-    
-    func setQRcodeButton() {
-        let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
-                                     style: .plain, target: self,
-                                     action: #selector(openQRcodeViewer))
-        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        navigationItem.rightBarButtonItem = button
     }
     
     // MARK: - UIAlertController
@@ -110,10 +110,10 @@ class JourneyController: UIViewController {
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
-        // Privacy
-        let privacyAction = UIAlertAction(title: "Privacy and share", style: .default)
-        privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
-        controller.addAction(privacyAction)
+//        // Privacy
+//        let privacyAction = UIAlertAction(title: "Privacy and share", style: .default)
+//        privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
+//        controller.addAction(privacyAction)
         
         // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
@@ -192,7 +192,7 @@ class JourneyController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    // MARK: - objc func
+    // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: journeyTableView)
         if let indexPath = journeyTableView.indexPathForRow(at: point) {
