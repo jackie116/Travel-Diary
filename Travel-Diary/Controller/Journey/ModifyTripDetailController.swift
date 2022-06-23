@@ -73,6 +73,8 @@ class ModifyTripDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         configureUI()
         initData()
     }
@@ -92,9 +94,6 @@ class ModifyTripDetailController: UIViewController {
     
     func configureUI() {
         view.backgroundColor = .white
-        
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
         view.addSubview(plusPhotoButton)
         view.addSubview(titleTextField)
         view.addSubview(startDateLabel)

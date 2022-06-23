@@ -7,8 +7,7 @@
 
 import UIKit
 import MapKit
-
-// TODO: - zoomSelectedSpot 
+ 
 protocol DrawAnnotationDelegate: AnyObject {
     func redrawMap(placemarks: [DailySpot])
     func zoomSelectedRoute(day: Int)
@@ -64,7 +63,7 @@ class ScheduleController: UIViewController {
         let table = UITableView()
         
         table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
-        table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
+//        table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
         table.register(ScheduleSectionFooter.self, forHeaderFooterViewReuseIdentifier: ScheduleSectionFooter.identifier)
         
         table.delegate = self
@@ -225,15 +224,23 @@ extension ScheduleController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let editAction = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+//            let vc = DiaryController()
+//            vc.spot = self.scheduleMarks[indexPath.section].spot[indexPath.row]
+//            self.navigationController?.pushViewController(vc, animated: true)
+//            completionHandler(true)
+//        }
+//        editAction.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
+//
         // 刪除action
         let deleteAction = UIContextualAction(style: .destructive,
-                                              title: "Delete") { _, _, completionHandler in
+                                              title: nil) { _, _, completionHandler in
             self.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
         }
-        // Action 圖片
         deleteAction.image = UIImage(systemName: "trash")
+        
         let config = UISwipeActionsConfiguration(actions: [deleteAction])
         // 防止滑到底觸發刪除
         config.performsFirstActionWithFullSwipe = false
