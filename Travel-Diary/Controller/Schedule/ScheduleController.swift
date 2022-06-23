@@ -63,7 +63,6 @@ class ScheduleController: UIViewController {
         let table = UITableView()
         
         table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
-//        table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
         table.register(ScheduleSectionFooter.self, forHeaderFooterViewReuseIdentifier: ScheduleSectionFooter.identifier)
         
         table.delegate = self
@@ -94,21 +93,19 @@ class ScheduleController: UIViewController {
     }
     
     func setUI() {
-        view.addSubview(topView)
-        topView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        view.addSubview(sectionCollectionView)
+        sectionCollectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                        left: view.leftAnchor,
                        right: view.rightAnchor,
                        paddingTop: 20,
                        height: 50)
         
         view.addSubview(scheduleTableView)
-        scheduleTableView.anchor(top: topView.bottomAnchor,
+        scheduleTableView.anchor(top: sectionCollectionView.bottomAnchor,
                                  left: view.leftAnchor,
                                  bottom: view.bottomAnchor,
                                  right: view.rightAnchor)
         setScheduleTableHeaderFooter()
-        
-        setCollectionView()
     }
     
     func setScheduleTableHeaderFooter() {
@@ -162,10 +159,6 @@ class ScheduleController: UIViewController {
         
         scheduleTableView.tableHeaderView = headerView
         scheduleTableView.tableFooterView = footerView
-    }
-    
-    func setCollectionView() {
-        topView.addSubview(sectionCollectionView)
     }
     
     func getTripDuration(start: Int64, end: Int64) -> String {
@@ -224,14 +217,7 @@ extension ScheduleController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let editAction = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-//            let vc = DiaryController()
-//            vc.spot = self.scheduleMarks[indexPath.section].spot[indexPath.row]
-//            self.navigationController?.pushViewController(vc, animated: true)
-//            completionHandler(true)
-//        }
-//        editAction.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
-//
+
         // 刪除action
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: nil) { _, _, completionHandler in

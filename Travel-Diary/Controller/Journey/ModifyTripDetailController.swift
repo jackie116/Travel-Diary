@@ -79,6 +79,16 @@ class ModifyTripDetailController: UIViewController {
         initData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     func initData() {
         guard let journey = journey else { return }
         titleTextField.text = journey.title
