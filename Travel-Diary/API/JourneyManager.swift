@@ -18,6 +18,7 @@ class JourneyManager {
     let collectionRef = Firestore.firestore().collection("Journeys")
     let storageRef = Storage.storage().reference()
     let coverImageRef = Storage.storage().reference().child("cover_images")
+    let spotImageRef = Storage.storage().reference().child("spot_images")
     
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
@@ -62,6 +63,26 @@ class JourneyManager {
             }
         }
     }
+    // MARK: - 抓取公開行程
+    func fetchPublicJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
+        collectionRef.whereField("isPublic", isEqualTo: true).getDocuments { snapshot, error in
+            
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var journeys = [Journey]()
+                for document in snapshot!.documents {
+                    do {
+                        let journey = try document.data(as: Journey.self)
+                        journeys.append(journey)
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                completion(.success(journeys))
+            }
+        }
+    }
     
     // MARK: - 抓特定旅程
     func fetchSpecificJourney(id: String, completion: @escaping (Result<Journey, Error>) -> Void) {
@@ -87,6 +108,7 @@ class JourneyManager {
             }
         }
     }
+    
     // MARK: - 更新旅程名稱含封面照
     func updateJourneyWithCoverImage(journey: Journey, coverImage: UIImage?,
                                      completion: @escaping (Result<Void, Error>) -> Void) {
@@ -114,10 +136,55 @@ class JourneyManager {
             }
         }
     }
-    // MARK: - Add user
+    // MARK: - update data
+//    func updateData(id: String, data: [DailySpot], completion: @escaping (Result<[DailySpot], Error>) -> Void) {
+//        let docRef = collectionRef.document(id)
+//        docRef.updateData([
+//            "data": data
+//        ]) { err in
+//            print("======test========")
+//            if let err = err {
+//                print("err: \(err)")
+//                completion(.failure(err))
+//            } else {
+//                completion(.success(data))
+//            }
+//        }
+//    }
     
-    // MARK: - 上傳spot照片
-    func uploadSpotImage(image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
+    // MARK: - 上傳spot照片敘述
+    func uploadSpotDetail(journey: Journey,
+                          image: UIImage?,
+                          indexPath: IndexPath,
+                          completion: @escaping (Result<Void, Error>) -> Void) {
         
+        var journey = journey
+        DispatchQueue.global().async {
+            let semaphore = DispatchSemaphore(value: 0)
+            if let image = image?.jpegData(compressionQuality: 0.1) {
+                let filename = NSUUID().uuidString
+                let imageRef = self.spotImageRef.child(filename)
+                imageRef.putData(image, metadata: nil) { _, _ in
+                    imageRef.downloadURL { url, _ in
+                        if let url = url?.absoluteString {
+                            journey.data[indexPath.section].spot[indexPath.row].photo = url
+                        }
+                        semaphore.signal()
+                    }
+                }
+            } else {
+                semaphore.signal()
+            }
+            semaphore.wait()
+            
+            self.updateJourney(journey: journey) { result in
+                switch result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
     }
 }

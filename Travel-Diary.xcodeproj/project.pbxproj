@@ -16,19 +16,20 @@
 		E7131A632858F2430034FE12 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A612858F2430034FE12 /* Main.storyboard */; };
 		E7131A652858F2430034FE12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7131A642858F2430034FE12 /* Assets.xcassets */; };
 		E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A662858F2430034FE12 /* LaunchScreen.storyboard */; };
-		E7131A792858F97A0034FE12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7131A782858F97A0034FE12 /* GoogleService-Info.plist */; };
 		E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D2285E1C5000700F09 /* SearchBarController.swift */; };
 		E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */; };
 		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
 		E74D67DA285E465F00700F09 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* Journey.swift */; };
 		E74E191628622CEB00ADBF65 /* QRcodeViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */; };
+		E753A2F6286595F500807E51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E753A2F5286595F500807E51 /* GoogleService-Info.plist */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
 		E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7776292286193C800CC45B0 /* JourneyCell.swift */; };
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
-		E781C1BC286351570090E5A6 /* DiaryControllerDeprecate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* DiaryControllerDeprecate.swift */; };
+		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
+		E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC44B828670C7800CD836B /* PDFCreator.swift */; };
 		E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9258528603A0D007F266C /* JourneyManager.swift */; };
 		E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */; };
 		E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EC2864151800F575DC /* EditDiaryController.swift */; };
@@ -69,19 +70,20 @@
 		E7131A642858F2430034FE12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7131A672858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7131A692858F2430034FE12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E7131A782858F97A0034FE12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E74D67D2285E1C5000700F09 /* SearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarController.swift; sourceTree = "<group>"; };
 		E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSectionFooter.swift; sourceTree = "<group>"; };
 		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
 		E74D67D9285E465F00700F09 /* Journey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 		E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeViewerController.swift; sourceTree = "<group>"; };
+		E753A2F5286595F500807E51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		E7776292286193C800CC45B0 /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
-		E781C1BB286351570090E5A6 /* DiaryControllerDeprecate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryControllerDeprecate.swift; sourceTree = "<group>"; };
+		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		E7AC44B828670C7800CD836B /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		E7B9258528603A0D007F266C /* JourneyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyManager.swift; sourceTree = "<group>"; };
 		E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
 		E7B975EC2864151800F575DC /* EditDiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryController.swift; sourceTree = "<group>"; };
@@ -169,7 +171,7 @@
 				E7131A5D2858F2430034FE12 /* SceneDelegate.swift */,
 				E7131A642858F2430034FE12 /* Assets.xcassets */,
 				E7131A692858F2430034FE12 /* Info.plist */,
-				E7131A782858F97A0034FE12 /* GoogleService-Info.plist */,
+				E753A2F5286595F500807E51 /* GoogleService-Info.plist */,
 			);
 			path = "Travel-Diary";
 			sourceTree = "<group>";
@@ -179,6 +181,7 @@
 			children = (
 				E74D67D9285E465F00700F09 /* Journey.swift */,
 				E70ED9B8285F1079004874B2 /* CustomAnnotation.swift */,
+				E7AC44B828670C7800CD836B /* PDFCreator.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -277,7 +280,6 @@
 				E75B5FAA285B05F000B3A866 /* ScheduleController.swift */,
 				E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */,
 				E74D67D2285E1C5000700F09 /* SearchBarController.swift */,
-				E781C1BB286351570090E5A6 /* DiaryControllerDeprecate.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -322,6 +324,7 @@
 			children = (
 				E7C69D452859B4DC004910AC /* DiaryController.swift */,
 				E7B975EC2864151800F575DC /* EditDiaryController.swift */,
+				E781C1BB286351570090E5A6 /* EditDetailController.swift */,
 				E7B975F02864348B00F575DC /* PrivacyController.swift */,
 			);
 			path = Diary;
@@ -406,8 +409,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */,
-				E7131A792858F97A0034FE12 /* GoogleService-Info.plist in Resources */,
 				E7131A652858F2430034FE12 /* Assets.xcassets in Resources */,
+				E753A2F6286595F500807E51 /* GoogleService-Info.plist in Resources */,
 				E7131A632858F2430034FE12 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +499,7 @@
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,
 				E7C69D442859B4CD004910AC /* DiscoverController.swift in Sources */,
 				E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */,
+				E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
 				E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */,
@@ -510,7 +514,7 @@
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
-				E781C1BC286351570090E5A6 /* DiaryControllerDeprecate.swift in Sources */,
+				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
@@ -595,7 +599,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -649,7 +653,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

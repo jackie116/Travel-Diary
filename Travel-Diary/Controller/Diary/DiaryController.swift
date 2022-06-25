@@ -107,8 +107,9 @@ class DiaryController: UIViewController {
 extension DiaryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = EditDiaryController()
-        vc.journey = journeys[indexPath.row]
-        navigationController?.pushViewController(vc, animated: true)
+        vc.id = journeys[indexPath.row].id
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
     }
 }
 
