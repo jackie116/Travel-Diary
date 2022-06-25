@@ -110,11 +110,6 @@ class JourneyController: UIViewController {
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
-//        // Privacy
-//        let privacyAction = UIAlertAction(title: "Privacy and share", style: .default)
-//        privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
-//        controller.addAction(privacyAction)
-        
         // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
             self?.dismiss(animated: true) {

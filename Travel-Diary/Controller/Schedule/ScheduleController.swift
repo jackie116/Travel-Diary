@@ -54,11 +54,6 @@ class ScheduleController: UIViewController {
         return collectionView
     }()
     
-    private let topView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
     lazy var scheduleTableView: UITableView = {
         let table = UITableView()
         
@@ -73,11 +68,30 @@ class ScheduleController: UIViewController {
         return table
     }()
     
+    let tripTitle: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let tripDuration: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var uploadButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Upload", for: .normal)
+        button.backgroundColor = .customBlue
+        button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         initSchedule()
         setUI()
+        configureData()
     }
     
     func initSchedule() {
@@ -110,21 +124,6 @@ class ScheduleController: UIViewController {
     
     func setScheduleTableHeaderFooter() {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 150))
-        
-        let tripTitle: UILabel = {
-            let label = UILabel()
-            label.text = self.tripData?.title
-            return label
-        }()
-        
-        let tripDuration: UILabel = {
-            let label = UILabel()
-            label.text = self.getTripDuration(
-                start: self.tripData?.start ?? 0,
-                end: self.tripData?.end ?? 0)
-            return label
-        }()
-        
         headerView.addSubview(tripTitle)
         headerView.addSubview(tripDuration)
         
@@ -139,18 +138,10 @@ class ScheduleController: UIViewController {
             tripDuration.topAnchor.constraint(equalTo: tripTitle.bottomAnchor, constant: 8),
             tripDuration.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 16),
             tripDuration.bottomAnchor.constraint(greaterThanOrEqualTo: headerView.bottomAnchor, constant: -16),
-            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: 16)
+            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: -16)
         ])
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
-        
-        let uploadButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("Upload", for: .normal)
-            button.backgroundColor = .customBlue
-            button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
-            return button
-        }()
         
         footerView.addSubview(uploadButton)
         uploadButton.centerX(inView: footerView)
@@ -161,8 +152,12 @@ class ScheduleController: UIViewController {
         scheduleTableView.tableFooterView = footerView
     }
     
-    func getTripDuration(start: Int64, end: Int64) -> String {
-        return "\(int64ToyMd(start)) - \(int64ToyMd(end))"
+    func configureData() {
+        guard let tripData = tripData else { return }
+
+        tripTitle.text = tripData.title
+        tripDuration.text = Date.dateFormatter.string(from: Date.init(milliseconds: tripData.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
     }
     
     private func int64ToyMd(_ timestamp: Int64) -> String {

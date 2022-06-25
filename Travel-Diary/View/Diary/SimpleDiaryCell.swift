@@ -26,14 +26,6 @@ class SimpleDiaryCell: UITableViewCell {
         return stack
     }()
     
-    let photoView: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.backgroundColor = .clear
-        return image
-    }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
@@ -64,7 +56,6 @@ class SimpleDiaryCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         configureUI()
-        configureCellData()
     }
 
     required init?(coder: NSCoder) {
@@ -77,13 +68,16 @@ class SimpleDiaryCell: UITableViewCell {
         orderView.setDimensions(width: 60, height: 60)
         vStackView.addArrangedSubview(titleLabel)
         vStackView.addArrangedSubview(addressLabel)
-        photoView.setDimensions(width: UIScreen.height / 4.5, height: UIScreen.height / 6)
+
         hStackView.addArrangedSubview(orderView)
         hStackView.addArrangedSubview(vStackView)
-        hStackView.addArrangedSubview(photoView)
+        contentView.addSubview(hStackView)
+        hStackView.addConstraintsToFillView(contentView)
     }
     
-    func configureCellData() {
-        
+    func configureData(title: String, address: String, order: Int) {
+        titleLabel.text = title
+        addressLabel.text = address
+        orderLabel.text = "\(order + 1)"
     }
 }

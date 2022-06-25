@@ -55,7 +55,7 @@ class DiscoverController: UIViewController {
     }
     
     func fetchJourneys() {
-        JourneyManager.shared.fetchJourneys { result in
+        JourneyManager.shared.fetchPublicJourneys { result in
             switch result {
             case .success(let journeys):
                 self.journeys = journeys
