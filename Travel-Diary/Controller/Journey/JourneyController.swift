@@ -26,8 +26,9 @@ class JourneyController: UIViewController {
     
     private lazy var addButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .blue
+        button.setBackgroundImage(UIImage(named: "plus"), for: .normal)
         button.addTarget(self, action: #selector(addJourney), for: .touchUpInside)
+        button.layer.cornerRadius = 30
         return button
     }()
     
