@@ -16,14 +16,14 @@ class EditDetailController: UIViewController {
         return button
     }()
     
-    private lazy var imagePicker: UIImagePickerController = {
-        let picker = UIImagePickerController()
-        
-        picker.delegate = self
-        picker.allowsEditing = true
-        
-        return picker
-    }()
+//    private lazy var imagePicker: UIImagePickerController = {
+//        let picker = UIImagePickerController()
+//
+//        picker.delegate = self
+//        picker.allowsEditing = true
+//
+//        return picker
+//    }()
     
     private var spotImage: UIImage?
     
@@ -145,7 +145,38 @@ class EditDetailController: UIViewController {
     }
     
     @objc func addPhoto() {
-        present(imagePicker, animated: true, completion: nil)
+//        present(imagePicker, animated: true, completion: nil)
+        let actionSheet = UIAlertController(title: "Select Photo",
+                                            message: "Where do you want to select a photo?",
+                                            preferredStyle: .actionSheet)
+        
+        let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+                let photoPicker = UIImagePickerController()
+                photoPicker.delegate = self
+                photoPicker.sourceType = .photoLibrary
+                photoPicker.allowsEditing = true
+                
+                self.present(photoPicker, animated: true, completion: nil)
+            }
+        }
+        actionSheet.addAction(photoAction)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.delegate = self
+                cameraPicker.sourceType = .camera
+                
+                self.present(cameraPicker, animated: true, completion: nil)
+            }
+        }
+        actionSheet.addAction(cameraAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(cancelAction)
+        
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     @objc func saveTap() {
@@ -170,10 +201,15 @@ class EditDetailController: UIViewController {
 extension EditDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let spotImage = info[.editedImage] as? UIImage else { return }
-        self.spotImage = spotImage
+//        guard let spotImage = info[.editedImage] as? UIImage else { return }
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+          return
+        }
+        
+        self.spotImage = selectedImage
 
-        self.plusPhotoButton.setImage(spotImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        self.plusPhotoButton.setImage(selectedImage.withRenderingMode(.alwaysOriginal),
+                                      for: .normal)
         
         dismiss(animated: true)
     }
