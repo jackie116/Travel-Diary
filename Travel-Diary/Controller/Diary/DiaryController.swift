@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreMedia
 
 class DiaryController: UIViewController {
     
@@ -70,22 +71,28 @@ class DiaryController: UIViewController {
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    
-        // Privacy
-        let privacyAction = UIAlertAction(title: "Privacy and share", style: .default) { [weak self] _ in
-            self?.dismiss(animated: false) {
-                let vc = PrivacyController()
-                vc.journey = self?.journeys[indexPath.row]
-                let navVC = UINavigationController(rootViewController: vc)
-                self?.navigationController?.present(navVC, animated: true)
+        
+        // privacy and share
+        let privacyAction: UIAlertAction = {
+            let action = UIAlertAction(title: "Privacy and share", style: .default) { [weak self] _ in
+                self?.dismiss(animated: false) {
+                    let vc = PrivacyController()
+                    vc.journey = self?.journeys[indexPath.row]
+                    let navVC = UINavigationController(rootViewController: vc)
+                    self?.navigationController?.present(navVC, animated: true)
+                }
             }
-        }
-        privacyAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
+            action.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
+            return action
+        }()
         controller.addAction(privacyAction)
         
         // Cancel
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
+        let cancelAction: UIAlertAction = {
+            let action = UIAlertAction(title: "Cancel", style: .cancel)
+            action.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
+            return action
+        }()
         controller.addAction(cancelAction)
         
         present(controller, animated: true)

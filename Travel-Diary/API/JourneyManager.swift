@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import UIKit
+import MapKit
 
 class JourneyManager {
     static let shared = JourneyManager()
@@ -184,6 +185,19 @@ class JourneyManager {
                 case .failure(let error):
                     completion(.failure(error))
                 }
+            }
+        }
+    }
+    
+    func switchPublic(id: String, isPublic: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        let docRef = collectionRef.document(id)
+        docRef.updateData([
+            "isPublic": isPublic
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
             }
         }
     }

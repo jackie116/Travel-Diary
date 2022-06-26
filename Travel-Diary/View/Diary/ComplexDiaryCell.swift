@@ -67,7 +67,6 @@ class ComplexDiaryCell: UITableViewCell {
                           right: contentView.rightAnchor,
                           paddingTop: 8, paddingLeft: 16,
                           paddingBottom: 8, paddingRight: 16)
-        //vStackView.addConstraintsToFillView(contentView)
     }
     
     func configureData(name: String, address: String, image: String, describe: String) {
