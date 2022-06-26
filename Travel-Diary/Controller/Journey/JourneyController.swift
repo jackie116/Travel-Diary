@@ -107,7 +107,15 @@ class JourneyController: UIViewController {
         controller.addAction(changeTripAction)
         
         // Group
-        let groupAction = UIAlertAction(title: "Travel group", style: .default)
+        let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
+            self?.dismiss(animated: false) {
+                let vc = QRcodeGeneratorController()
+                vc.id = self?.journeys[indexPath.row].id
+                let navVC = UINavigationController(rootViewController: vc)
+                self?.navigationController?.present(navVC, animated: true)
+            }
+            
+        }
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
