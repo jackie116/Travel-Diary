@@ -12,6 +12,14 @@ class QRcodeGeneratorController: UIViewController {
     var qrcodeImage: CIImage?
     var id: String?
     
+    private lazy var shareButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+                                         style: .plain, target: self,
+                                         action: #selector(shareAlert))
+        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return button
+    }()
+    
     let hintLabel: UILabel = {
         let label = UILabel()
         label.text = "Show your code to invite other to your journey"
@@ -39,6 +47,7 @@ class QRcodeGeneratorController: UIViewController {
     }
     
     func configureUI() {
+        navigationItem.rightBarButtonItem = shareButton
         view.backgroundColor = .white
         view.addSubview(hintLabel)
         view.addSubview(qrcodeView)
@@ -76,5 +85,12 @@ class QRcodeGeneratorController: UIViewController {
         let transformedImage = qrcodeImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
         
         qrcodeView.image = UIImage(ciImage: transformedImage)
+    }
+    
+    @objc func shareAlert() {
+        guard let image = qrcodeView.image else { return }
+        
+        let vc = UIActivityViewController(activityItems: [image], applicationActivities: [])
+        present(vc, animated: true, completion: nil)
     }
 }

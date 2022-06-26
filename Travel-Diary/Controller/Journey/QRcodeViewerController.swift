@@ -29,3 +29,11 @@ class QRcodeViewerController: UIViewController {
 extension QRcodeViewerController: AVCaptureMetadataOutputObjectsDelegate {
     
 }
+
+extension QRcodeViewerController: UIImagePickerControllerDelegate {
+    
+}
+
+extension QRcodeViewerController: UINavigationControllerDelegate {
+    
+}
