@@ -8,7 +8,6 @@
 import UIKit
 
 class SectionCollectionCell: UICollectionViewCell {
-    static let identifier = "SectionCollectionCell"
     
     let dayLabel: UILabel = {
         let label = UILabel()

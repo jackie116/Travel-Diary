@@ -13,10 +13,13 @@ import CoreLocation
 struct Journey: Codable, Identifiable {
     @DocumentID var id: String?
     var title: String
+    var coverPhoto: String = ""
     var start: Int64
     var end: Int64
     var days: Int
     var data: [DailySpot] = [DailySpot]()
+    var isPublic: Bool = false
+    var users: [String] = [String]()
     var owner: String = ""
 }
 

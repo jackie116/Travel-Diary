@@ -7,10 +7,11 @@
 
 import UIKit
 import MapKit
-
+ 
 protocol DrawAnnotationDelegate: AnyObject {
     func redrawMap(placemarks: [DailySpot])
     func zoomSelectedRoute(day: Int)
+    func zoomSelectedSpot(indexPath: IndexPath)
 }
 
 class ScheduleController: UIViewController {
@@ -26,78 +27,103 @@ class ScheduleController: UIViewController {
         }
     }
     
-    var sectionCollectionView: UICollectionView?
-    
-    private let topView: UIView = {
-        let view = UIView()
-        return view
+    lazy var sectionCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        // 方向
+        layout.scrollDirection = .horizontal
+        // section 邊距
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        // size of each cell
+        layout.itemSize = CGSize(width: 60, height: 40)
+        // cell 間距
+        layout.minimumLineSpacing = CGFloat(10)
+        
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
+        
+        let collectionView = UICollectionView(frame: rect, collectionViewLayout: layout)
+        
+        collectionView.register(SectionCollectionCell.self,
+                                        forCellWithReuseIdentifier: SectionCollectionCell.identifier)
+
+        collectionView.backgroundColor = .clear
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        collectionView.isPagingEnabled = true
+        
+        return collectionView
     }()
     
-    private let scheduleTableView: UITableView = {
+    lazy var scheduleTableView: UITableView = {
         let table = UITableView()
         
         table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
-        table.register(ScheduleTableHeader.self, forHeaderFooterViewReuseIdentifier: ScheduleTableHeader.identifier)
         table.register(ScheduleSectionFooter.self, forHeaderFooterViewReuseIdentifier: ScheduleSectionFooter.identifier)
+        
+        table.delegate = self
+        table.dataSource = self
+        table.dragDelegate = self
+        table.dragInteractionEnabled = true
         
         return table
     }()
     
+    let tripTitle: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let tripDuration: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var uploadButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Upload", for: .normal)
+        button.backgroundColor = .customBlue
+        button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        scheduleTableView.delegate = self
-        scheduleTableView.dataSource = self
-        
-        scheduleTableView.dragDelegate = self
-        scheduleTableView.dragInteractionEnabled = true
         
         initSchedule()
         setUI()
+        configureData()
     }
     
     func initSchedule() {
-        guard let days = tripData?.days else { return }
-        for _ in 1...days {
-            scheduleMarks.append(DailySpot())
+        guard let tripData = tripData else { return }
+        
+        if tripData.data.isEmpty {
+            for _ in 1...tripData.days {
+                scheduleMarks.append(DailySpot())
+            }
+        } else {
+            scheduleMarks = tripData.data
         }
     }
     
     func setUI() {
-        view.addSubview(topView)
-        topView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        view.addSubview(sectionCollectionView)
+        sectionCollectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                        left: view.leftAnchor,
                        right: view.rightAnchor,
                        paddingTop: 20,
                        height: 50)
         
         view.addSubview(scheduleTableView)
-        scheduleTableView.anchor(top: topView.bottomAnchor,
+        scheduleTableView.anchor(top: sectionCollectionView.bottomAnchor,
                                  left: view.leftAnchor,
                                  bottom: view.bottomAnchor,
                                  right: view.rightAnchor)
         setScheduleTableHeaderFooter()
-        
-        setCollectionView()
     }
     
     func setScheduleTableHeaderFooter() {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 150))
-        
-        let tripTitle: UILabel = {
-            let label = UILabel()
-            label.text = self.tripData?.title
-            return label
-        }()
-        
-        let tripDuration: UILabel = {
-            let label = UILabel()
-            label.text = self.getTripDuration(
-                start: self.tripData?.start ?? 0,
-                end: self.tripData?.end ?? 0)
-            return label
-        }()
-        
         headerView.addSubview(tripTitle)
         headerView.addSubview(tripDuration)
         
@@ -112,18 +138,10 @@ class ScheduleController: UIViewController {
             tripDuration.topAnchor.constraint(equalTo: tripTitle.bottomAnchor, constant: 8),
             tripDuration.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 16),
             tripDuration.bottomAnchor.constraint(greaterThanOrEqualTo: headerView.bottomAnchor, constant: -16),
-            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: 16)
+            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: -16)
         ])
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
-        
-        let uploadButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("Upload", for: .normal)
-            button.backgroundColor = .customBlue
-            button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
-            return button
-        }()
         
         footerView.addSubview(uploadButton)
         uploadButton.centerX(inView: footerView)
@@ -134,36 +152,12 @@ class ScheduleController: UIViewController {
         scheduleTableView.tableFooterView = footerView
     }
     
-    func setCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        
-        // 方向
-        layout.scrollDirection = .horizontal
-        // section 邊距
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        // size of each cell
-        layout.itemSize = CGSize(width: 60, height: 40)
-        // cell 間距
-        layout.minimumLineSpacing = CGFloat(10)
-        
-        let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
-        
-        sectionCollectionView = UICollectionView(frame: rect, collectionViewLayout: layout)
-        sectionCollectionView?.register(SectionCollectionCell.self,
-                                        forCellWithReuseIdentifier: SectionCollectionCell.identifier)
+    func configureData() {
+        guard let tripData = tripData else { return }
 
-        sectionCollectionView?.backgroundColor = .clear
-        
-        sectionCollectionView?.delegate = self
-        sectionCollectionView?.dataSource = self
-        // 分頁效果
-        sectionCollectionView?.isPagingEnabled = true
-        
-        topView.addSubview(sectionCollectionView ?? UICollectionView())
-    }
-    
-    func getTripDuration(start: Int64, end: Int64) -> String {
-        return "\(int64ToyMd(start)) - \(int64ToyMd(end))"
+        tripTitle.text = tripData.title
+        tripDuration.text = Date.dateFormatter.string(from: Date.init(milliseconds: tripData.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
     }
     
     private func int64ToyMd(_ timestamp: Int64) -> String {
@@ -173,7 +167,7 @@ class ScheduleController: UIViewController {
         return dateFormatter.string(from: date)
     }
     
-    @objc func searchPlace(sender: UIButton) {
+    @objc func searchPlace(_ sender: UIButton) {
         let vc = SearchBarController()
         vc.daySection = sender.tag
         vc.delegate = self
@@ -181,7 +175,14 @@ class ScheduleController: UIViewController {
     }
     
     @objc func uploadSchedule() {
-        JourneyManager.shared.uploadJourney(journey: self.tripData!)
+        JourneyManager.shared.updateJourney(journey: self.tripData!) { result in
+            switch result {
+            case .success:
+                print("Upload success")
+            case .failure(let error):
+                print("Upload failure: \(error)")
+            }
+        }
     }
 }
 
@@ -204,26 +205,31 @@ extension ScheduleController: UITableViewDelegate {
             return UITableViewHeaderFooterView()
         }
         view.button.tag = section
-        view.button.addTarget(self, action: #selector(searchPlace(sender:)), for: .touchUpInside)
+        view.button.addTarget(self, action: #selector(searchPlace), for: .touchUpInside)
         
         return view
     }
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
         // 刪除action
         let deleteAction = UIContextualAction(style: .destructive,
-                                              title: "Delete") { _, _, completionHandler in
+                                              title: nil) { _, _, completionHandler in
             self.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
         }
-        // Action 圖片
         deleteAction.image = UIImage(systemName: "trash")
+        
         let config = UISwipeActionsConfiguration(actions: [deleteAction])
         // 防止滑到底觸發刪除
         config.performsFirstActionWithFullSwipe = false
         return config
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.zoomSelectedSpot(indexPath: indexPath)
     }
 }
 

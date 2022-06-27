@@ -85,4 +85,12 @@ extension UIView {
         anchor(top: view.topAnchor, left: view.leftAnchor,
                bottom: view.bottomAnchor, right: view.rightAnchor)
     }
+    
+    func addConstraintsToFillSafeArea(_ view: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        anchor(top: view.safeAreaLayoutGuide.topAnchor,
+               left: view.leftAnchor,
+               bottom: view.safeAreaLayoutGuide.bottomAnchor,
+               right: view.rightAnchor)
+    }
 }
