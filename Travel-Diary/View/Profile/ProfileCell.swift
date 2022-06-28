@@ -38,7 +38,12 @@ class ProfileCell: UITableViewCell {
     func configureConstraint() {
         iconView.anchor(left: self.leftAnchor, paddingLeft: 32, width: 40, height: 40)
         iconView.centerY(inView: self)
-        titleLabel.anchor(top: self.topAnchor, left: iconView.rightAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 16, paddingLeft: 32, paddingBottom: 16, paddingRight: 32)
+        titleLabel.anchor(top: self.topAnchor,
+                          left: iconView.rightAnchor,
+                          bottom: self.bottomAnchor,
+                          right: self.rightAnchor,
+                          paddingTop: 16, paddingLeft: 32,
+                          paddingBottom: 16, paddingRight: 32)
     }
     
     func configureData(title: String, systemName: String) {

@@ -11,10 +11,6 @@ import FirebaseAuth
 import CryptoKit
 
 class LoginController: UIViewController {
-//    let loginView: UIView = {
-//        let view = UIView()
-//        return view
-//    }()
     
     lazy var signInButton: ASAuthorizationAppleIDButton = {
         let button = ASAuthorizationAppleIDButton()
@@ -174,20 +170,7 @@ extension LoginController {
                 print("\(String(describing: error!.localizedDescription))")
                 return
             }
-            print("Login Success")
-            self.getFirebaseUserInfo()
+            self.navigationController?.dismiss(animated: true)
         }
-    }
-    
-    // MARK: - Firebase 取得登入使用者的資訊
-    func getFirebaseUserInfo() {
-        let currentUser = Auth.auth().currentUser
-        guard let user = currentUser else {
-            print("無法取用使用者資料")
-            return
-        }
-        let uid = user.uid
-        let email = user.email
-        print("UID：\(uid)\nEmail：\(email!)")
     }
 }

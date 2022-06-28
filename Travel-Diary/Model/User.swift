@@ -10,6 +10,6 @@ import FirebaseFirestoreSwift
 
 struct User: Codable, Identifiable {
     @DocumentID var id: String?
-    let username: String
-    let profileImageUrl: String
+    var username: String = ""
+    var profileImageUrl: String = ""
 }

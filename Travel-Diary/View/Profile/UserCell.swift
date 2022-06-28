@@ -13,6 +13,9 @@ class UserCell: UITableViewCell {
         let view = UIImageView()
         view.backgroundColor = .lightGray
         view.layer.cornerRadius = 60
+        view.clipsToBounds = true
+        view.layer.masksToBounds = true
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
@@ -24,6 +27,7 @@ class UserCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.selectionStyle = .none
         configureUI()
     }
     

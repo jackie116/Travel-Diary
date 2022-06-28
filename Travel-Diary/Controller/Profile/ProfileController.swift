@@ -27,6 +27,8 @@ class ProfileController: UIViewController {
     let profileImage = ["", "pencil", "star", "envelope",
                         "lock.shield", "hand.raised",
                         "person.crop.circle.fill.badge.minus"]
+    
+    var userInfo: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +38,27 @@ class ProfileController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // presentLoginPage()
+        
+        AuthManager.shared.getUserInfo { [weak self] result in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async { [weak self] in
+                    self?.userInfo = user
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("Fetch user data failed \(error)")
+            }
+        }
+        
+        presentLoginPage()
     }
     
     func configureUI() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(logOut))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign out",
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(signOut))
         view.backgroundColor = .white
         navigationItem.title = "Profile"
         view.addSubview(tableView)
@@ -58,13 +76,40 @@ class ProfileController: UIViewController {
         navigationController?.present(navVC, animated: true)
     }
     
-    @objc func logOut() {
-        
+    @objc func signOut() {
+        AuthManager.shared.signOut { [weak self] result in
+            switch result {
+            case .success:
+                print("Sign out success")
+                self?.tableView.reloadData()
+                self?.presentLoginPage()
+            case .failure(let error):
+                print("Sign Out failed \(error)")
+            }
+        }
     }
 }
 
 extension ProfileController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 1:
+            let vc = EditProfileController()
+            self.navigationController?.pushViewController(vc, animated: true)
+        case 2:
+            print("rate")
+        case 3:
+            print("send us feedback")
+        case 4:
+            print("Privacy")
+        case 5:
+            print("eula")
+        case 6:
+            print("delete account")
+        default:
+            print("Nothing happened")
+        }
+    }
 }
 
 extension ProfileController: UITableViewDataSource {
@@ -74,11 +119,15 @@ extension ProfileController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.identifier, for: indexPath) as? UserCell else { return UITableViewCell() }
-            cell.configureData(name: "", photoUrl: "")
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: UserCell.identifier,
+                for: indexPath) as? UserCell else { return UITableViewCell() }
+            cell.configureData(name: userInfo?.username ?? "", photoUrl: userInfo?.profileImageUrl ?? "")
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.identifier, for: indexPath) as? ProfileCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ProfileCell.identifier,
+                for: indexPath) as? ProfileCell else { return UITableViewCell() }
             cell.configureData(title: profileItems[indexPath.row], systemName: profileImage[indexPath.row])
             return cell
         }
