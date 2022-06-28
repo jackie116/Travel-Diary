@@ -9,6 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import FirebaseAuth
 import UIKit
 import MapKit
 
@@ -46,21 +47,23 @@ class JourneyManager {
     
     // MARK: - 抓取全部旅程
     func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
-        collectionRef.getDocuments { snapshot, error in
-            
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                var journeys = [Journey]()
-                for document in snapshot!.documents {
-                    do {
-                        let journey = try document.data(as: Journey.self)
-                        journeys.append(journey)
-                    } catch {
-                        completion(.failure(error))
+        let currentUser = Auth.auth().currentUser
+        if let user = currentUser {
+            collectionRef.whereField("owner", isEqualTo: user.uid).getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    var journeys = [Journey]()
+                    for document in snapshot!.documents {
+                        do {
+                            let journey = try document.data(as: Journey.self)
+                            journeys.append(journey)
+                        } catch {
+                            completion(.failure(error))
+                        }
                     }
+                    completion(.success(journeys))
                 }
-                completion(.success(journeys))
             }
         }
     }
