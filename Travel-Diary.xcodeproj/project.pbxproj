@@ -26,7 +26,7 @@
 		E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */; };
 		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
 		E74D67DA285E465F00700F09 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* Journey.swift */; };
-		E74E191628622CEB00ADBF65 /* QRcodeViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */; };
+		E74E191628622CEB00ADBF65 /* QRcodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */; };
 		E753A2F6286595F500807E51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E753A2F5286595F500807E51 /* GoogleService-Info.plist */; };
 		E7580CD22868A20300F68168 /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7580CD12868A20300F68168 /* CommentController.swift */; };
 		E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */; };
@@ -89,7 +89,7 @@
 		E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSectionFooter.swift; sourceTree = "<group>"; };
 		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
 		E74D67D9285E465F00700F09 /* Journey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
-		E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeViewerController.swift; sourceTree = "<group>"; };
+		E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeScannerController.swift; sourceTree = "<group>"; };
 		E753A2F5286595F500807E51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E7580CD12868A20300F68168 /* CommentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeGeneratorController.swift; sourceTree = "<group>"; };
@@ -297,7 +297,7 @@
 			children = (
 				E7131A5F2858F2430034FE12 /* JourneyController.swift */,
 				E7C69D472859E0F6004910AC /* NewTripController.swift */,
-				E74E191528622CEB00ADBF65 /* QRcodeViewerController.swift */,
+				E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */,
 				E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */,
 				E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */,
 			);
@@ -550,7 +550,7 @@
 				E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */,
 				E7131A5E2858F2430034FE12 /* SceneDelegate.swift in Sources */,
 				E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */,
-				E74E191628622CEB00ADBF65 /* QRcodeViewerController.swift in Sources */,
+				E74E191628622CEB00ADBF65 /* QRcodeScannerController.swift in Sources */,
 				E7B9761D2864C6D500F575DC /* DaysCell.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
