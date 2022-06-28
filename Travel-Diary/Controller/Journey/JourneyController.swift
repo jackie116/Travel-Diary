@@ -225,7 +225,10 @@ class JourneyController: UIViewController {
     }
     
     @objc func openQRcodeViewer() {
-        
+        let vc = QRcodeScannerController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
     }
 }
 
