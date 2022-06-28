@@ -81,6 +81,7 @@ class ProfileController: UIViewController {
             switch result {
             case .success:
                 print("Sign out success")
+                self?.userInfo = nil
                 self?.tableView.reloadData()
                 self?.presentLoginPage()
             case .failure(let error):
