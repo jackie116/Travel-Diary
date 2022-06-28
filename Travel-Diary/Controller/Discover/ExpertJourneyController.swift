@@ -157,7 +157,8 @@ class ExpertJourneyController: UIViewController {
     // MARK: - copy end
     
     @objc func makeComment() {
-        
+        let vc = CommentController()
+        navigationController?.present(vc, animated: true)
     }
 }
 
