@@ -107,6 +107,7 @@ class PrivacyController: UIViewController {
         let pdfCreator = PDFCreator(journey: journey)
         let pdfData = pdfCreator.createPDF()
         let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
+        vc.popoverPresentationController?.sourceView = self.view
         present(vc, animated: true, completion: nil)
     }
 }

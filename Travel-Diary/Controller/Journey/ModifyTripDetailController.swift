@@ -10,7 +10,7 @@ import Kingfisher
 
 class ModifyTripDetailController: UIViewController {
     
-    private let imagePicker = UIImagePickerController()
+    // private let imagePicker = UIImagePickerController()
     private var coverImage: UIImage?
     
     lazy var plusPhotoButton: UIButton = {
@@ -73,8 +73,8 @@ class ModifyTripDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
+        // imagePicker.delegate = self
+        // imagePicker.allowsEditing = true
         configureUI()
         initData()
     }
@@ -163,7 +163,38 @@ class ModifyTripDetailController: UIViewController {
     
     // MARK: - Selectors
     @objc func handleAddcoverPhoto() {
-        present(imagePicker, animated: true, completion: nil)
+//        present(imagePicker, animated: true, completion: nil)
+        let actionSheet = UIAlertController(title: "Select Photo",
+                                            message: "Where do you want to select a photo?",
+                                            preferredStyle: .actionSheet)
+        
+        let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
+                let photoPicker = UIImagePickerController()
+                photoPicker.delegate = self
+                photoPicker.sourceType = .photoLibrary
+                photoPicker.allowsEditing = true
+                
+                self.present(photoPicker, animated: true, completion: nil)
+            }
+        }
+        actionSheet.addAction(photoAction)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.delegate = self
+                cameraPicker.sourceType = .camera
+                
+                self.present(cameraPicker, animated: true, completion: nil)
+            }
+        }
+        actionSheet.addAction(cameraAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(cancelAction)
+        
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     @objc func didSubmit() {
@@ -228,10 +259,14 @@ class ModifyTripDetailController: UIViewController {
 extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let coverImage = info[.editedImage] as? UIImage else { return }
-        self.coverImage = coverImage
+//        guard let coverImage = info[.editedImage] as? UIImage else { return }
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+          return
+        }
+        
+        self.coverImage = selectedImage
 
-        self.plusPhotoButton.setImage(coverImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        self.plusPhotoButton.setImage(selectedImage.withRenderingMode(.alwaysOriginal), for: .normal)
         
         dismiss(animated: true)
     }
