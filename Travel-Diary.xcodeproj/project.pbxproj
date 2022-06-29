@@ -62,6 +62,8 @@
 		E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D452859B4DC004910AC /* DiaryController.swift */; };
 		E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D472859E0F6004910AC /* NewTripController.swift */; };
 		E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */; };
+		E7D1D470286B463500483754 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D1D46F286B463500483754 /* Comment.swift */; };
+		E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D1D471286B50EE00483754 /* CommentCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -125,6 +127,8 @@
 		E7C69D452859B4DC004910AC /* DiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryController.swift; sourceTree = "<group>"; };
 		E7C69D472859E0F6004910AC /* NewTripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTripController.swift; sourceTree = "<group>"; };
 		E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleMapController.swift; sourceTree = "<group>"; };
+		E7D1D46F286B463500483754 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		E7D1D471286B50EE00483754 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +205,7 @@
 				E70ED9B8285F1079004874B2 /* CustomAnnotation.swift */,
 				E7AC44B828670C7800CD836B /* PDFCreator.swift */,
 				E7390CAC2869AFD00056D6D9 /* User.swift */,
+				E7D1D46F286B463500483754 /* Comment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				E7B975F42864450B00F575DC /* DiscoverCell.swift */,
+				E7D1D471286B50EE00483754 /* CommentCell.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -538,6 +544,7 @@
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,
 				E7C69D442859B4CD004910AC /* DiscoverController.swift in Sources */,
+				E7D1D470286B463500483754 /* Comment.swift in Sources */,
 				E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */,
 				E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */,
 				E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */,
@@ -554,6 +561,7 @@
 				E7B9761D2864C6D500F575DC /* DaysCell.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
+				E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */,
 				E7390CB42869F99F0056D6D9 /* UserCell.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
