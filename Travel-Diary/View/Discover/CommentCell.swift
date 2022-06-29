@@ -62,11 +62,32 @@ class CommentCell: UITableViewCell {
     }
     
     func configureConstraint() {
-        userPhoto.anchor(top: self.topAnchor, left: self.leftAnchor, paddingTop: 4, paddingLeft: 8, width: 40, height: 40)
-        commentView.anchor(top: self.topAnchor, left: userPhoto.rightAnchor, right: self.rightAnchor, paddingLeft: 4, paddingRight: 16)
-        commentTime.anchor(top: commentView.bottomAnchor, left: userPhoto.rightAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 4, paddingLeft: 4, paddingRight: 16)
-        userName.anchor(top: commentView.topAnchor, left: commentView.leftAnchor, right: commentView.rightAnchor, paddingRight: 8)
-        comment.anchor(top: userName.bottomAnchor, left: commentView.leftAnchor, bottom: commentView.bottomAnchor, right: commentView.rightAnchor, paddingTop: 4)
+        userPhoto.anchor(top: self.topAnchor,
+                         left: self.leftAnchor,
+                         paddingTop: 4, paddingLeft: 8,
+                         width: 40, height: 40)
+        
+        commentView.anchor(top: self.topAnchor,
+                           left: userPhoto.rightAnchor,
+                           right: self.rightAnchor,
+                           paddingLeft: 4, paddingRight: 16)
+        
+        commentTime.anchor(top: commentView.bottomAnchor,
+                           left: userPhoto.rightAnchor,
+                           bottom: self.bottomAnchor,
+                           right: self.rightAnchor,
+                           paddingTop: 4, paddingLeft: 4, paddingRight: 16)
+        
+        userName.anchor(top: commentView.topAnchor,
+                        left: commentView.leftAnchor,
+                        right: commentView.rightAnchor,
+                        paddingRight: 8)
+        
+        comment.anchor(top: userName.bottomAnchor,
+                       left: commentView.leftAnchor,
+                       bottom: commentView.bottomAnchor,
+                       right: commentView.rightAnchor,
+                       paddingTop: 4)
         
     }
     

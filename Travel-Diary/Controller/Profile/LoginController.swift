@@ -58,7 +58,7 @@ class LoginController: UIViewController {
     
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
-        let charset: Array<Character> = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
         var result = ""
         var remainingLength = length
 
@@ -165,7 +165,7 @@ extension LoginController: ASAuthorizationControllerPresentationContextProviding
 extension LoginController {
     // MARK: - 透過 Credential 與 Firebase Auth 串接
     func firebaseSignInWithApple(credential: AuthCredential) {
-        Auth.auth().signIn(with: credential) { authResult, error in
+        Auth.auth().signIn(with: credential) { _, error in
             guard error == nil else {
                 print("\(String(describing: error!.localizedDescription))")
                 return
