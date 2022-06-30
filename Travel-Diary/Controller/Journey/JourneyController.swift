@@ -38,14 +38,6 @@ class JourneyController: UIViewController {
         return refreshControl
     }()
     
-    private lazy var qrcodeButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
-                                         style: .plain, target: self,
-                                         action: #selector(openQRcodeViewer))
-        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        return button
-    }()
-    
     var journeys = [Journey]()
 
     override func viewDidLoad() {
@@ -70,7 +62,6 @@ class JourneyController: UIViewController {
     }
 
     func configureUI() {
-        navigationItem.rightBarButtonItem = qrcodeButton
         view.addSubview(journeyTableView)
         view.addSubview(addButton)
         journeyTableView.addSubview(refreshControl)
@@ -106,19 +97,6 @@ class JourneyController: UIViewController {
         changeTripAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
         controller.addAction(changeTripAction)
         
-        // Group
-        let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
-            self?.dismiss(animated: false) {
-                let vc = QRcodeGeneratorController()
-                vc.id = self?.journeys[indexPath.row].id
-                let navVC = UINavigationController(rootViewController: vc)
-                self?.navigationController?.present(navVC, animated: true)
-            }
-            
-        }
-        groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
-        controller.addAction(groupAction)
-        
         // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
             self?.dismiss(animated: true) {
@@ -153,7 +131,7 @@ class JourneyController: UIViewController {
             var journey = self.journeys[indexPath.row]
             journey.title += "_copy"
             
-            JourneyManager.shared.addNewJourey(journey: journey) { [weak self] result in
+            JourneyManager.shared.copyJourey(journey: journey) { [weak self] result in
                 switch result {
                 case .success(let journey):
                     self?.journeys.insert(journey, at: 0)
@@ -222,13 +200,6 @@ class JourneyController: UIViewController {
                 print("Fetch data failed \(error)")
             }
         }
-    }
-    
-    @objc func openQRcodeViewer() {
-        let vc = QRcodeScannerController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
     }
 }
 
