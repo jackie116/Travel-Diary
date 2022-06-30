@@ -43,40 +43,42 @@ class PDFCreator: NSObject {
             // 6
             let titleBottom = addTitle(pageRect: pageRect)
             let tripDateBottom = addTripDate(pageRect: pageRect, textTop: titleBottom + 18.0)
-            let imageBottom = addCoverImage(image: resource.coverImage, pageRect: pageRect, imageTop: tripDateBottom + 18.0)
-//            addBodyText(pageRect: pageRect, textTop: imageBottom + 18.0)
+            _ = addCoverImage(image: resource.coverImage,
+                                            pageRect: pageRect,
+                                            imageTop: tripDateBottom + 18.0)
             
             var pointer = 0
+            var order = 0
             for _ in 1...pages {
                 context.beginPage()
-                
-                addSpotImage(image: self.resource.spots[safe: pointer]?.image, pageRect: pageRect, imageTop: pageHeight * 0.1)
-                addSpotTitle(title: self.resource.spots[safe: pointer]?.name ?? "", pageRect: pageRect, textTop: pageHeight * 0.1 + 20)
-                addSpotAddress(address: self.resource.spots[safe: pointer]?.address ?? "", pageRect: pageRect, textTop: pageHeight * 0.15 + 20)
-                addSpotAnnotation(pageRect: pageRect, imageTop: pageHeight * 0.15)
-                addDayOrderText(order: pointer, pageRect: pageRect, textTop: pageHeight * 0.15 + 10)
-                pointer += 1
-                addSpotImage(image: self.resource.spots[safe: pointer]?.image, pageRect: pageRect, imageTop: pageHeight * 0.4)
-                addSpotTitle(title: self.resource.spots[safe: pointer]?.name ?? "", pageRect: pageRect, textTop: pageHeight * 0.4 + 20)
-                addSpotAddress(address: self.resource.spots[safe: pointer]?.address ?? "", pageRect: pageRect, textTop: pageHeight * 0.45 + 20)
-                addSpotAnnotation(pageRect: pageRect, imageTop: pageHeight * 0.45)
-                addDayOrderText(order: pointer, pageRect: pageRect, textTop: pageHeight * 0.45 + 10)
-                pointer += 1
-                addSpotImage(image: self.resource.spots[safe: pointer]?.image, pageRect: pageRect, imageTop: pageHeight * 0.7)
-                addSpotTitle(title: self.resource.spots[safe: pointer]?.name ?? "", pageRect: pageRect, textTop: pageHeight * 0.7 + 20)
-                addSpotAddress(address: self.resource.spots[safe: pointer]?.address ?? "", pageRect: pageRect, textTop: pageHeight * 0.75 + 20)
-                addSpotAnnotation(pageRect: pageRect, imageTop: pageHeight * 0.75)
-                addDayOrderText(order: pointer, pageRect: pageRect, textTop: pageHeight * 0.75 + 10)
-                pointer += 1
+                for ratio in [0.1, 0.4, 0.7] {
+                    if let spot = self.resource.spots[safe: pointer] {
+                        if spot.isDay == false {
+                            order += 1
+                            addSpot(spot: spot, pointer: pointer, pageRect: pageRect, order: order, pageTop: ratio)
+                        } else {
+                            order = 0
+                            addDayTitle(title: spot.name, pageRect: pageRect, textTop: ratio)
+                        }
+                    }
+                    pointer += 1
+                }
             }
-            
         }
         
         return data
     }
     
+    func addSpot(spot: PdfSpot, pointer: Int, pageRect: CGRect, order: Int, pageTop: CGFloat) {
+        addSpotImage(image: spot.image, pageRect: pageRect, imageTop: pageRect.height * pageTop)
+        addSpotTitle(title: spot.name, pageRect: pageRect, textTop: pageRect.height * pageTop + 20)
+        addSpotAddress(address: spot.address, pageRect: pageRect, textTop: pageRect.height * (pageTop + 0.05) + 20)
+        addSpotAnnotation(pageRect: pageRect, imageTop: pageRect.height * (pageTop + 0.05))
+        addDayOrderText(order: order, pageRect: pageRect, textTop: pageRect.height * (pageTop + 0.05) + 10)
+    }
+    
     func addTitle(pageRect: CGRect) -> CGFloat {
-        let titleFont = UIFont.systemFont(ofSize: 18.0, weight: .bold)
+        let titleFont = UIFont.systemFont(ofSize: 36.0, weight: .bold)
         
         let titleAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: titleFont]
         
@@ -93,12 +95,33 @@ class PDFCreator: NSObject {
         return titleStringRect.origin.y + titleStringRect.size.height
     }
     
+    func addDayTitle(title: String, pageRect: CGRect, textTop: CGFloat) {
+        let titleFont = UIFont.systemFont(ofSize: 36, weight: .bold)
+        let tilteColor = UIColor.customBlue
+        
+        let titleAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: titleFont,
+                                                              NSAttributedString.Key.foregroundColor: tilteColor]
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: titleAttributes)
+        
+        let titleStringSize = attributedTitle.size()
+
+        let titleStringRect = CGRect(x: (pageRect.width - titleStringSize.width) / 2.0,
+                                     y: pageRect.height * (textTop + 0.1), width: titleStringSize.width,
+                                     height: titleStringSize.height)
+
+        attributedTitle.draw(in: titleStringRect)
+    }
+    
     func addTripDate(pageRect: CGRect, textTop: CGFloat) -> CGFloat {
         let textFont = UIFont.systemFont(ofSize: 14, weight: .medium)
         let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: textFont]
         let attributedText = NSAttributedString(string: resource.tripDate, attributes: textAttributes)
         let textStringSize = attributedText.size()
-        let textStringRect = CGRect(x: (pageRect.width - textStringSize.width) / 2.0, y: textTop, width: textStringSize.width, height: textStringSize.height)
+        let textStringRect = CGRect(x: (pageRect.width - textStringSize.width) / 2.0,
+                                    y: textTop,
+                                    width: textStringSize.width,
+                                    height: textStringSize.height)
         attributedText.draw(in: textStringRect)
         return textStringRect.origin.y + textStringRect.size.height
     }
@@ -108,7 +131,10 @@ class PDFCreator: NSObject {
         let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: textFont]
         let attributedText = NSAttributedString(string: title, attributes: textAttributes)
         let textStringSize = attributedText.size()
-        let textStringRect = CGRect(x: (pageRect.width * 0.8 - textStringSize.width / 2) , y: textTop, width: textStringSize.width, height: textStringSize.height)
+        let textStringRect = CGRect(x: (pageRect.width * 0.8 - textStringSize.width / 2),
+                                    y: textTop,
+                                    width: textStringSize.width,
+                                    height: textStringSize.height)
         attributedText.draw(in: textStringRect)
     }
     
@@ -135,7 +161,10 @@ class PDFCreator: NSObject {
         let textAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: textFont]
         let attributedText = NSAttributedString(string: "\(order)", attributes: textAttributes)
         let textStringSize = attributedText.size()
-        let textStringRect = CGRect(x: pageRect.width * 0.085, y: textTop, width: textStringSize.width, height: textStringSize.height)
+        let textStringRect = CGRect(x: pageRect.width * 0.085,
+                                    y: textTop,
+                                    width: textStringSize.width,
+                                    height: textStringSize.height)
         attributedText.draw(in: textStringRect)
     }
     

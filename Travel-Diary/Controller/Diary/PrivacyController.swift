@@ -97,13 +97,13 @@ class PrivacyController: UIViewController {
         guard let journey = journey else { return }
         publicSwitch.isOn = journey.isPublic
         
-        downloadAllResource { resource in
+        downloadAllResource { [weak self] resource in
             DispatchQueue.main.async {
                 let pdfCreator = PDFCreator(resource: resource)
-                self.documentData = pdfCreator.createPDF()
-                if let documentData = self.documentData {
-                    self.pdfView.document = PDFDocument(data: documentData)
-                    self.pdfView.autoScales = true
+                self?.documentData = pdfCreator.createPDF()
+                if let documentData = self?.documentData {
+                    self?.pdfView.document = PDFDocument(data: documentData)
+                    self?.pdfView.autoScales = true
                 }
             }
         }
@@ -184,11 +184,14 @@ class PrivacyController: UIViewController {
     }
     
     @objc func shareAlert() {
-//        guard let journey = journey else { return }
-//        let pdfCreator = PDFCreator(journey: journey)
-//        let pdfData = pdfCreator.createPDF()
-//        let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
-//        vc.popoverPresentationController?.sourceView = self.view
-//        present(vc, animated: true, completion: nil)
+        downloadAllResource { [weak self] resource in
+            DispatchQueue.main.async {
+                let pdfCreator = PDFCreator(resource: resource)
+                let pdfData = pdfCreator.createPDF()
+                let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
+                vc.popoverPresentationController?.sourceView = self?.view
+                self?.present(vc, animated: true, completion: nil)
+            }
+        }
     }
 }
