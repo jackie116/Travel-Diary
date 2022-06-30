@@ -49,14 +49,20 @@ class QRcodeScannerController: UIViewController {
     }
     
     func configureUI() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .done, target: self, action: #selector(closeScanner))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                                           style: .done,
+                                                           target: self,
+                                                           action: #selector(closeScanner))
         view.backgroundColor = .white
         view.addSubview(camView)
         configureConstraint()
     }
     
     func configureConstraint() {
-        camView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: UIScreen.height * 0.7)
+        camView.anchor(top: view.topAnchor,
+                       left: view.leftAnchor,
+                       right: view.rightAnchor,
+                       height: UIScreen.height * 0.7)
     }
     
     func qrcodeScanner() {
@@ -113,7 +119,9 @@ class QRcodeScannerController: UIViewController {
 }
 
 extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+    func metadataOutput(_ output: AVCaptureMetadataOutput,
+                        didOutput metadataObjects: [AVMetadataObject],
+                        from connection: AVCaptureConnection) {
         // 檢查  metadataObjects 陣列為非空值，它至少需包含一個物件
         if metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
@@ -130,7 +138,7 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
             qrCodeFrameView?.frame = barCodeObject!.bounds
 
             if metadataObj.stringValue != nil {
-                print(metadataObj.stringValue)
+                print(metadataObj.stringValue as Any)
             }
         }
     }

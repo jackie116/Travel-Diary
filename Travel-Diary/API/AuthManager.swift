@@ -37,6 +37,17 @@ class AuthManager {
         }
     }
     
+//    func getUserPhotoURL(completion: @escaping (Result<String, Error>) -> Void) {
+//        getUserInfo { result in
+//            switch result {
+//            case .success(let user):
+//                completion(.success(user.profileImageUrl))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
+    
     func updateUserInfo(userInfo: User, userImage: UIImage?, completion: @escaping (Result<Void, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
