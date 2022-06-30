@@ -16,6 +16,21 @@ class QRcodeScannerController: UIViewController {
         return view
     }()
     
+    let directionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Scan a QR code for quick join other journey"
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
+    let qrStringLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        return label
+    }()
+    
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
@@ -55,6 +70,8 @@ class QRcodeScannerController: UIViewController {
                                                            action: #selector(closeScanner))
         view.backgroundColor = .white
         view.addSubview(camView)
+        view.addSubview(directionLabel)
+        view.addSubview(qrStringLabel)
         configureConstraint()
     }
     
@@ -63,12 +80,26 @@ class QRcodeScannerController: UIViewController {
                        left: view.leftAnchor,
                        right: view.rightAnchor,
                        height: UIScreen.height * 0.7)
+        directionLabel.anchor(top: camView.bottomAnchor,
+                              left: view.leftAnchor,
+                              right: view.rightAnchor,
+                              paddingTop: UIScreen.height * 0.05,
+                              paddingLeft: UIScreen.width * 0.1,
+                              paddingRight: UIScreen.width * 0.1)
+        qrStringLabel.anchor(top: directionLabel.bottomAnchor,
+                             left: view.leftAnchor,
+                             bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                             right: view.rightAnchor,
+                             paddingTop: UIScreen.height * 0.05,
+                             paddingLeft: UIScreen.width * 0.1,
+                             paddingBottom: UIScreen.width * 0.1,
+                             paddingRight: UIScreen.height * 0.05)
     }
     
     func qrcodeScanner() {
         // 取得後置鏡頭來擷取影片
         guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-            print("Failed to get the camera device")
+            qrStringLabel.text = "Failed to get the camera device"
             return
         }
 
@@ -125,7 +156,7 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
         // 檢查  metadataObjects 陣列為非空值，它至少需包含一個物件
         if metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
-            print("No QR code is detected")
+            qrStringLabel.text = "No QR code is detected"
             return
         }
 
@@ -138,7 +169,25 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
             qrCodeFrameView?.frame = barCodeObject!.bounds
 
             if metadataObj.stringValue != nil {
-                print(metadataObj.stringValue as Any)
+                qrStringLabel.text = metadataObj.stringValue
+                let qrSplit = metadataObj.stringValue?.split(separator: ":")
+                if qrSplit?[0] == "Travel-Diary" {
+                    guard let id = qrSplit?[1] else { return }
+                    JourneyManager.shared.fetchSpecificJourney(id: String(id)) { [weak self] result in
+                        switch result {
+                        case .success(let journey):
+                            let vc = JoinGroupController()
+                            vc.journey = journey
+                            vc.modalPresentationStyle = .overFullScreen
+                            let presentingVC = self?.presentingViewController
+                            self?.navigationController?.dismiss(animated: false, completion: {
+                                presentingVC?.present(vc, animated: true)
+                            })
+                        case .failure(let error):
+                            self?.qrStringLabel.text = "Can't find the journey: \(error)"
+                        }
+                    }
+                }
             }
         }
     }

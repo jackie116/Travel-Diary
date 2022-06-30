@@ -66,7 +66,7 @@ class QRcodeGeneratorController: UIViewController {
     
     func generateQRcode() -> CIImage? {
         if let id = id {
-            let data = id.data(using: .isoLatin1)
+            let data = "Travel-Diary:\(id)".data(using: .isoLatin1)
 
             let filter = CIFilter(name: "CIQRCodeGenerator")
 

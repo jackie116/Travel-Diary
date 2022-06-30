@@ -16,6 +16,7 @@
 		E7131A632858F2430034FE12 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A612858F2430034FE12 /* Main.storyboard */; };
 		E7131A652858F2430034FE12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7131A642858F2430034FE12 /* Assets.xcassets */; };
 		E7131A682858F2430034FE12 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7131A662858F2430034FE12 /* LaunchScreen.storyboard */; };
+		E729CDE5286D7BA800E8FDCE /* JoinGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E729CDE4286D7BA800E8FDCE /* JoinGroupController.swift */; };
 		E7390CA928696D860056D6D9 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7390CA828696D860056D6D9 /* LoginController.swift */; };
 		E7390CAB2869AFAE0056D6D9 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7390CAA2869AFAE0056D6D9 /* AuthManager.swift */; };
 		E7390CAD2869AFD00056D6D9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7390CAC2869AFD00056D6D9 /* User.swift */; };
@@ -80,6 +81,7 @@
 		E7131A642858F2430034FE12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7131A672858F2430034FE12 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7131A692858F2430034FE12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E729CDE4286D7BA800E8FDCE /* JoinGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroupController.swift; sourceTree = "<group>"; };
 		E7390CA72869536C0056D6D9 /* Travel-Diary.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Travel-Diary.entitlements"; sourceTree = "<group>"; };
 		E7390CA828696D860056D6D9 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		E7390CAA2869AFAE0056D6D9 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -302,9 +304,7 @@
 			children = (
 				E7131A5F2858F2430034FE12 /* JourneyController.swift */,
 				E7C69D472859E0F6004910AC /* NewTripController.swift */,
-				E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */,
 				E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */,
-				E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */,
 			);
 			path = Journey;
 			sourceTree = "<group>";
@@ -363,6 +363,9 @@
 				E7B975EC2864151800F575DC /* EditDiaryController.swift */,
 				E781C1BB286351570090E5A6 /* EditDetailController.swift */,
 				E7B975F02864348B00F575DC /* PrivacyController.swift */,
+				E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */,
+				E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */,
+				E729CDE4286D7BA800E8FDCE /* JoinGroupController.swift */,
 			);
 			path = Diary;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				E7D1D470286B463500483754 /* Comment.swift in Sources */,
 				E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */,
 				E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */,
+				E729CDE5286D7BA800E8FDCE /* JoinGroupController.swift in Sources */,
 				E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
