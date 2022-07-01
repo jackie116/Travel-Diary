@@ -16,6 +16,16 @@ class QRcodeScannerController: UIViewController {
         return view
     }()
     
+    lazy var albumButton: UIButton = {
+        let button = UIButton(type: .system)
+        var config = UIButton.Configuration.plain()
+        config.background.image = UIImage(systemName: "photo.on.rectangle.angled")
+        config.background.imageContentMode = .scaleAspectFill
+        button.configuration = config
+        button.addTarget(self, action: #selector(scanAlbumQR), for: .touchUpInside)
+        return button
+    }()
+    
     let directionLabel: UILabel = {
         let label = UILabel()
         label.text = "Scan a QR code for quick join other journey"
@@ -70,6 +80,7 @@ class QRcodeScannerController: UIViewController {
                                                            action: #selector(closeScanner))
         view.backgroundColor = .white
         view.addSubview(camView)
+        camView.addSubview(albumButton)
         view.addSubview(directionLabel)
         view.addSubview(qrStringLabel)
         configureConstraint()
@@ -80,12 +91,21 @@ class QRcodeScannerController: UIViewController {
                        left: view.leftAnchor,
                        right: view.rightAnchor,
                        height: UIScreen.height * 0.7)
+        
+        albumButton.anchor(bottom: camView.bottomAnchor,
+                           right: camView.rightAnchor,
+                           paddingBottom: UIScreen.width * 0.05,
+                           paddingRight: UIScreen.width * 0.05,
+                           width: UIScreen.width * 0.1,
+                           height: UIScreen.width * 0.1)
+        
         directionLabel.anchor(top: camView.bottomAnchor,
                               left: view.leftAnchor,
                               right: view.rightAnchor,
                               paddingTop: UIScreen.height * 0.05,
                               paddingLeft: UIScreen.width * 0.1,
                               paddingRight: UIScreen.width * 0.1)
+        
         qrStringLabel.anchor(top: directionLabel.bottomAnchor,
                              left: view.leftAnchor,
                              bottom: view.safeAreaLayoutGuide.bottomAnchor,
@@ -123,6 +143,7 @@ class QRcodeScannerController: UIViewController {
             videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
             videoPreviewLayer?.frame = camView.layer.bounds
             camView.layer.addSublayer(videoPreviewLayer!)
+            camView.bringSubviewToFront(albumButton)
             
             // 開始影片的擷取
             captureSession.startRunning()
@@ -132,7 +153,7 @@ class QRcodeScannerController: UIViewController {
 
             if let qrCodeFrameView = qrCodeFrameView {
                 qrCodeFrameView.layer.borderColor = UIColor.green.cgColor
-                qrCodeFrameView.layer.borderWidth = 2
+                qrCodeFrameView.layer.borderWidth = 4
                 view.addSubview(qrCodeFrameView)
                 view.bringSubviewToFront(qrCodeFrameView)
             }
@@ -146,6 +167,13 @@ class QRcodeScannerController: UIViewController {
     
     @objc func closeScanner() {
         navigationController?.dismiss(animated: true)
+    }
+    
+    @objc func scanAlbumQR() {
+        let photoController = UIImagePickerController()
+        photoController.delegate = self
+        photoController.sourceType = .photoLibrary
+        present(photoController, animated: true, completion: nil)
     }
 }
 
@@ -194,7 +222,39 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
 }
 
 extension QRcodeScannerController: UIImagePickerControllerDelegate {
-    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+              let detector = CIDetector(ofType: CIDetectorTypeQRCode,
+                                        context: nil,
+                                        options: [CIDetectorAccuracy: CIDetectorAccuracyHigh]),
+              let ciImage = CIImage(image: pickedImage),
+              let features = detector.features(in: ciImage) as? [CIQRCodeFeature] else { return }
+        
+        let qrCodeLink = features.reduce("") { $0 + ($1.messageString ?? "")}
+        
+        qrStringLabel.text = qrCodeLink
+        let qrSplit = qrCodeLink.split(separator: ":")
+        if qrSplit[0] == "Travel-Diary" {
+            JourneyManager.shared.fetchSpecificJourney(id: String(qrSplit[1])) { [weak self] result in
+                switch result {
+                case .success(let journey):
+                    let vc = JoinGroupController()
+                    vc.journey = journey
+                    vc.modalPresentationStyle = .overFullScreen
+                    let presentingVC = self?.presentingViewController
+                    self?.navigationController?.dismiss(animated: false, completion: {
+                        presentingVC?.present(vc, animated: true)
+                    })
+                case .failure(let error):
+                    self?.qrStringLabel.text = "Can't find the journey: \(error)"
+                }
+            }
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension QRcodeScannerController: UINavigationControllerDelegate {
