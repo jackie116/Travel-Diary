@@ -102,7 +102,9 @@ class JoinGroupController: UIViewController {
                                  height: UIScreen.height * 0.3)
         coverImage.anchor(top: closeButton.bottomAnchor)
         
-        joinButton.setDimensions(width: UIScreen.width * 0.4, height: UIScreen.height * 0.05)
+        joinButton.anchor(width: UIScreen.width * 0.4)
+        
+        // joinButton.setDimensions(width: UIScreen.width * 0.4, height: UIScreen.height * 0.05)
         
         vStackView.centerX(inView: showView)
         vStackView.anchor(top: coverImage.bottomAnchor,
