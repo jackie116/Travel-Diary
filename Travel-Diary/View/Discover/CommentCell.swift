@@ -20,31 +20,35 @@ class CommentCell: UITableViewCell {
     
     let commentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = UIColor.hexStringToUIColor(hex: "EBEBEB")
         view.layer.cornerRadius = 20
         return view
     }()
     
-    let userName: UILabel = {
+    let userNameLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         return label
     }()
     
-    let comment: UILabel = {
+    let commentLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
     }()
     
-    let commentTime: UILabel = {
+    let commentTimeLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        selectionStyle = .none
         configureUI()
     }
     
@@ -55,9 +59,9 @@ class CommentCell: UITableViewCell {
     func configureUI() {
         addSubview(userPhoto)
         addSubview(commentView)
-        commentView.addSubview(userName)
-        commentView.addSubview(comment)
-        addSubview(commentTime)
+        commentView.addSubview(userNameLabel)
+        commentView.addSubview(commentLabel)
+        addSubview(commentTimeLabel)
         configureConstraint()
     }
     
@@ -70,29 +74,35 @@ class CommentCell: UITableViewCell {
         commentView.anchor(top: self.topAnchor,
                            left: userPhoto.rightAnchor,
                            right: self.rightAnchor,
-                           paddingLeft: 4, paddingRight: 16)
+                           paddingTop: 8, paddingLeft: 4, paddingRight: 16)
         
-        commentTime.anchor(top: commentView.bottomAnchor,
-                           left: userPhoto.rightAnchor,
-                           bottom: self.bottomAnchor,
-                           right: self.rightAnchor,
-                           paddingTop: 4, paddingLeft: 4, paddingRight: 16)
+        commentTimeLabel.anchor(top: commentView.bottomAnchor,
+                                left: userPhoto.rightAnchor,
+                                bottom: self.bottomAnchor,
+                                right: self.rightAnchor,
+                                paddingTop: 4, paddingLeft: 8,
+                                paddingBottom: 8, paddingRight: 16)
         
-        userName.anchor(top: commentView.topAnchor,
-                        left: commentView.leftAnchor,
-                        right: commentView.rightAnchor,
-                        paddingRight: 8)
+        userNameLabel.anchor(top: commentView.topAnchor,
+                             left: commentView.leftAnchor,
+                             right: commentView.rightAnchor,
+                             paddingTop: 4, paddingLeft: 8,
+                             paddingRight: 8)
         
-        comment.anchor(top: userName.bottomAnchor,
+        commentLabel.anchor(top: userNameLabel.bottomAnchor,
                        left: commentView.leftAnchor,
                        bottom: commentView.bottomAnchor,
                        right: commentView.rightAnchor,
-                       paddingTop: 4)
+                       paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 8)
         
     }
     
-    func configureData(username: String, userPhotoUrl: String, comment: String, commentTime: Int64) {
+    func configureData(username: String, profileImageUrl: String, comment: String, commentTime: Int64) {
         
+        userNameLabel.text = username
+        let url = URL(string: profileImageUrl)
+        userPhoto.kf.setImage(with: url)
+        commentLabel.text = comment
+        commentTimeLabel.text = Date(milliseconds: commentTime).displayTimeInSocialMediaStyle()
     }
-
 }

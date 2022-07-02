@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "send.png",
+      "filename" : "icons8-send-32.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "icons8-send-64.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
