@@ -733,6 +733,9 @@
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -764,6 +767,9 @@
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

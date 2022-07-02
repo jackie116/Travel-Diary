@@ -20,7 +20,9 @@ class CommentManager {
     
     func fetchAllComments(journeyId: String, completion: @escaping (Result<[Comment], Error>) -> Void) {
         
-        collectionRef.whereField("journeyID", isEqualTo: journeyId).order(by: "commentTime", descending: false).getDocuments { querySnapshot, error in
+        collectionRef.whereField("journeyID", isEqualTo: journeyId)
+            .order(by: "commentTime", descending: false)
+            .getDocuments { querySnapshot, error in
             
             if let error = error {
                 completion(.failure(error))

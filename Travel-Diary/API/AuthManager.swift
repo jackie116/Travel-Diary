@@ -14,6 +14,7 @@ import FirebaseStorage
 
 class AuthManager {
     static let shared = AuthManager()
+    let currentUser = Auth.auth().currentUser
     
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("users")
@@ -22,7 +23,6 @@ class AuthManager {
     
     // MARK: - Firebase 取得登入使用者的資訊
     func getUserInfo(completion: @escaping (Result<User, Error>) -> Void) {
-        let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
         
         let docRef = collectionRef.document(user.uid)
@@ -61,6 +61,23 @@ class AuthManager {
 //            }
 //        }
 //    }
+    
+    func checkUserInfo(uid: String) {
+        
+    }
+    
+    func initialUserInfo(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let user = currentUser else { return }
+        let data = User(username: "Default", profileImageUrl: "")
+
+        do {
+            try collectionRef.document(user.uid).setData(from: data)
+            completion(.success(()))
+        } catch {
+            completion(.failure(error))
+        }
+        
+    }
     
     func updateUserInfo(userInfo: User, userImage: UIImage?, completion: @escaping (Result<Void, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser

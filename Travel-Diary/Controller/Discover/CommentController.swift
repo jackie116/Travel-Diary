@@ -173,7 +173,7 @@ class CommentController: UIViewController {
                                           comment: commentView.text,
                                           commentTime: current) { [weak self] result in
             switch result {
-            case .success(let comment):
+            case .success:
                 self?.commentView.text.removeAll()
                 self?.fetchAllComments()
             case .failure(let error):

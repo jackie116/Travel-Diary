@@ -9,6 +9,8 @@ import UIKit
 import AuthenticationServices
 import FirebaseAuth
 import CryptoKit
+import GoogleSignIn
+import FirebaseCore
 
 class LoginController: UIViewController {
     
@@ -16,6 +18,22 @@ class LoginController: UIViewController {
         let button = ASAuthorizationAppleIDButton()
         button.addTarget(self, action: #selector(pressSignIn), for: .touchUpInside)
         return button
+    }()
+    
+    lazy var googleSignInButton: GIDSignInButton = {
+        let button = GIDSignInButton()
+        // button.largeContentTitle = "Sign in with Google"
+        button.addTarget(self, action: #selector(signInWithGoogle), for: .touchUpInside)
+        return button
+    }()
+    
+    let buttonStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = UIScreen.height * 0.05
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
     }()
     
     var currentNonce: String?
@@ -27,18 +45,19 @@ class LoginController: UIViewController {
     
     func configureUI() {
         view.backgroundColor = .white
-        view.addSubview(signInButton)
+        buttonStackView.addArrangedSubview(signInButton)
+        buttonStackView.addArrangedSubview(googleSignInButton)
+        view.addSubview(buttonStackView)
         configureConstraint()
     }
     
     func configureConstraint() {
-        signInButton.centerX(inView: view)
         signInButton.setDimensions(width: UIScreen.width * 0.8, height: 50)
-        signInButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                             constant: -32).isActive = true
+        googleSignInButton.setDimensions(width: UIScreen.width * 0.8, height: 50)
+        buttonStackView.centerX(inView: view)
+        buttonStackView.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: UIScreen.height * 0.1)
+        
     }
-    
-    // func createAppleIDRequest() -> ASAuthorizationAppleIDRequest
     
     @objc func pressSignIn() {
         let nonce = randomNonceString()
@@ -54,6 +73,59 @@ class LoginController: UIViewController {
         controller.presentationContextProvider = self
 
         controller.performRequests()
+    }
+    
+    @objc func signInWithGoogle() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { [unowned self] user, error in
+
+          if let error = error {
+            print("\(error)")
+            return
+          }
+
+          guard
+            let authentication = user?.authentication,
+            let idToken = authentication.idToken
+          else {
+            return
+          }
+
+          let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                         accessToken: authentication.accessToken)
+
+          firebaseSignInWithGoogle(credential: credential)
+        }
+    }
+    
+    func firebaseSignInWithGoogle(credential: AuthCredential) {
+        Auth.auth().signIn(with: credential) { [weak self] _, error in
+            guard error == nil else {
+                print("\(String(describing: error!.localizedDescription))")
+                return
+            }
+            AuthManager.shared.getUserInfo { result in
+                switch result {
+                case .success:
+                    self?.navigationController?.dismiss(animated: true)
+                case .failure:
+                    AuthManager.shared.initialUserInfo { result in
+                        switch result {
+                        case .success:
+                            self?.navigationController?.dismiss(animated: true)
+                        case .failure(let error):
+                            print("\(error)")
+                        }
+                    }
+                }
+            }
+            
+        }
     }
     
     private func randomNonceString(length: Int = 32) -> String {
