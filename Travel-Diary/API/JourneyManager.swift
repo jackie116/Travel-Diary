@@ -16,6 +16,8 @@ import MapKit
 class JourneyManager {
     static let shared = JourneyManager()
     
+    let currentUser = Auth.auth().currentUser
+    
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("Journeys")
     let storageRef = Storage.storage().reference()
@@ -24,8 +26,8 @@ class JourneyManager {
     
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
-        let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
+        
         do {
             var data = journey
             data.owner = user.uid

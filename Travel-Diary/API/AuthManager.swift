@@ -37,6 +37,20 @@ class AuthManager {
         }
     }
     
+    func getUserInfo(uid: String, completion: @escaping (Result<User, Error>) -> Void) {
+        
+        let docRef = collectionRef.document(uid)
+        
+        docRef.getDocument(as: User.self) { result in
+            switch result {
+            case .success(let user):
+                completion(.success(user))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
 //    func getUserPhotoURL(completion: @escaping (Result<String, Error>) -> Void) {
 //        getUserInfo { result in
 //            switch result {

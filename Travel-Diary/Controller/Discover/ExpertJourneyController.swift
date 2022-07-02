@@ -158,6 +158,7 @@ class ExpertJourneyController: UIViewController {
     
     @objc func makeComment() {
         let vc = CommentController()
+        vc.journeyId = journey?.id
         navigationController?.present(vc, animated: true)
     }
 }

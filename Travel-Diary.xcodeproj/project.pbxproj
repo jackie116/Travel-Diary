@@ -65,6 +65,7 @@
 		E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */; };
 		E7D1D470286B463500483754 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D1D46F286B463500483754 /* Comment.swift */; };
 		E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D1D471286B50EE00483754 /* CommentCell.swift */; };
+		E7DBA19D286EF7DE00C08C55 /* CommentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DBA19C286EF7DE00C08C55 /* CommentManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,7 @@
 		E7CFD989285A0FD2004B5ED5 /* ScheduleMapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleMapController.swift; sourceTree = "<group>"; };
 		E7D1D46F286B463500483754 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		E7D1D471286B50EE00483754 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		E7DBA19C286EF7DE00C08C55 /* CommentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +271,7 @@
 			children = (
 				E7B9258528603A0D007F266C /* JourneyManager.swift */,
 				E7390CAA2869AFAE0056D6D9 /* AuthManager.swift */,
+				E7DBA19C286EF7DE00C08C55 /* CommentManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
+				E7DBA19D286EF7DE00C08C55 /* CommentManager.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */,
