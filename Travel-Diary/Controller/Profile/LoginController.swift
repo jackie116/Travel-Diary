@@ -52,8 +52,8 @@ class LoginController: UIViewController {
     }
     
     func configureConstraint() {
-        signInButton.setDimensions(width: UIScreen.width * 0.8, height: 50)
-        googleSignInButton.setDimensions(width: UIScreen.width * 0.8, height: 50)
+        signInButton.setDimensions(width: UIScreen.width * 0.6, height: 50)
+        googleSignInButton.setDimensions(width: UIScreen.width * 0.6, height: 50)
         buttonStackView.centerX(inView: view)
         buttonStackView.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: UIScreen.height * 0.1)
         
