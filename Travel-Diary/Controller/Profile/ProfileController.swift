@@ -72,8 +72,8 @@ class ProfileController: UIViewController {
     
     func presentLoginPage() {
         let vc = LoginController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navigationController?.present(navVC, animated: true)
+        // let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(vc, animated: true)
     }
     
     @objc func signOut() {

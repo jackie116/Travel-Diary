@@ -733,6 +733,7 @@
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
@@ -767,6 +768,7 @@
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
