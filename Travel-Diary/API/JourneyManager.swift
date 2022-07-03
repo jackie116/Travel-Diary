@@ -9,23 +9,70 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import FirebaseAuth
 import UIKit
 import MapKit
 
 class JourneyManager {
     static let shared = JourneyManager()
-    
+        
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("Journeys")
     let storageRef = Storage.storage().reference()
     let coverImageRef = Storage.storage().reference().child("cover_images")
     let spotImageRef = Storage.storage().reference().child("spot_images")
     
+    // MARK: - 抓取全部旅程
+    func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success([]))
+            return
+        }
+        
+        collectionRef.whereField("owner", isEqualTo: user.uid).getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var journeys = [Journey]()
+                for document in snapshot!.documents {
+                    do {
+                        let journey = try document.data(as: Journey.self)
+                        journeys.append(journey)
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                completion(.success(journeys))
+            }
+        }
+    }
+    
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        
         do {
-            let docRef = try collectionRef.addDocument(from: journey)
             var data = journey
+            data.owner = user.uid
+            data.users.append(user.uid)
+            let docRef = try collectionRef.addDocument(from: data)
+            data.id = docRef.documentID
+            completion(.success(data))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - 複製旅程
+    func copyJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        do {
+            var data = journey
+            data.owner = user.uid
+            let docRef = try collectionRef.addDocument(from: data)
             data.id = docRef.documentID
             completion(.success(data))
         } catch {
@@ -44,10 +91,14 @@ class JourneyManager {
         }
     }
     
-    // MARK: - 抓取全部旅程
-    func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
-        collectionRef.getDocuments { snapshot, error in
-            
+    // MARK: - 抓取遊記
+    func fetchDiarys(completion: @escaping (Result<[Journey], Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success([]))
+            return
+        }
+        collectionRef.whereField("users", arrayContains: user.uid).getDocuments { snapshot, error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -64,6 +115,7 @@ class JourneyManager {
             }
         }
     }
+    
     // MARK: - 抓取公開行程
     func fetchPublicJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
         collectionRef.whereField("isPublic", isEqualTo: true).getDocuments { snapshot, error in
@@ -102,6 +154,20 @@ class JourneyManager {
     // MARK: - 刪一個旅程
     func deleteJourney(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
         collectionRef.document(id).delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func joinGroup(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        collectionRef.document(id).updateData([
+            "users": FieldValue.arrayUnion([user.uid])
+        ]) { error in
             if let error = error {
                 completion(.failure(error))
             } else {

@@ -29,6 +29,7 @@ class ScheduleMapController: UIViewController {
         super.viewDidLoad()
         
         mapView.delegate = self
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Pins")
         setUI()
     }
     
@@ -71,9 +72,10 @@ class ScheduleMapController: UIViewController {
         panel.addPanel(toParent: self)
     }
     
-    func placeAnnotation(mark: Spot) {
+    func placeAnnotation(offset: Int, mark: Spot) {
         let annotation = CustomAnnotation(coordinate: mark.coordinate.getCLLocationCoordinate2D())
         annotation.title = mark.name
+        annotation.subtitle = "\(offset + 1)"
         mapView.addAnnotation(annotation)
     }
     
@@ -117,8 +119,8 @@ extension ScheduleMapController: DrawAnnotationDelegate {
         mapView.removeOverlays(mapView.overlays)
         
         for marks in placemarks {
-            for mark in marks.spot {
-                placeAnnotation(mark: mark)
+            for (offset, mark) in marks.spot.enumerated() {
+                placeAnnotation(offset: offset, mark: mark)
             }
         }
     
@@ -132,20 +134,20 @@ extension ScheduleMapController: DrawAnnotationDelegate {
 }
 
 extension ScheduleMapController: MKMapViewDelegate {
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+
 //        guard let pin = annotation as? CustomAnnotation else { return MKAnnotationView() }
-//
-//        var view = mapView.dequeueReusableAnnotationView(withIdentifier: "Pins")
-//
-//        if view == nil {
-//            view = MKAnnotationView(annotation: pin, reuseIdentifier: "Pins")
-//            view?.image = UIImage(named: "pin")
-//            view?.canShowCallout = true
-//        }
-//
-//        return view
-//    }
+
+        let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Pins", for: annotation)
+        
+        guard let marker = view as? MKMarkerAnnotationView else { return view}
+        marker.glyphText = annotation.subtitle as? String
+        marker.subtitleVisibility = .hidden
+        view.canShowCallout = true
+
+        return view
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         
@@ -157,7 +159,7 @@ extension ScheduleMapController: MKMapViewDelegate {
         
         renderer.strokeColor = lineColor[colorTag]
         renderer.lineCap = .round
-        renderer.lineWidth = 3.0
+        renderer.lineWidth = 5.0
         
         return renderer
     }

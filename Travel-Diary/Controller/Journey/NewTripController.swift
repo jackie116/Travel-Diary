@@ -49,9 +49,10 @@ class NewTripController: UIViewController {
     
     private lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .customBlue
         button.setTitle("Submit", for: .normal)
         button.addTarget(self, action: #selector(submitTrip), for: .touchUpInside)
+        button.layer.cornerRadius = 20
         return button
     }()
     
@@ -78,10 +79,8 @@ class NewTripController: UIViewController {
                                  paddingLeft: 32,
                                  paddingRight: 32)
         
-        startDateLabel.anchor(top: tripNameTextField.bottomAnchor,
-                              left: view.leftAnchor,
-                              paddingTop: 32, paddingLeft: 32)
-    
+        startDateLabel.anchor(left: view.leftAnchor, paddingLeft: 32)
+        startDateLabel.centerYAnchor.constraint(equalTo: startDatePicker.centerYAnchor).isActive = true
         startDatePicker.anchor(top: tripNameTextField.bottomAnchor,
                                left: startDateLabel.rightAnchor,
                                right: view.rightAnchor,
@@ -89,8 +88,8 @@ class NewTripController: UIViewController {
                                paddingLeft: 32,
                                paddingRight: 32)
         
-        endDateLabel.anchor(top: startDateLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 32, paddingLeft: 32)
-        
+        endDateLabel.anchor(left: view.leftAnchor, paddingLeft: 32)
+        endDateLabel.centerYAnchor.constraint(equalTo: endDatePicker.centerYAnchor).isActive = true
         endDatePicker.anchor(top: startDatePicker.bottomAnchor,
                              left: endDateLabel.leftAnchor,
                              right: view.rightAnchor,
@@ -99,11 +98,8 @@ class NewTripController: UIViewController {
                              paddingRight: 32)
         
         submitButton.anchor(top: endDatePicker.bottomAnchor,
-                            left: view.leftAnchor,
-                            right: view.rightAnchor,
-                            paddingTop: 32,
-                            paddingLeft: 32,
-                            paddingRight: 32)
+                            paddingTop: 32, width: UIScreen.width * 0.6)
+        submitButton.centerX(inView: view)
     }
     
     func daysBetween(start: Date, end: Date) -> Int {

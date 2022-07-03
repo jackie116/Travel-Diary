@@ -18,11 +18,19 @@ class DiaryController: UIViewController {
         
         table.delegate = self
         table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 2
+        table.estimatedRowHeight = UIScreen.height / 3
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
         
         return table
+    }()
+    
+    private lazy var qrcodeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
+                                         style: .plain, target: self,
+                                         action: #selector(didTapQR))
+        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return button
     }()
     
     private lazy var refreshControl: UIRefreshControl = {
@@ -47,7 +55,9 @@ class DiaryController: UIViewController {
     }
     
     func configureUI() {
+        navigationItem.rightBarButtonItem = qrcodeButton
         view.addSubview(tableView)
+        tableView.addSubview(refreshControl)
         configureConstraint()
     }
     
@@ -56,7 +66,7 @@ class DiaryController: UIViewController {
     }
     
     func fetchJourneys() {
-        JourneyManager.shared.fetchJourneys { result in
+        JourneyManager.shared.fetchDiarys { result in
             switch result {
             case .success(let journeys):
                 self.journeys = journeys
@@ -71,6 +81,19 @@ class DiaryController: UIViewController {
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // Group
+        let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
+            self?.dismiss(animated: false) {
+                let vc = QRcodeGeneratorController()
+                vc.id = self?.journeys[indexPath.row].id
+                let navVC = UINavigationController(rootViewController: vc)
+                self?.navigationController?.present(navVC, animated: true)
+            }
+            
+        }
+        groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
+        controller.addAction(groupAction)
         
         // privacy and share
         let privacyAction: UIAlertAction = {
@@ -98,6 +121,19 @@ class DiaryController: UIViewController {
         present(controller, animated: true)
     }
     
+    func showQRcodeScannerController() {
+        let vc = QRcodeScannerController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to join travel groups"
+        navigationController?.present(vc, animated: true)
+    }
+    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
@@ -108,6 +144,16 @@ class DiaryController: UIViewController {
     
     @objc func refreshData() {
         fetchJourneys()
+    }
+    
+    @objc func didTapQR() {
+        AuthManager.shared.checkUser { [weak self] bool in
+            if bool {
+                self?.showQRcodeScannerController()
+            } else {
+                self?.showLoginController()
+            }
+        }
     }
 }
 

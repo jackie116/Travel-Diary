@@ -7,6 +7,21 @@
 
 import UIKit
 import PDFKit
+import Kingfisher
+
+struct PdfSpot {
+    let name: String
+    let image: UIImage?
+    let address: String
+    var isDay: Bool = false
+}
+
+struct PdfResource {
+    let title: String
+    let coverImage: UIImage?
+    let tripDate: String
+    let spots: [PdfSpot]
+}
 
 class PrivacyController: UIViewController {
     let publicLabel: UILabel = {
@@ -81,11 +96,80 @@ class PrivacyController: UIViewController {
     func configureData() {
         guard let journey = journey else { return }
         publicSwitch.isOn = journey.isPublic
-        let pdfCreator = PDFCreator(journey: journey)
-        documentData = pdfCreator.createPDF()
-        if let documentData = documentData {
-            pdfView.document = PDFDocument(data: documentData)
-            pdfView.autoScales = true
+        
+        downloadAllResource { [weak self] resource in
+            DispatchQueue.main.async {
+                let pdfCreator = PDFCreator(resource: resource)
+                self?.documentData = pdfCreator.createPDF()
+                if let documentData = self?.documentData {
+                    self?.pdfView.document = PDFDocument(data: documentData)
+                    self?.pdfView.autoScales = true
+                }
+            }
+        }
+    }
+    
+    func downloadAllResource(completion: @escaping (PdfResource) -> Void) {
+        guard let journey = journey else { return }
+
+        let title = journey.title
+        let tripDate = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        var coverImage: UIImage?
+        var spots = [PdfSpot]()
+        
+        DispatchQueue.global().async {
+            let semaphore = DispatchSemaphore(value: 0)
+            self.downloadImage(urlString: journey.coverPhoto) { result in
+                switch result {
+                case .success(let image):
+                    coverImage = image
+                    semaphore.signal()
+                case .failure(let error):
+                    print(error)
+                    semaphore.signal()
+                }
+            }
+            semaphore.wait()
+            var days: Int = 0
+            for day in journey.data {
+                days += 1
+                spots.append(PdfSpot(name: "Day \(days)", image: nil, address: "", isDay: true))
+                for spot in day.spot {
+                    var spotImage: UIImage?
+                    self.downloadImage(urlString: spot.photo) { result in
+                        switch result {
+                        case .success(let image):
+                            spotImage = image
+                            semaphore.signal()
+                        case .failure(let error):
+                            print(error)
+                            semaphore.signal()
+                        }
+                    }
+                    semaphore.wait()
+                    spots.append(PdfSpot(name: spot.name, image: spotImage, address: spot.address))
+                    
+                }
+            }
+            completion(PdfResource(title: title, coverImage: coverImage, tripDate: tripDate, spots: spots))
+        }
+        
+    }
+    
+    func downloadImage(urlString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
+        if let url = URL(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            KingfisherManager.shared.retrieveImage(with: resource) { result in
+                switch result {
+                case .success(let result):
+                    completion(.success(result.image))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            completion(.success(UIImage()))
         }
     }
     
@@ -103,11 +187,14 @@ class PrivacyController: UIViewController {
     }
     
     @objc func shareAlert() {
-        guard let journey = journey else { return }
-        let pdfCreator = PDFCreator(journey: journey)
-        let pdfData = pdfCreator.createPDF()
-        let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
-        vc.popoverPresentationController?.sourceView = self.view
-        present(vc, animated: true, completion: nil)
+        downloadAllResource { [weak self] resource in
+            DispatchQueue.main.async {
+                let pdfCreator = PDFCreator(resource: resource)
+                let pdfData = pdfCreator.createPDF()
+                let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
+                vc.popoverPresentationController?.sourceView = self?.view
+                self?.present(vc, animated: true, completion: nil)
+            }
+        }
     }
 }

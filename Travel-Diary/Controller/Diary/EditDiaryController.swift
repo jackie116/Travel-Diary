@@ -60,7 +60,6 @@ class EditDiaryController: UIViewController {
         let layout: UICollectionViewLayout = {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = 0
             return layout
         }()
         
@@ -117,8 +116,6 @@ class EditDiaryController: UIViewController {
     }
     
     func configureUI() {
-//        navigationItem.rightBarButtonItems = [uploadButton, switchButton]
-//        navigationItem.rightBarButtonItem = switchButton
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dateLabel)
         stackView.addArrangedSubview(collectionView)
@@ -240,8 +237,7 @@ extension EditDiaryController: UITableViewDataSource {
 extension EditDiaryController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.layer.borderColor = UIColor.customBlue.cgColor
-        cell?.layer.borderWidth = 1
+        cell?.backgroundColor = .customBlue
         cell?.isSelected = true
         let tablePath = IndexPath(row: NSNotFound, section: indexPath.item)
         tableView.scrollToRow(at: tablePath, at: .top, animated: true)
@@ -249,8 +245,7 @@ extension EditDiaryController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.layer.borderColor = UIColor.lightGray.cgColor
-        cell?.layer.borderWidth = 0.5
+        cell?.backgroundColor = .clear
         cell?.isSelected = false
     }
 }
@@ -266,7 +261,13 @@ extension EditDiaryController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        5.0
     }
 }
 
@@ -281,14 +282,6 @@ extension EditDiaryController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
-        
-        if cell.isSelected {
-            cell.layer.borderColor = UIColor.customBlue.cgColor
-            cell.layer.borderWidth = 1
-        } else {
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.layer.borderWidth = 0.5
-        }
         
         cell.configureData(day: indexPath.item)
         return cell

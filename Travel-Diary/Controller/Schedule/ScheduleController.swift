@@ -31,25 +31,20 @@ class ScheduleController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         // 方向
         layout.scrollDirection = .horizontal
-        // section 邊距
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        // size of each cell
-        layout.itemSize = CGSize(width: 60, height: 40)
-        // cell 間距
-        layout.minimumLineSpacing = CGFloat(10)
         
         let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
         
         let collectionView = UICollectionView(frame: rect, collectionViewLayout: layout)
         
-        collectionView.register(SectionCollectionCell.self,
-                                        forCellWithReuseIdentifier: SectionCollectionCell.identifier)
+        collectionView.register(DaysCell.self,
+                                        forCellWithReuseIdentifier: DaysCell.identifier)
 
         collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
 
         collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         
         return collectionView
     }()
@@ -78,11 +73,29 @@ class ScheduleController: UIViewController {
         return label
     }()
     
+    let headerImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "gy_photo")
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    let headerStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.alignment = .center
+        stack.distribution = .fill
+        return stack
+    }()
+    
     lazy var uploadButton: UIButton = {
         let button = UIButton()
         button.setTitle("Upload", for: .normal)
         button.backgroundColor = .customBlue
-        button.addTarget(self, action: #selector(uploadSchedule), for: .touchUpInside)
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
         return button
     }()
     
@@ -123,30 +136,23 @@ class ScheduleController: UIViewController {
     }
     
     func setScheduleTableHeaderFooter() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 150))
-        headerView.addSubview(tripTitle)
-        headerView.addSubview(tripDuration)
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         
-        tripTitle.anchor(top: headerView.topAnchor,
-                         left: headerView.leftAnchor,
-                         right: headerView.rightAnchor,
-                         paddingTop: 8, paddingLeft: 16,
-                         paddingRight: 16)
+        headerStackView.addArrangedSubview(tripTitle)
+        headerStackView.addArrangedSubview(tripDuration)
+        headerView.addSubview(headerStackView)
+        headerStackView.center(inView: headerView)
+        headerView.addSubview(headerImageView)
+        headerImageView.anchor(top: headerView.topAnchor,
+                               left: headerStackView.rightAnchor,
+                               bottom: headerView.bottomAnchor,
+                               right: headerView.rightAnchor)
         
-        tripDuration.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tripDuration.topAnchor.constraint(equalTo: tripTitle.bottomAnchor, constant: 8),
-            tripDuration.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 16),
-            tripDuration.bottomAnchor.constraint(greaterThanOrEqualTo: headerView.bottomAnchor, constant: -16),
-            tripDuration.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: -16)
-        ])
-        
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
         
         footerView.addSubview(uploadButton)
-        uploadButton.centerX(inView: footerView)
-        uploadButton.centerY(inView: footerView)
-        uploadButton.setDimensions(width: 80, height: 40)
+        uploadButton.center(inView: footerView)
+        uploadButton.setDimensions(width: UIScreen.width * 0.6, height: 40)
         
         scheduleTableView.tableHeaderView = headerView
         scheduleTableView.tableFooterView = footerView
@@ -167,14 +173,7 @@ class ScheduleController: UIViewController {
         return dateFormatter.string(from: date)
     }
     
-    @objc func searchPlace(_ sender: UIButton) {
-        let vc = SearchBarController()
-        vc.daySection = sender.tag
-        vc.delegate = self
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func uploadSchedule() {
+    private func uploadSchedule() {
         JourneyManager.shared.updateJourney(journey: self.tripData!) { result in
             switch result {
             case .success:
@@ -183,6 +182,17 @@ class ScheduleController: UIViewController {
                 print("Upload failure: \(error)")
             }
         }
+    }
+    
+    @objc func searchPlace(_ sender: UIButton) {
+        let vc = SearchBarController()
+        vc.daySection = sender.tag
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func didTapUpload() {
+        uploadSchedule()
     }
 }
 
@@ -252,9 +262,11 @@ extension ScheduleController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: ScheduleCell.identifier,
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
-        cell.titleLabel.text = scheduleMarks[indexPath.section].spot[indexPath.row].name
-        cell.addressLabel.text = scheduleMarks[indexPath.section].spot[indexPath.row].address
-        cell.orderLabel.text = "\(indexPath.row)"
+        
+        cell.configureData(name: scheduleMarks[indexPath.section].spot[indexPath.row].name,
+                           address: scheduleMarks[indexPath.section].spot[indexPath.row].address,
+                           order: indexPath.row)
+        
         return cell
     }
     
@@ -276,9 +288,39 @@ extension ScheduleController: HandleScheduleDelegate {
 // MARK: - UICollectionViewDelegate
 extension ScheduleController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = .customBlue
+        cell?.isSelected = true
         let tablePath = IndexPath(row: NSNotFound, section: indexPath.item)
         scheduleTableView.scrollToRow(at: tablePath, at: .top, animated: true)
         self.delegate?.zoomSelectedRoute(day: indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = .clear
+        cell?.isSelected = false
+    }
+}
+
+// MARK: - UIcollectionViewDelegateFlowLayout
+extension ScheduleController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: UIScreen.width / 5, height: 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        5.0
     }
 }
 
@@ -291,11 +333,10 @@ extension ScheduleController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SectionCollectionCell.identifier,
-            for: indexPath) as? SectionCollectionCell else { return UICollectionViewCell() }
+            withReuseIdentifier: DaysCell.identifier,
+            for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.dayLabel.text = "Day \(indexPath.item + 1)"
-        cell.backgroundColor = .customBlue
+        cell.configureData(day: indexPath.item)
         
         return cell
     }
