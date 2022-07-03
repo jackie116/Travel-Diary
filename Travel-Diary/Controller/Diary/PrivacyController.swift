@@ -111,7 +111,7 @@ class PrivacyController: UIViewController {
     
     func downloadAllResource(completion: @escaping (PdfResource) -> Void) {
         guard let journey = journey else { return }
-        
+
         let title = journey.title
         let tripDate = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
@@ -149,6 +149,7 @@ class PrivacyController: UIViewController {
                     }
                     semaphore.wait()
                     spots.append(PdfSpot(name: spot.name, image: spotImage, address: spot.address))
+                    
                 }
             }
             completion(PdfResource(title: title, coverImage: coverImage, tripDate: tripDate, spots: spots))
@@ -167,6 +168,8 @@ class PrivacyController: UIViewController {
                     completion(.failure(error))
                 }
             }
+        } else {
+            completion(.success(UIImage()))
         }
     }
     

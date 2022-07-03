@@ -105,7 +105,7 @@ class ExpertJourneyController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "text.bubble"),
                                                             style: .plain,
                                                             target: self,
-                                                            action: #selector(makeComment))
+                                                            action: #selector(didTapComment))
 // MARK: - copy start
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dateLabel)
@@ -148,6 +148,18 @@ class ExpertJourneyController: UIViewController {
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
     }
     
+    func showCommentController() {
+        let vc = CommentController()
+        vc.journeyId = journey?.id
+        navigationController?.present(vc, animated: true)
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to make comments"
+        navigationController?.present(vc, animated: true)
+    }
+    
     // MARK: - selector
     
     @objc func switchMode() {
@@ -156,10 +168,14 @@ class ExpertJourneyController: UIViewController {
     }
     // MARK: - copy end
     
-    @objc func makeComment() {
-        let vc = CommentController()
-        vc.journeyId = journey?.id
-        navigationController?.present(vc, animated: true)
+    @objc func didTapComment() {
+        AuthManager.shared.checkUser { [weak self] bool in
+            if bool {
+                self?.showCommentController()
+            } else {
+                self?.showLoginController()
+            }
+        }
     }
 }
 

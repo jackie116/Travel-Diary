@@ -46,6 +46,7 @@ class PDFCreator: NSObject {
             _ = addCoverImage(image: resource.coverImage,
                                             pageRect: pageRect,
                                             imageTop: tripDateBottom + 18.0)
+            addCornerImage(pageRect: pageRect)
             
             var pointer = 0
             var order = 0
@@ -75,6 +76,25 @@ class PDFCreator: NSObject {
         addSpotAddress(address: spot.address, pageRect: pageRect, textTop: pageRect.height * (pageTop + 0.05) + 20)
         addSpotAnnotation(pageRect: pageRect, imageTop: pageRect.height * (pageTop + 0.05))
         addDayOrderText(order: order, pageRect: pageRect, textTop: pageRect.height * (pageTop + 0.05) + 10)
+        addCornerImage(pageRect: pageRect)
+    }
+    
+    func addCornerImage(pageRect: CGRect) {
+        let image = UIImage(named: "gy_bike")
+        let maxHeight = pageRect.height * 0.1
+        let maxWidth = pageRect.height * 0.1
+        
+        let aspectWidth = maxWidth / image!.size.width
+        let aspectHeight = maxHeight / image!.size.height
+
+        let scaledWidth = image!.size.width * aspectWidth
+        let scaledHeight = image!.size.height * aspectHeight
+
+        let imageRect = CGRect(x: pageRect.width - pageRect.height * 0.1,
+                               y: pageRect.height * 0.9,
+                               width: scaledWidth, height: scaledHeight)
+
+        image!.draw(in: imageRect)
     }
     
     func addTitle(pageRect: CGRect) -> CGFloat {
@@ -87,7 +107,7 @@ class PDFCreator: NSObject {
         let titleStringSize = attributedTitle.size()
 
         let titleStringRect = CGRect(x: (pageRect.width - titleStringSize.width) / 2.0,
-                                     y: 36, width: titleStringSize.width,
+                                     y: UIScreen.height * 0.2, width: titleStringSize.width,
                                      height: titleStringSize.height)
 
         attributedTitle.draw(in: titleStringRect)
@@ -212,10 +232,10 @@ class PDFCreator: NSObject {
 
         let aspectWidth = maxWidth / image.size.width
         let aspectHeight = maxHeight / image.size.height
-        let aspectRatio = min(aspectWidth, aspectHeight)
+        // let aspectRatio = min(aspectWidth, aspectHeight)
 
-        let scaledWidth = image.size.width * aspectRatio
-        let scaledHeight = image.size.height * aspectRatio
+        let scaledWidth = image.size.width * aspectWidth
+        let scaledHeight = image.size.height * aspectHeight
 
         let imageX = (pageRect.width - scaledWidth) / 2.0
         let imageRect = CGRect(x: imageX, y: imageTop,

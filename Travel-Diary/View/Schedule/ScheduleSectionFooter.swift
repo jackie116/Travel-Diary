@@ -12,6 +12,7 @@ class ScheduleSectionFooter: UITableViewHeaderFooterView {
     
     lazy var button: UIButton = {
         let button = UIButton()
+        button.layer.cornerRadius = 20
         button.setTitle("search to add", for: .normal)
         button.backgroundColor = .customBlue
         return button
@@ -21,12 +22,11 @@ class ScheduleSectionFooter: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         
         contentView.addSubview(button)
+        button.centerX(inView: contentView)
         button.anchor(top: contentView.topAnchor,
-                      left: contentView.leftAnchor,
                       bottom: contentView.bottomAnchor,
-                      right: contentView.rightAnchor,
-                      paddingTop: 8, paddingLeft: 8,
-                      paddingBottom: 8, paddingRight: 8)
+                      paddingTop: 16, paddingBottom: 16,
+                      width: UIScreen.width * 0.6, height: 40)
     }
     
     required init?(coder: NSCoder) {

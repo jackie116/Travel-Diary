@@ -18,12 +18,19 @@ class SearchBarController: UIViewController {
     var resultSearchController: UISearchController?
     let mapView = MKMapView()
     var daySection: Int?
+    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "search")
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         view.addSubview(mapView)
+        mapView.alpha = 0.5
         mapView.addConstraintsToFillView(view)
+        mapView.addSubview(animationView)
+        animationView.center(inView: mapView)
+
         setSearchBar()
     }
     

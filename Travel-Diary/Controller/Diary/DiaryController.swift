@@ -18,7 +18,7 @@ class DiaryController: UIViewController {
         
         table.delegate = self
         table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 2
+        table.estimatedRowHeight = UIScreen.height / 3
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
         
@@ -28,7 +28,7 @@ class DiaryController: UIViewController {
     private lazy var qrcodeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
                                          style: .plain, target: self,
-                                         action: #selector(openQRcodeViewer))
+                                         action: #selector(didTapQR))
         button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return button
     }()
@@ -57,6 +57,7 @@ class DiaryController: UIViewController {
     func configureUI() {
         navigationItem.rightBarButtonItem = qrcodeButton
         view.addSubview(tableView)
+        tableView.addSubview(refreshControl)
         configureConstraint()
     }
     
@@ -120,6 +121,19 @@ class DiaryController: UIViewController {
         present(controller, animated: true)
     }
     
+    func showQRcodeScannerController() {
+        let vc = QRcodeScannerController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to join travel groups"
+        navigationController?.present(vc, animated: true)
+    }
+    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
@@ -132,11 +146,14 @@ class DiaryController: UIViewController {
         fetchJourneys()
     }
     
-    @objc func openQRcodeViewer() {
-        let vc = QRcodeScannerController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
+    @objc func didTapQR() {
+        AuthManager.shared.checkUser { [weak self] bool in
+            if bool {
+                self?.showQRcodeScannerController()
+            } else {
+                self?.showLoginController()
+            }
+        }
     }
 }
 
