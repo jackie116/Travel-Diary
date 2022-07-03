@@ -15,6 +15,7 @@ enum ImageAsset: String {
     case icons_36pt_Expert
     case icons_36pt_Diary
     case icons_36pt_User
+    case plan
     
     // Annotation
     case orderMarker

@@ -17,6 +17,7 @@ class MainTabController: UITabBarController {
         super.viewDidLoad()
         
         configureViewControllers()
+        delegate = self
     }
     
     // MARK: - Selectors
@@ -28,7 +29,7 @@ class MainTabController: UITabBarController {
         let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: journey)
         
         let diary = DiaryController()
-        let nav2 = templateNavigationController(image: UIImage.asset(.icons_36pt_Chat), rootViewController: diary)
+        let nav2 = templateNavigationController(image: UIImage.asset(.plan), rootViewController: diary)
 
         let discover = DiscoverController()
         let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: discover)
@@ -46,5 +47,33 @@ class MainTabController: UITabBarController {
         nav.tabBarItem.selectedImage = image?.withTintColor(UIColor.customBlue,
                                                             renderingMode: .alwaysOriginal)
         return nav
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to edit your profile"
+        self.present(vc, animated: true)
+    }
+    
+    func isSignIn() -> Bool {
+        var isSignIn = false
+        AuthManager.shared.checkUser { [weak self] bool in
+            isSignIn = bool
+            if !isSignIn {
+                self?.showLoginController()
+            }
+        }
+        return isSignIn
+    }
+}
+
+extension MainTabController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController,
+                          shouldSelect viewController: UIViewController) -> Bool {
+        if viewController == self.viewControllers?[3] {
+            return isSignIn()
+        } else {
+            return true
+        }
     }
 }

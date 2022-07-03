@@ -12,12 +12,12 @@ class DiscoverController: UIViewController {
     private lazy var tableView: UITableView = {
         let table = UITableView()
         
-        table.register(DiscoverCell.self, forCellReuseIdentifier:
-                        DiscoverCell.identifier)
+        table.register(DiaryCell.self, forCellReuseIdentifier:
+                        DiaryCell.identifier)
         
         table.delegate = self
         table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 2
+        table.estimatedRowHeight = UIScreen.height / 3
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
         
@@ -47,6 +47,7 @@ class DiscoverController: UIViewController {
     
     func configureUI() {
         view.addSubview(tableView)
+        tableView.addSubview(refreshControl)
         configureConstraint()
     }
     
@@ -89,9 +90,10 @@ extension DiscoverController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: DiscoverCell.identifier,
-            for: indexPath) as? DiscoverCell else { return UITableViewCell() }
+            withIdentifier: DiaryCell.identifier,
+            for: indexPath) as? DiaryCell else { return UITableViewCell() }
         
+        cell.functionButton.isHidden = true
         cell.configureCell(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,
                            end: journeys[indexPath.row].end,

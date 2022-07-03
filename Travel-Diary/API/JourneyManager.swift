@@ -15,17 +15,42 @@ import MapKit
 
 class JourneyManager {
     static let shared = JourneyManager()
-    
-    let currentUser = Auth.auth().currentUser
-    
+        
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("Journeys")
     let storageRef = Storage.storage().reference()
     let coverImageRef = Storage.storage().reference().child("cover_images")
     let spotImageRef = Storage.storage().reference().child("spot_images")
     
+    // MARK: - 抓取全部旅程
+    func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success([]))
+            return
+        }
+        
+        collectionRef.whereField("owner", isEqualTo: user.uid).getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var journeys = [Journey]()
+                for document in snapshot!.documents {
+                    do {
+                        let journey = try document.data(as: Journey.self)
+                        journeys.append(journey)
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                completion(.success(journeys))
+            }
+        }
+    }
+    
     // MARK: - 新增旅程
     func addNewJourey(journey: Journey, completion: @escaping (Result<Journey, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
         
         do {
@@ -66,33 +91,13 @@ class JourneyManager {
         }
     }
     
-    // MARK: - 抓取全部旅程
-    func fetchJourneys(completion: @escaping (Result<[Journey], Error>) -> Void) {
-        let currentUser = Auth.auth().currentUser
-        if let user = currentUser {
-            collectionRef.whereField("owner", isEqualTo: user.uid).getDocuments { snapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    var journeys = [Journey]()
-                    for document in snapshot!.documents {
-                        do {
-                            let journey = try document.data(as: Journey.self)
-                            journeys.append(journey)
-                        } catch {
-                            completion(.failure(error))
-                        }
-                    }
-                    completion(.success(journeys))
-                }
-            }
-        }
-    }
-    
     // MARK: - 抓取遊記
     func fetchDiarys(completion: @escaping (Result<[Journey], Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
-        guard let user = currentUser else { return }
+        guard let user = currentUser else {
+            completion(.success([]))
+            return
+        }
         collectionRef.whereField("users", arrayContains: user.uid).getDocuments { snapshot, error in
             if let error = error {
                 completion(.failure(error))

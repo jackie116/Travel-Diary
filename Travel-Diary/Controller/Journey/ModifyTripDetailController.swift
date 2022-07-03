@@ -33,6 +33,33 @@ class ModifyTripDetailController: UIViewController {
         return textField
     }()
     
+    let vStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 16
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
+    }()
+    
+    let startStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 32
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
+    }()
+    
+    let endStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 32
+        stack.alignment = .fill
+        stack.distribution = .fill
+        return stack
+    }()
+    
     let startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Start Date"
@@ -63,7 +90,8 @@ class ModifyTripDetailController: UIViewController {
     
     private lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = .customBlue
+        button.layer.cornerRadius = 20
         button.setTitle("Submit", for: .normal)
         button.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
         return button
@@ -105,11 +133,19 @@ class ModifyTripDetailController: UIViewController {
     func configureUI() {
         view.backgroundColor = .white
         view.addSubview(plusPhotoButton)
-        view.addSubview(titleTextField)
-        view.addSubview(startDateLabel)
-        view.addSubview(startDatePicker)
-        view.addSubview(endDateLabel)
-        view.addSubview(endDatePicker)
+        startStackView.addArrangedSubview(startDateLabel)
+        startStackView.addArrangedSubview(startDatePicker)
+        endStackView.addArrangedSubview(endDateLabel)
+        endStackView.addArrangedSubview(endDatePicker)
+        vStackView.addArrangedSubview(titleTextField)
+        vStackView.addArrangedSubview(startStackView)
+        vStackView.addArrangedSubview(endStackView)
+        view.addSubview(vStackView)
+//        view.addSubview(titleTextField)
+//        view.addSubview(startDateLabel)
+//        view.addSubview(startDatePicker)
+//        view.addSubview(endDateLabel)
+//        view.addSubview(endDatePicker)
         view.addSubview(submitButton)
         setConstraint()
     }
@@ -117,34 +153,10 @@ class ModifyTripDetailController: UIViewController {
     func setConstraint() {
         plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
                                right: view.rightAnchor, height: UIScreen.height / 3)
+        vStackView.centerX(inView: view, topAnchor: plusPhotoButton.bottomAnchor, paddingTop: 32)
         
-        titleTextField.anchor(top: plusPhotoButton.bottomAnchor, left: view.leftAnchor,
-                              right: view.rightAnchor, paddingTop: 32,
-                              paddingLeft: 32, paddingRight: 32)
-        
-        startDateLabel.anchor(top: titleTextField.bottomAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 32)
-        
-        startDatePicker.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            startDatePicker.centerYAnchor.constraint(equalTo: startDateLabel.centerYAnchor),
-            startDatePicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32)
-        ])
-        
-        endDateLabel.anchor(top: startDateLabel.bottomAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 32)
-        
-        endDatePicker.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            endDatePicker.centerYAnchor.constraint(equalTo: endDateLabel.centerYAnchor),
-            endDatePicker.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32)
-        ])
-        
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            submitButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
-            submitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            submitButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 3),
-            submitButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
+        submitButton.centerX(inView: view, topAnchor: vStackView.bottomAnchor, paddingTop: 32)
+        submitButton.setDimensions(width: UIScreen.width * 0.6, height: 40)
     }
 
     func daysBetween(start: Date, end: Date) -> Int {
@@ -259,8 +271,7 @@ class ModifyTripDetailController: UIViewController {
 extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//        guard let coverImage = info[.editedImage] as? UIImage else { return }
-        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+        guard let selectedImage = info[.editedImage] as? UIImage else {
           return
         }
         

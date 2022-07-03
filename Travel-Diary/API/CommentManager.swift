@@ -13,8 +13,6 @@ import FirebaseAuth
 class CommentManager {
     static let shared = CommentManager()
     
-    let currentUser = Auth.auth().currentUser
-    
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("comments")
     
@@ -39,6 +37,7 @@ class CommentManager {
                      comment: String,
                      commentTime: Int64,
                      completion: @escaping (Result<Comment, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
         var data = Comment(journeyID: journeyId,
                            userUID: user.uid,

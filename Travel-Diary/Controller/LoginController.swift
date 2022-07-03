@@ -11,18 +11,23 @@ import FirebaseAuth
 import CryptoKit
 import GoogleSignIn
 import FirebaseCore
+import Lottie
 
 class LoginController: UIViewController {
+    
+    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "signIn")
     
     lazy var signInButton: ASAuthorizationAppleIDButton = {
         let button = ASAuthorizationAppleIDButton()
         button.addTarget(self, action: #selector(pressSignIn), for: .touchUpInside)
+        button.layer.cornerRadius = UIScreen.width * 0.3
         return button
     }()
     
     lazy var googleSignInButton: GIDSignInButton = {
         let button = GIDSignInButton()
-        // button.largeContentTitle = "Sign in with Google"
+        button.style = .wide
+        // button.layer.cornerRadius = UIScreen.width * 0.3
         button.addTarget(self, action: #selector(signInWithGoogle), for: .touchUpInside)
         return button
     }()
@@ -30,10 +35,33 @@ class LoginController: UIViewController {
     let buttonStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = UIScreen.height * 0.05
+        stack.spacing = UIScreen.height * 0.01
         stack.alignment = .fill
         stack.distribution = .fill
         return stack
+    }()
+    
+    let alertMessage: UILabel = {
+        let label = UILabel()
+        label.textColor = .red
+        return label
+    }()
+    
+    lazy var licenseLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.isUserInteractionEnabled = true
+        
+        let stringValue = "By continuing, you agree to our Privacy Police and Apple EULA"
+        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: stringValue)
+        attributedString.setColor(color: UIColor.customBlue, forText: "Privacy Police")
+        attributedString.setColor(color: UIColor.customBlue, forText: "EULA")
+        label.attributedText = attributedString
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapLabel))
+        label.addGestureRecognizer(tap)
+        return label
     }()
     
     var currentNonce: String?
@@ -43,20 +71,46 @@ class LoginController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presentingViewController?.viewWillDisappear(true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presentingViewController?.viewWillAppear(true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 0.5, delay: 5) {
+            self.alertMessage.alpha = 0
+        }
+    }
+    
     func configureUI() {
         view.backgroundColor = .white
+        view.addSubview(animationView)
+        buttonStackView.addArrangedSubview(alertMessage)
         buttonStackView.addArrangedSubview(signInButton)
         buttonStackView.addArrangedSubview(googleSignInButton)
+        buttonStackView.addArrangedSubview(licenseLabel)
+        
         view.addSubview(buttonStackView)
         configureConstraint()
     }
     
     func configureConstraint() {
-        signInButton.setDimensions(width: UIScreen.width * 0.6, height: 50)
-        googleSignInButton.setDimensions(width: UIScreen.width * 0.6, height: 50)
+        animationView.centerX(inView: view)
+        animationView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                             paddingTop: UIScreen.height * 0.1,
+                             width: UIScreen.width * 0.8,
+                             height: UIScreen.width * 0.8)
+        
+        signInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
+        googleSignInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
         buttonStackView.centerX(inView: view)
         buttonStackView.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: UIScreen.height * 0.1)
-        
     }
     
     @objc func pressSignIn() {
@@ -99,32 +153,45 @@ class LoginController: UIViewController {
           let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                          accessToken: authentication.accessToken)
 
-          firebaseSignInWithGoogle(credential: credential)
+          firebaseSignIn(credential: credential)
         }
     }
     
-    func firebaseSignInWithGoogle(credential: AuthCredential) {
-        Auth.auth().signIn(with: credential) { [weak self] _, error in
+    // MARK: - 透過 Credential 與 Firebase Auth 串接
+//    func firebaseSignInWithApple(credential: AuthCredential) {
+//        Auth.auth().signIn(with: credential) { _, error in
+//            guard error == nil else {
+//                print("\(String(describing: error!.localizedDescription))")
+//                return
+//            }
+//            self.navigationController?.dismiss(animated: true)
+//        }
+//    }
+    
+    func firebaseSignIn(credential: AuthCredential) {
+        Auth.auth().signIn(with: credential) { _, error in
             guard error == nil else {
                 print("\(String(describing: error!.localizedDescription))")
                 return
             }
+            LottieAnimation.shared.stopAnimation(lottieAnimation: self.animationView)
+            
             AuthManager.shared.getUserInfo { result in
                 switch result {
                 case .success:
-                    self?.navigationController?.dismiss(animated: true)
+                    break
                 case .failure:
                     AuthManager.shared.initialUserInfo { result in
                         switch result {
                         case .success:
-                            self?.navigationController?.dismiss(animated: true)
+                            break
                         case .failure(let error):
                             print("\(error)")
                         }
                     }
                 }
+                self.dismiss(animated: true)
             }
-            
         }
     }
     
@@ -197,7 +264,7 @@ extension LoginController: ASAuthorizationControllerDelegate {
                                                       idToken: idTokenString,
                                                       rawNonce: nonce)
             // 與 Firebase Auth 進行串接
-            firebaseSignInWithApple(credential: credential)
+            firebaseSignIn(credential: credential)
         }
     }
     
@@ -224,6 +291,24 @@ extension LoginController: ASAuthorizationControllerDelegate {
                     
         print("didCompleteWithError: \(error.localizedDescription)")
     }
+
+    // MARK: - Target / IBAction
+    @objc private func tapLabel(_ gesture: UITapGestureRecognizer) {
+        guard let text = licenseLabel.text else { return }
+        let privacyRange = (text as NSString).range(of: "Privacy Police")
+        let standardRange = (text as NSString).range(of: "EULA")
+        
+        var webVC: WebViewController
+
+        if gesture.didTapAttributedTextInLabel(label: licenseLabel, inRange: privacyRange) {
+            webVC = WebViewController(urlString: "https://www.privacypolicies.com/live/ee7f5a2b-33d3-4b00-bf9b-32d784f8cb81")
+        } else if gesture.didTapAttributedTextInLabel(label: licenseLabel, inRange: standardRange) {
+            webVC = WebViewController(urlString: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
+        } else {
+            return
+        }
+        self.present(webVC, animated: true, completion: nil)
+    }
 }
 
 extension LoginController: ASAuthorizationControllerPresentationContextProviding {
@@ -231,18 +316,5 @@ extension LoginController: ASAuthorizationControllerPresentationContextProviding
     /// - Parameter controller: _
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window!
-    }
-}
-
-extension LoginController {
-    // MARK: - 透過 Credential 與 Firebase Auth 串接
-    func firebaseSignInWithApple(credential: AuthCredential) {
-        Auth.auth().signIn(with: credential) { _, error in
-            guard error == nil else {
-                print("\(String(describing: error!.localizedDescription))")
-                return
-            }
-            self.navigationController?.dismiss(animated: true)
-        }
     }
 }

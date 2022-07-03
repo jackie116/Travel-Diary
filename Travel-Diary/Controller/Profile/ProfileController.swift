@@ -50,8 +50,6 @@ class ProfileController: UIViewController {
                 print("Fetch user data failed \(error)")
             }
         }
-        
-        presentLoginPage()
     }
     
     func configureUI() {
@@ -70,11 +68,10 @@ class ProfileController: UIViewController {
         tableView.addConstraintsToFillSafeArea(view)
     }
     
-    func presentLoginPage() {
-        let vc = LoginController()
-        // let navVC = UINavigationController(rootViewController: vc)
-        navigationController?.present(vc, animated: true)
-    }
+//    func presentLoginPage() {
+//        let vc = LoginController()
+//        navigationController?.present(vc, animated: true)
+//    }
     
     @objc func signOut() {
         AuthManager.shared.signOut { [weak self] result in
@@ -83,7 +80,7 @@ class ProfileController: UIViewController {
                 print("Sign out success")
                 self?.userInfo = nil
                 self?.tableView.reloadData()
-                self?.presentLoginPage()
+                self?.tabBarController?.selectedIndex = 0
             case .failure(let error):
                 print("Sign Out failed \(error)")
             }

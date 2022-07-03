@@ -26,7 +26,7 @@ class JoinGroupController: UIViewController {
     
     let coverImage: UIImageView = {
         let view = UIImageView()
-        // view.backgroundColor = .black
+        
         return view
     }()
     
@@ -75,12 +75,11 @@ class JoinGroupController: UIViewController {
     }
     
     func configureUI() {
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         view.addSubview(showView)
         showView.addSubview(coverImage)
         showView.addSubview(closeButton)
-//        coverImage.addSubview(ownerPhoto)
-        
+
         vStackView.addArrangedSubview(tripName)
         vStackView.addArrangedSubview(tripDate)
         vStackView.addArrangedSubview(joinButton)

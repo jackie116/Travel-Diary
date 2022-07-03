@@ -8,14 +8,16 @@
 import UIKit
 
 class DaysCell: UICollectionViewCell {
-    let dayLabel: UILabel = {
+    private let dayLabel: UILabel = {
         let label = UILabel()
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        self.layer.borderWidth = 0.3
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.cornerRadius = 10
         self.addSubview(dayLabel)
         dayLabel.center(inView: self)
     }
@@ -26,5 +28,11 @@ class DaysCell: UICollectionViewCell {
     
     func configureData(day: Int) {
         dayLabel.text = "Day \(day + 1)"
+        
+        if self.isSelected {
+            self.backgroundColor = .customBlue
+        } else {
+            self.backgroundColor = .clear
+        }
     }
 }

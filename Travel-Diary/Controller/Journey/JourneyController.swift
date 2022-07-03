@@ -13,7 +13,7 @@ class JourneyController: UIViewController {
     private lazy var journeyTableView: UITableView = {
         let table = UITableView()
         
-        table.register(JourneyCell.self, forCellReuseIdentifier: JourneyCell.identifier)
+        table.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
         
         table.delegate = self
         table.dataSource = self
@@ -49,16 +49,7 @@ class JourneyController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        JourneyManager.shared.fetchJourneys { result in
-            switch result {
-            case .success(let journeys):
-                self.journeys = journeys
-                self.journeyTableView.reloadData()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
-            }
-        }
+        updateData()
     }
 
     func configureUI() {
@@ -174,6 +165,32 @@ class JourneyController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    func showNewTripController() {
+        let vc = NewTripController()
+        vc.delegate = self
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to plan your journey"
+        self.present(vc, animated: true)
+    }
+    
+    func updateData() {
+        JourneyManager.shared.fetchJourneys { [weak self] result in
+            switch result {
+            case .success(let journeys):
+                self?.journeys = journeys
+                self?.journeyTableView.reloadData()
+                self?.refreshControl.endRefreshing()
+            case .failure(let error):
+                print("Fetch data failed \(error)")
+            }
+        }
+    }
+    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: journeyTableView)
@@ -183,23 +200,17 @@ class JourneyController: UIViewController {
     }
     
     @objc func addJourney() {
-        let vc = NewTripController()
-        vc.delegate = self
-        let navVC = UINavigationController(rootViewController: vc)
-        navigationController?.present(navVC, animated: true)
+        AuthManager.shared.checkUser { [weak self] bool in
+            if bool {
+                self?.showNewTripController()
+            } else {
+                self?.showLoginController()
+            }
+        }
     }
     
     @objc func refreshData() {
-        JourneyManager.shared.fetchJourneys { result in
-            switch result {
-            case .success(let journeys):
-                self.journeys = journeys
-                self.journeyTableView.reloadData()
-                self.refreshControl.endRefreshing()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
-            }
-        }
+        updateData()
     }
 }
 
@@ -229,15 +240,15 @@ extension JourneyController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: JourneyCell.identifier,
-            for: indexPath) as? JourneyCell else { return UITableViewCell() }
+            withIdentifier: DiaryCell.identifier,
+            for: indexPath) as? DiaryCell else { return UITableViewCell() }
         
-        cell.titleLabel.text = journeys[indexPath.row].title
-        cell.dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journeys[indexPath.row].start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journeys[indexPath.row].end))
+        cell.configureCell(title: journeys[indexPath.row].title,
+                           start: journeys[indexPath.row].start,
+                           end: journeys[indexPath.row].end,
+                           coverPhoto: journeys[indexPath.row].coverPhoto)
+        
         cell.functionButton.addTarget(self, action: #selector(didTapSetting), for: .touchUpInside)
-        let imageUrl = URL(string: journeys[indexPath.row].coverPhoto)
-        cell.coverPhoto.kf.setImage(with: imageUrl)
         
         return cell
     }

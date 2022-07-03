@@ -8,11 +8,12 @@
 import UIKit
 
 class DiaryCell: UITableViewCell {
+    
     let coverImageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.backgroundColor = .black
+        image.backgroundColor = .lightGray
         return image
     }()
     

@@ -236,7 +236,7 @@ extension QRcodeScannerController: UIImagePickerControllerDelegate {
         
         qrStringLabel.text = qrCodeLink
         let qrSplit = qrCodeLink.split(separator: ":")
-        if qrSplit[0] == "Travel-Diary" {
+        if qrSplit[safe: 0] == "Travel-Diary" {
             JourneyManager.shared.fetchSpecificJourney(id: String(qrSplit[1])) { [weak self] result in
                 switch result {
                 case .success(let journey):

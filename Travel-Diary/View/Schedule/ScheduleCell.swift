@@ -102,4 +102,10 @@ class ScheduleCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
     }
+    
+    func configureData(name: String, address: String, order: Int) {
+        titleLabel.text = name
+        addressLabel.text = address
+        orderLabel.text = "\(order + 1)"
+    }
 }
