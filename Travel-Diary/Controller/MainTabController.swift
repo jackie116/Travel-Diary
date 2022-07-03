@@ -17,6 +17,7 @@ class MainTabController: UITabBarController {
         super.viewDidLoad()
         
         configureViewControllers()
+        delegate = self
     }
     
     // MARK: - Selectors
@@ -24,14 +25,14 @@ class MainTabController: UITabBarController {
     // MARK: - Helpers
 
     func configureViewControllers() {
-        let diary = JourneyController()
-        let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: diary)
-
-        let expert = ExpertController()
-        let nav2 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: expert)
+        let journey = JourneyController()
+        let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: journey)
         
-        let chat = ChatController()
-        let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Chat), rootViewController: chat)
+        let diary = DiaryController()
+        let nav2 = templateNavigationController(image: UIImage.asset(.plan), rootViewController: diary)
+
+        let discover = DiscoverController()
+        let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: discover)
         
         let user = ProfileController()
         let nav4 = templateNavigationController(image: UIImage.asset(.icons_36pt_User), rootViewController: user)
@@ -46,5 +47,33 @@ class MainTabController: UITabBarController {
         nav.tabBarItem.selectedImage = image?.withTintColor(UIColor.customBlue,
                                                             renderingMode: .alwaysOriginal)
         return nav
+    }
+    
+    func showLoginController() {
+        let vc = LoginController()
+        vc.alertMessage.text = "Sign in to edit your profile"
+        self.present(vc, animated: true)
+    }
+    
+    func isSignIn() -> Bool {
+        var isSignIn = false
+        AuthManager.shared.checkUser { [weak self] bool in
+            isSignIn = bool
+            if !isSignIn {
+                self?.showLoginController()
+            }
+        }
+        return isSignIn
+    }
+}
+
+extension MainTabController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController,
+                          shouldSelect viewController: UIViewController) -> Bool {
+        if viewController == self.viewControllers?[3] {
+            return isSignIn()
+        } else {
+            return true
+        }
     }
 }
