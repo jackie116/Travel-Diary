@@ -76,7 +76,7 @@ class ScheduleController: UIViewController {
     let headerImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "gy_photo")
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
         return view
     }()

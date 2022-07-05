@@ -20,6 +20,10 @@ class AuthManager {
     let storageRef = Storage.storage().reference()
     let userImageRef = Storage.storage().reference().child("user_images")
     
+    var userId: String {
+        return Auth.auth().currentUser?.uid ?? ""
+    }
+    
     func checkUser(completion: @escaping (Bool) -> Void) {
         let currentUser = Auth.auth().currentUser
         if currentUser != nil {

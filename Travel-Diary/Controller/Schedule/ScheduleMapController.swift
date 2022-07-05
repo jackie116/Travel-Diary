@@ -11,6 +11,14 @@ import FloatingPanel
 
 class ScheduleMapController: UIViewController {
     
+    lazy var navigationButton: UIButton = {
+        let button = UIButton(frame: CGRect(
+            origin: CGPoint.zero,
+            size: CGSize(width: 48, height: 48)))
+        button.setBackgroundImage(UIImage(named: "Map"), for: .normal)
+        return button
+    }()
+    
     var tripData: Journey?
     
     var selectedPin: MKPlacemark?
@@ -136,14 +144,14 @@ extension ScheduleMapController: DrawAnnotationDelegate {
 extension ScheduleMapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
-//        guard let pin = annotation as? CustomAnnotation else { return MKAnnotationView() }
-
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Pins", for: annotation)
         
         guard let marker = view as? MKMarkerAnnotationView else { return view}
         marker.glyphText = annotation.subtitle as? String
         marker.subtitleVisibility = .hidden
         view.canShowCallout = true
+        view.calloutOffset = CGPoint(x: -5, y: 5)
+        view.rightCalloutAccessoryView = navigationButton
 
         return view
     }
@@ -162,5 +170,19 @@ extension ScheduleMapController: MKMapViewDelegate {
         renderer.lineWidth = 5.0
         
         return renderer
+    }
+    
+    func mapView(_ mapView: MKMapView,
+                 annotationView view: MKAnnotationView,
+                 calloutAccessoryControlTapped control: UIControl) {
+        guard let spot = view.annotation as? CustomAnnotation else { return }
+        let placemark = MKPlacemark(coordinate: spot.coordinate)
+        let targetItem = MKMapItem(placemark: placemark)
+        targetItem.name = spot.title
+        
+        let launchOptions = [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
+        ]
+        targetItem.openInMaps(launchOptions: launchOptions)
     }
 }

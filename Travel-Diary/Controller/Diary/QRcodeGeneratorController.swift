@@ -88,7 +88,7 @@ class QRcodeGeneratorController: UIViewController {
     }
     
     @objc func shareAlert() {
-        guard let image = qrcodeView.image else { return }
+        guard let image = qrcodeView.image?.pngData() else { return }
         
         let vc = UIActivityViewController(activityItems: [image], applicationActivities: [])
         present(vc, animated: true, completion: nil)

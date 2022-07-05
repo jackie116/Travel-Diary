@@ -82,6 +82,23 @@ class DiaryController: UIViewController {
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
+        if journeys[indexPath.row].owner == AuthManager.shared.userId {
+            let privacyAction: UIAlertAction = {
+                let action = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
+                    self?.dismiss(animated: false) {
+                        let vc = PrivacyController()
+                        vc.journey = self?.journeys[indexPath.row]
+//                        let navVC = UINavigationController(rootViewController: vc)
+//                        self?.navigationController?.present(navVC, animated: true)
+                        self?.present(vc, animated: true)
+                    }
+                }
+                action.setValue(UIImage(systemName: "person.3"), forKey: "image")
+                return action
+            }()
+            controller.addAction(privacyAction)
+        }
+        
         // Group
         let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
             self?.dismiss(animated: false) {
@@ -95,11 +112,11 @@ class DiaryController: UIViewController {
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
-        // privacy and share
-        let privacyAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Privacy and share", style: .default) { [weak self] _ in
+        // share pdf
+        let sharePDFAction: UIAlertAction = {
+            let action = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
                 self?.dismiss(animated: false) {
-                    let vc = PrivacyController()
+                    let vc = PDFController()
                     vc.journey = self?.journeys[indexPath.row]
                     let navVC = UINavigationController(rootViewController: vc)
                     self?.navigationController?.present(navVC, animated: true)
@@ -108,7 +125,7 @@ class DiaryController: UIViewController {
             action.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
             return action
         }()
-        controller.addAction(privacyAction)
+        controller.addAction(sharePDFAction)
         
         // Cancel
         let cancelAction: UIAlertAction = {

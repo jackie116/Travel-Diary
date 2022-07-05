@@ -36,6 +36,7 @@
 		E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7776292286193C800CC45B0 /* JourneyCell.swift */; };
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
+		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC44B828670C7800CD836B /* PDFCreator.swift */; };
@@ -43,7 +44,7 @@
 		E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */; };
 		E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EC2864151800F575DC /* EditDiaryController.swift */; };
 		E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EE2864178900F575DC /* DiaryCell.swift */; };
-		E7B975F12864348B00F575DC /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F02864348B00F575DC /* PrivacyController.swift */; };
+		E7B975F12864348B00F575DC /* PDFController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F02864348B00F575DC /* PDFController.swift */; };
 		E7B975F52864450B00F575DC /* DiscoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F42864450B00F575DC /* DiscoverCell.swift */; };
 		E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F62864475700F575DC /* ExpertJourneyController.swift */; };
 		E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */; };
@@ -112,6 +113,7 @@
 		E7776292286193C800CC45B0 /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
+		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7AC44B828670C7800CD836B /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
@@ -119,7 +121,7 @@
 		E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
 		E7B975EC2864151800F575DC /* EditDiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryController.swift; sourceTree = "<group>"; };
 		E7B975EE2864178900F575DC /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
-		E7B975F02864348B00F575DC /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
+		E7B975F02864348B00F575DC /* PDFController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFController.swift; sourceTree = "<group>"; };
 		E7B975F42864450B00F575DC /* DiscoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCell.swift; sourceTree = "<group>"; };
 		E7B975F62864475700F575DC /* ExpertJourneyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertJourneyController.swift; sourceTree = "<group>"; };
 		E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDiaryCell.swift; sourceTree = "<group>"; };
@@ -389,10 +391,11 @@
 				E7C69D452859B4DC004910AC /* DiaryController.swift */,
 				E7B975EC2864151800F575DC /* EditDiaryController.swift */,
 				E781C1BB286351570090E5A6 /* EditDetailController.swift */,
-				E7B975F02864348B00F575DC /* PrivacyController.swift */,
+				E7B975F02864348B00F575DC /* PDFController.swift */,
 				E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */,
 				E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */,
 				E729CDE4286D7BA800E8FDCE /* JoinGroupController.swift */,
+				E7874B8C28748DDA00CD2067 /* PrivacyController.swift */,
 			);
 			path = Diary;
 			sourceTree = "<group>";
@@ -583,7 +586,7 @@
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
 				E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
-				E7B975F12864348B00F575DC /* PrivacyController.swift in Sources */,
+				E7B975F12864348B00F575DC /* PDFController.swift in Sources */,
 				E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */,
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
 				E7390CAF2869B2840056D6D9 /* EditProfileController.swift in Sources */,
@@ -599,6 +602,7 @@
 				E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
+				E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */,
 				E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
 				E7DBA1A8287092B700C08C55 /* MyAlert.swift in Sources */,
@@ -773,7 +777,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Travel-Diary/Travel-Diary.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
@@ -784,8 +788,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -808,7 +813,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Travel-Diary/Travel-Diary.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
@@ -819,8 +824,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
