@@ -19,6 +19,13 @@ class LoginController: UIViewController {
     var videoLooper: AVPlayerLooper?
     var player: AVQueuePlayer?
     
+    let titleView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "title")
+        view.clipsToBounds = true
+        return view
+    }()
+    
     lazy var signInButton: ASAuthorizationAppleIDButton = {
         let button = ASAuthorizationAppleIDButton()
         button.addTarget(self, action: #selector(pressSignIn), for: .touchUpInside)
@@ -87,20 +94,28 @@ class LoginController: UIViewController {
     
     func configureUI() {
         view.backgroundColor = .white
+        
         view.addSubview(videoLayer)
         playVideo()
         createGradientBackgroud()
+        
+        view.addSubview(titleView)
         buttonStackView.addArrangedSubview(signInButton)
         buttonStackView.addArrangedSubview(googleSignInButton)
         buttonStackView.addArrangedSubview(licenseLabel)
         view.addSubview(buttonStackView)
-        view.bringSubviewToFront(buttonStackView)
+        // view.bringSubviewToFront(buttonStackView)
 
         configureConstraint()
     }
     
     func configureConstraint() {
         videoLayer.addConstraintsToFillView(view)
+        
+        titleView.centerX(inView: view)
+        titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                         paddingTop: UIScreen.height * 0.3,
+                         width: UIScreen.width * 0.8, height: 100)
         
         signInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
         googleSignInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
@@ -115,7 +130,6 @@ class LoginController: UIViewController {
         player = AVQueuePlayer()
         let item = AVPlayerItem(url: URL(fileURLWithPath: path))
         videoLooper = AVPlayerLooper(player: player!, templateItem: item)
-        // let player = AVPlayer(url: URL(fileURLWithPath: path))
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = view.bounds
         playerLayer.videoGravity = .resizeAspectFill
@@ -128,8 +142,9 @@ class LoginController: UIViewController {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [
-            UIColor.clear.cgColor,
-            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
+//            UIColor.clear.cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor
         ]
         videoLayer.layer.addSublayer(gradientLayer)
     }
