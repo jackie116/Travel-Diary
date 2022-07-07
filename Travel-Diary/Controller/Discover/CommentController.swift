@@ -93,7 +93,8 @@ class CommentController: UIViewController {
     
     func configureConstraint() {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                         left: view.leftAnchor, right: view.rightAnchor)
+                         left: view.leftAnchor, right: view.rightAnchor,
+                         paddingTop: 16)
         buttomView.anchor(top: tableView.bottomAnchor,
                                left: view.leftAnchor,
                           bottom: view.bottomAnchor,

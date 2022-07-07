@@ -23,7 +23,6 @@ class ScheduleController: UIViewController {
     var scheduleMarks: [DailySpot] = [] {
         didSet {
             self.tripData?.data = scheduleMarks
-            // self.uploadSchedule()
             self.delegate?.redrawMap(placemarks: scheduleMarks)
         }
     }
@@ -90,7 +89,10 @@ class ScheduleController: UIViewController {
         configureData()
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appMovedToBackground),
+                                       name: UIApplication.didEnterBackgroundNotification,
+                                       object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

@@ -35,7 +35,6 @@
 		E76814732875272F00487782 /* PulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76814722875272F00487782 /* PulseAnimation.swift */; };
 		E7681477287585B000487782 /* VideoPlayerLooped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7681476287585B000487782 /* VideoPlayerLooped.swift */; };
 		E768147928758CAD00487782 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E768147828758CAD00487782 /* intro.mp4 */; };
-		E768147B2875E33C00487782 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768147A2875E33C00487782 /* UIViewController.swift */; };
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
 		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
@@ -113,7 +112,6 @@
 		E76814722875272F00487782 /* PulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimation.swift; sourceTree = "<group>"; };
 		E7681476287585B000487782 /* VideoPlayerLooped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerLooped.swift; sourceTree = "<group>"; };
 		E768147828758CAD00487782 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
-		E768147A2875E33C00487782 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
 		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
@@ -292,7 +290,6 @@
 				E7B9761E2864C70D00F575DC /* UICollectionViewCell+Extension.swift */,
 				E7DBA1A92870B14A00C08C55 /* NSMutableAttributedString+Extension.swift */,
 				E7DBA1AF2870B58D00C08C55 /* UItapGestureRecognizer+Extension.swift */,
-				E768147A2875E33C00487782 /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -588,7 +585,6 @@
 				E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */,
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
-				E768147B2875E33C00487782 /* UIViewController.swift in Sources */,
 				E7B975F12864348B00F575DC /* PDFController.swift in Sources */,
 				E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */,
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,

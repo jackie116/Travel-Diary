@@ -9,13 +9,7 @@ import UIKit
 import MapKit
 import FloatingPanel
 
-//protocol SaveScheduleDelegate: AnyObject {
-//    func save()
-//}
-
 class ScheduleMapController: UIViewController {
-    
-//    weak var delegate: SaveScheduleDelegate?
     
     lazy var navigationButton: UIButton = {
         let button = UIButton(frame: CGRect(
@@ -24,14 +18,6 @@ class ScheduleMapController: UIViewController {
         button.setBackgroundImage(UIImage(named: "Map"), for: .normal)
         return button
     }()
-    
-//    private lazy var uploadButton: UIBarButtonItem = {
-//        let button = UIBarButtonItem(image: UIImage(systemName: "icloud.and.arrow.up"),
-//                                         style: .plain, target: self,
-//                                         action: #selector(didTapUpload))
-//        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//        return button
-//    }()
     
     var tripData: Journey?
     
@@ -73,7 +59,6 @@ class ScheduleMapController: UIViewController {
     }
     
     func setUI() {
-//        navigationItem.rightBarButtonItem = uploadButton
         setMapUI()
         setScheduleUI()
     }
@@ -119,10 +104,6 @@ class ScheduleMapController: UIViewController {
         overlay.title = "\(offset)"
         self.mapView.addOverlay(overlay, level: .aboveRoads)
     }
-    
-//    @objc func didTapUpload() {
-//        self.delegate?.save()
-//    }
 }
 
 extension ScheduleMapController: DrawAnnotationDelegate {
