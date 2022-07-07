@@ -93,7 +93,8 @@ class CommentController: UIViewController {
     
     func configureConstraint() {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                         left: view.leftAnchor, right: view.rightAnchor)
+                         left: view.leftAnchor, right: view.rightAnchor,
+                         paddingTop: 16)
         buttomView.anchor(top: tableView.bottomAnchor,
                                left: view.leftAnchor,
                           bottom: view.bottomAnchor,
@@ -175,6 +176,7 @@ class CommentController: UIViewController {
             switch result {
             case .success:
                 self?.commentView.text.removeAll()
+                self?.sendButton.isHidden = true
                 self?.fetchAllComments()
             case .failure(let error):
                 print("\(error)")

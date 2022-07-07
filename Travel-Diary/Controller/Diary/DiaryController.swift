@@ -147,7 +147,7 @@ class DiaryController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        vc.alertMessage.text = "Sign in to join travel groups"
+        // vc.alertMessage.text = "Sign in to join travel groups"
         navigationController?.present(vc, animated: true)
     }
     

@@ -19,6 +19,7 @@ class DiaryCell: UITableViewCell {
     
     let functionButton: UIButton = {
         let button = UIButton()
+        button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         return button
     }()

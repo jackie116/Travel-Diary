@@ -11,10 +11,10 @@ import UIKit
 enum ImageAsset: String {
 
     // tabbar - Tab
-    case icons_36pt_Chat
-    case icons_36pt_Expert
-    case icons_36pt_Diary
-    case icons_36pt_User
+    case tab_marker
+    case tab_book
+    case tab_world
+    case tab_user
     case plan
     
     // Annotation

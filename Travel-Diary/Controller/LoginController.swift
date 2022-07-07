@@ -11,11 +11,13 @@ import FirebaseAuth
 import CryptoKit
 import GoogleSignIn
 import FirebaseCore
-import Lottie
+import AVFoundation
 
 class LoginController: UIViewController {
     
-    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "signIn")
+    let videoLayer = UIView()
+    var videoLooper: AVPlayerLooper?
+    var player: AVQueuePlayer?
     
     lazy var signInButton: ASAuthorizationAppleIDButton = {
         let button = ASAuthorizationAppleIDButton()
@@ -27,7 +29,6 @@ class LoginController: UIViewController {
     lazy var googleSignInButton: GIDSignInButton = {
         let button = GIDSignInButton()
         button.style = .wide
-        // button.layer.cornerRadius = UIScreen.width * 0.3
         button.addTarget(self, action: #selector(signInWithGoogle), for: .touchUpInside)
         return button
     }()
@@ -39,12 +40,6 @@ class LoginController: UIViewController {
         stack.alignment = .fill
         stack.distribution = .fill
         return stack
-    }()
-    
-    let alertMessage: UILabel = {
-        let label = UILabel()
-        label.textColor = .red
-        return label
     }()
     
     lazy var licenseLabel: UILabel = {
@@ -83,34 +78,60 @@ class LoginController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIView.animate(withDuration: 0.5, delay: 5) {
-            self.alertMessage.alpha = 0
-        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        player = nil
     }
     
     func configureUI() {
         view.backgroundColor = .white
-        view.addSubview(animationView)
-        buttonStackView.addArrangedSubview(alertMessage)
+        view.addSubview(videoLayer)
+        playVideo()
+        createGradientBackgroud()
         buttonStackView.addArrangedSubview(signInButton)
         buttonStackView.addArrangedSubview(googleSignInButton)
         buttonStackView.addArrangedSubview(licenseLabel)
-        
         view.addSubview(buttonStackView)
+        view.bringSubviewToFront(buttonStackView)
+
         configureConstraint()
     }
     
     func configureConstraint() {
-        animationView.centerX(inView: view)
-        animationView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                             paddingTop: UIScreen.height * 0.1,
-                             width: UIScreen.width * 0.8,
-                             height: UIScreen.width * 0.8)
+        videoLayer.addConstraintsToFillView(view)
         
         signInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
         googleSignInButton.setDimensions(width: UIScreen.width * 0.7, height: 50)
         buttonStackView.centerX(inView: view)
-        buttonStackView.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: UIScreen.height * 0.1)
+        buttonStackView.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, paddingBottom: UIScreen.height * 0.05)
+    }
+    
+    func playVideo() {
+        guard let path = Bundle.main.path(forResource: "intro", ofType: "mp4") else {
+            return
+        }
+        player = AVQueuePlayer()
+        let item = AVPlayerItem(url: URL(fileURLWithPath: path))
+        videoLooper = AVPlayerLooper(player: player!, templateItem: item)
+        // let player = AVPlayer(url: URL(fileURLWithPath: path))
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = view.bounds
+        playerLayer.videoGravity = .resizeAspectFill
+        videoLayer.layer.addSublayer(playerLayer)
+
+        player?.play()
+    }
+    
+    func createGradientBackgroud() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.9).cgColor
+        ]
+        videoLayer.layer.addSublayer(gradientLayer)
     }
     
     @objc func pressSignIn() {
@@ -157,24 +178,12 @@ class LoginController: UIViewController {
         }
     }
     
-    // MARK: - 透過 Credential 與 Firebase Auth 串接
-//    func firebaseSignInWithApple(credential: AuthCredential) {
-//        Auth.auth().signIn(with: credential) { _, error in
-//            guard error == nil else {
-//                print("\(String(describing: error!.localizedDescription))")
-//                return
-//            }
-//            self.navigationController?.dismiss(animated: true)
-//        }
-//    }
-    
     func firebaseSignIn(credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { _, error in
             guard error == nil else {
                 print("\(String(describing: error!.localizedDescription))")
                 return
             }
-            LottieAnimation.shared.stopAnimation(lottieAnimation: self.animationView)
             
             AuthManager.shared.getUserInfo { result in
                 switch result {

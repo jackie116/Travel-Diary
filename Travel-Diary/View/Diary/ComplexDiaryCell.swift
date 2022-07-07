@@ -11,6 +11,7 @@ class ComplexDiaryCell: UITableViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
@@ -18,6 +19,7 @@ class ComplexDiaryCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.textColor = .gray
         return label
     }()
     
@@ -30,6 +32,7 @@ class ComplexDiaryCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.textColor = .gray
         return label
     }()
     

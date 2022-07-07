@@ -25,7 +25,6 @@
 		E7390CB42869F99F0056D6D9 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7390CB32869F99F0056D6D9 /* UserCell.swift */; };
 		E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D2285E1C5000700F09 /* SearchBarController.swift */; };
 		E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */; };
-		E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */; };
 		E74D67DA285E465F00700F09 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D67D9285E465F00700F09 /* Journey.swift */; };
 		E74E191628622CEB00ADBF65 /* QRcodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */; };
 		E753A2F6286595F500807E51 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E753A2F5286595F500807E51 /* GoogleService-Info.plist */; };
@@ -33,7 +32,9 @@
 		E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */; };
 		E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAA285B05F000B3A866 /* ScheduleController.swift */; };
 		E75B5FAD285B0FD900B3A866 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */; };
-		E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7776292286193C800CC45B0 /* JourneyCell.swift */; };
+		E76814732875272F00487782 /* PulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76814722875272F00487782 /* PulseAnimation.swift */; };
+		E7681477287585B000487782 /* VideoPlayerLooped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7681476287585B000487782 /* VideoPlayerLooped.swift */; };
+		E768147928758CAD00487782 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E768147828758CAD00487782 /* intro.mp4 */; };
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
 		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
@@ -45,7 +46,6 @@
 		E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EC2864151800F575DC /* EditDiaryController.swift */; };
 		E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EE2864178900F575DC /* DiaryCell.swift */; };
 		E7B975F12864348B00F575DC /* PDFController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F02864348B00F575DC /* PDFController.swift */; };
-		E7B975F52864450B00F575DC /* DiscoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F42864450B00F575DC /* DiscoverCell.swift */; };
 		E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F62864475700F575DC /* ExpertJourneyController.swift */; };
 		E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */; };
 		E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975FA286464AD00F575DC /* ComplexDiaryCell.swift */; };
@@ -102,7 +102,6 @@
 		E7390CB32869F99F0056D6D9 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		E74D67D2285E1C5000700F09 /* SearchBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarController.swift; sourceTree = "<group>"; };
 		E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleSectionFooter.swift; sourceTree = "<group>"; };
-		E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCollectionCell.swift; sourceTree = "<group>"; };
 		E74D67D9285E465F00700F09 /* Journey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 		E74E191528622CEB00ADBF65 /* QRcodeScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeScannerController.swift; sourceTree = "<group>"; };
 		E753A2F5286595F500807E51 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -110,7 +109,9 @@
 		E7580CD32868BF3800F68168 /* QRcodeGeneratorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeGeneratorController.swift; sourceTree = "<group>"; };
 		E75B5FAA285B05F000B3A866 /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 		E75B5FAC285B0FD900B3A866 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
-		E7776292286193C800CC45B0 /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
+		E76814722875272F00487782 /* PulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimation.swift; sourceTree = "<group>"; };
+		E7681476287585B000487782 /* VideoPlayerLooped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerLooped.swift; sourceTree = "<group>"; };
+		E768147828758CAD00487782 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
 		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		E7B975EC2864151800F575DC /* EditDiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryController.swift; sourceTree = "<group>"; };
 		E7B975EE2864178900F575DC /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		E7B975F02864348B00F575DC /* PDFController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFController.swift; sourceTree = "<group>"; };
-		E7B975F42864450B00F575DC /* DiscoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCell.swift; sourceTree = "<group>"; };
 		E7B975F62864475700F575DC /* ExpertJourneyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertJourneyController.swift; sourceTree = "<group>"; };
 		E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDiaryCell.swift; sourceTree = "<group>"; };
 		E7B975FA286464AD00F575DC /* ComplexDiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexDiaryCell.swift; sourceTree = "<group>"; };
@@ -217,6 +217,7 @@
 				E7131A5B2858F2430034FE12 /* AppDelegate.swift */,
 				E7131A5D2858F2430034FE12 /* SceneDelegate.swift */,
 				E7131A642858F2430034FE12 /* Assets.xcassets */,
+				E768147828758CAD00487782 /* intro.mp4 */,
 				E7131A692858F2430034FE12 /* Info.plist */,
 				E753A2F5286595F500807E51 /* GoogleService-Info.plist */,
 			);
@@ -246,6 +247,8 @@
 				E7390CB22869BA8A0056D6D9 /* Profile */,
 				E7131A612858F2430034FE12 /* Main.storyboard */,
 				E7131A662858F2430034FE12 /* LaunchScreen.storyboard */,
+				E76814722875272F00487782 /* PulseAnimation.swift */,
+				E7681476287585B000487782 /* VideoPlayerLooped.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -323,7 +326,6 @@
 			children = (
 				E793AF84285C748F00606CF7 /* ScheduleCell.swift */,
 				E74D67D4285E21D700700F09 /* ScheduleSectionFooter.swift */,
-				E74D67D7285E408A00700F09 /* SectionCollectionCell.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -360,7 +362,6 @@
 		E7B975E828640AAE00F575DC /* Journey */ = {
 			isa = PBXGroup;
 			children = (
-				E7776292286193C800CC45B0 /* JourneyCell.swift */,
 			);
 			path = Journey;
 			sourceTree = "<group>";
@@ -379,7 +380,6 @@
 		E7B975EA28640AC200F575DC /* Discover */ = {
 			isa = PBXGroup;
 			children = (
-				E7B975F42864450B00F575DC /* DiscoverCell.swift */,
 				E7D1D471286B50EE00483754 /* CommentCell.swift */,
 			);
 			path = Discover;
@@ -444,6 +444,7 @@
 				E7131A562858F2430034FE12 /* Resources */,
 				B3D3177B25F92B30A70BB301 /* [CP] Embed Pods Frameworks */,
 				E7C69D3A28597F2C004910AC /* SwiftLint */,
+				E7EB33D52876D9CF000446FB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -500,6 +501,7 @@
 				E753A2F6286595F500807E51 /* GoogleService-Info.plist in Resources */,
 				E7131A632858F2430034FE12 /* Main.storyboard in Resources */,
 				E7DBA1A62870506600C08C55 /* signIn.json in Resources */,
+				E768147928758CAD00487782 /* intro.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +565,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
+		E7EB33D52876D9CF000446FB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -576,7 +597,6 @@
 				E7390CAB2869AFAE0056D6D9 /* AuthManager.swift in Sources */,
 				E7390CAD2869AFD00056D6D9 /* User.swift in Sources */,
 				E7580CD22868A20300F68168 /* CommentController.swift in Sources */,
-				E7B975F52864450B00F575DC /* DiscoverCell.swift in Sources */,
 				E7C69D3428597D25004910AC /* Date+Extension.swift in Sources */,
 				E7390CA928696D860056D6D9 /* LoginController.swift in Sources */,
 				E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */,
@@ -584,7 +604,6 @@
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
 				E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */,
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
-				E74D67D8285E408A00700F09 /* SectionCollectionCell.swift in Sources */,
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
 				E7B975F12864348B00F575DC /* PDFController.swift in Sources */,
 				E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */,
@@ -616,6 +635,7 @@
 				E7B9761D2864C6D500F575DC /* DaysCell.swift in Sources */,
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
+				E76814732875272F00487782 /* PulseAnimation.swift in Sources */,
 				E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */,
 				E7390CB42869F99F0056D6D9 /* UserCell.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
@@ -623,12 +643,12 @@
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
 				E7DBA19D286EF7DE00C08C55 /* CommentManager.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
+				E7681477287585B000487782 /* VideoPlayerLooped.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
 				E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */,
 				E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */,
-				E7776293286193C800CC45B0 /* JourneyCell.swift in Sources */,
 				E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -688,7 +708,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

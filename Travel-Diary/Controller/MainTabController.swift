@@ -26,16 +26,16 @@ class MainTabController: UITabBarController {
 
     func configureViewControllers() {
         let journey = JourneyController()
-        let nav1 = templateNavigationController(image: UIImage.asset(.icons_36pt_Diary), rootViewController: journey)
+        let nav1 = templateNavigationController(image: UIImage.asset(.tab_marker), rootViewController: journey)
         
         let diary = DiaryController()
-        let nav2 = templateNavigationController(image: UIImage.asset(.plan), rootViewController: diary)
+        let nav2 = templateNavigationController(image: UIImage.asset(.tab_book), rootViewController: diary)
 
         let discover = DiscoverController()
-        let nav3 = templateNavigationController(image: UIImage.asset(.icons_36pt_Expert), rootViewController: discover)
+        let nav3 = templateNavigationController(image: UIImage.asset(.tab_world), rootViewController: discover)
         
         let user = ProfileController()
-        let nav4 = templateNavigationController(image: UIImage.asset(.icons_36pt_User), rootViewController: user)
+        let nav4 = templateNavigationController(image: UIImage.asset(.tab_user), rootViewController: user)
         
         viewControllers = [nav1, nav2, nav3, nav4]
     }
@@ -51,7 +51,7 @@ class MainTabController: UITabBarController {
     
     func showLoginController() {
         let vc = LoginController()
-        vc.alertMessage.text = "Sign in to edit your profile"
+        // vc.alertMessage.text = "Sign in to edit your profile"
         self.present(vc, animated: true)
     }
     

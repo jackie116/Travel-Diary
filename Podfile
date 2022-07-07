@@ -17,7 +17,7 @@ target 'Travel-Diary' do
   pod 'FirebaseFirestore'
   pod 'FirebaseFirestoreSwift'
   pod 'FirebaseStorage'
-  pod 'Firebase/Crashlytics'
+  pod 'FirebaseCrashlytics'
   pod 'GoogleSignIn'
   
 end
