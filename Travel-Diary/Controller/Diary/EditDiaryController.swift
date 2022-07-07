@@ -133,6 +133,7 @@ class EditDiaryController: UIViewController {
         titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor,
                          right: view.rightAnchor,
+                         paddingTop: 16,
                          height: 100)
         
         switchButton.translatesAutoresizingMaskIntoConstraints = false

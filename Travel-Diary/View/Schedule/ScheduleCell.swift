@@ -22,12 +22,14 @@ class ScheduleCell: UITableViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
     let addressLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        label.textColor = .gray
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -39,7 +41,7 @@ class ScheduleCell: UITableViewCell {
     }()
     
     let pinView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "orderMarker"))
+        let imageView = UIImageView(image: UIImage(named: "pin"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()

@@ -19,10 +19,11 @@ class ScheduleController: UIViewController {
     weak var delegate: DrawAnnotationDelegate?
     
     var tripData: Journey?
-    
+
     var scheduleMarks: [DailySpot] = [] {
         didSet {
             self.tripData?.data = scheduleMarks
+            // self.uploadSchedule()
             self.delegate?.redrawMap(placemarks: scheduleMarks)
         }
     }
@@ -73,14 +74,6 @@ class ScheduleController: UIViewController {
         return label
     }()
     
-    let headerImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "gy_photo")
-        view.contentMode = .scaleAspectFit
-        view.clipsToBounds = true
-        return view
-    }()
-    
     let headerStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -90,21 +83,19 @@ class ScheduleController: UIViewController {
         return stack
     }()
     
-    lazy var uploadButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Upload", for: .normal)
-        button.backgroundColor = .customBlue
-        button.layer.cornerRadius = 20
-        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         initSchedule()
         setUI()
         configureData()
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        uploadSchedule()
     }
     
     func initSchedule() {
@@ -142,20 +133,8 @@ class ScheduleController: UIViewController {
         headerStackView.addArrangedSubview(tripDuration)
         headerView.addSubview(headerStackView)
         headerStackView.center(inView: headerView)
-        headerView.addSubview(headerImageView)
-        headerImageView.anchor(top: headerView.topAnchor,
-                               left: headerStackView.rightAnchor,
-                               bottom: headerView.bottomAnchor,
-                               right: headerView.rightAnchor)
-        
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
-        
-        footerView.addSubview(uploadButton)
-        uploadButton.center(inView: footerView)
-        uploadButton.setDimensions(width: UIScreen.width * 0.6, height: 40)
-        
+
         scheduleTableView.tableHeaderView = headerView
-        scheduleTableView.tableFooterView = footerView
     }
     
     func configureData() {
@@ -191,7 +170,7 @@ class ScheduleController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapUpload() {
+    @objc func appMovedToBackground() {
         uploadSchedule()
     }
 }
@@ -225,8 +204,8 @@ extension ScheduleController: UITableViewDelegate {
 
         // 刪除action
         let deleteAction = UIContextualAction(style: .destructive,
-                                              title: nil) { _, _, completionHandler in
-            self.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
+                                              title: nil) { [weak self] _, _, completionHandler in
+            self?.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             completionHandler(true)
         }

@@ -60,5 +60,6 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
         LottieAnimation.shared.stopAnimation(lottieAnimation: loadingAnimationView)
+        loadingAnimationView.removeFromSuperview()
     }
 }

@@ -175,6 +175,7 @@ class CommentController: UIViewController {
             switch result {
             case .success:
                 self?.commentView.text.removeAll()
+                self?.sendButton.isHidden = true
                 self?.fetchAllComments()
             case .failure(let error):
                 print("\(error)")
