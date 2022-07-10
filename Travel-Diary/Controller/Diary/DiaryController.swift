@@ -21,6 +21,7 @@ class DiaryController: UIViewController {
         table.estimatedRowHeight = UIScreen.height / 3
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
@@ -30,6 +31,7 @@ class DiaryController: UIViewController {
                                          style: .plain, target: self,
                                          action: #selector(didTapQR))
         button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.tintColor = .customBlue
         return button
     }()
     
@@ -66,21 +68,46 @@ class DiaryController: UIViewController {
     }
     
     func fetchJourneys() {
-        JourneyManager.shared.fetchDiarys { result in
+        JourneyManager.shared.fetchDiarys { [weak self] result in
             switch result {
             case .success(let journeys):
-                self.journeys = journeys
-                self.tableView.reloadData()
-                self.refreshControl.endRefreshing()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
+                self?.journeys = journeys
+                self?.tableView.reloadData()
+                self?.refreshControl.endRefreshing()
+            case .failure:
+                self?.error404()
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        if journeys[indexPath.row].owner == AuthManager.shared.userId {
+            let privacyAction: UIAlertAction = {
+                let action = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
+                    self?.dismiss(animated: false) {
+                        let vc = PrivacyController()
+                        vc.journey = self?.journeys[indexPath.row]
+                        self?.present(vc, animated: true)
+                    }
+                }
+                action.setValue(UIImage(systemName: "person.3"), forKey: "image")
+                return action
+            }()
+            controller.addAction(privacyAction)
+        }
         
         // Group
         let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
@@ -95,11 +122,11 @@ class DiaryController: UIViewController {
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
-        // privacy and share
-        let privacyAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Privacy and share", style: .default) { [weak self] _ in
+        // share pdf
+        let sharePDFAction: UIAlertAction = {
+            let action = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
                 self?.dismiss(animated: false) {
-                    let vc = PrivacyController()
+                    let vc = PDFController()
                     vc.journey = self?.journeys[indexPath.row]
                     let navVC = UINavigationController(rootViewController: vc)
                     self?.navigationController?.present(navVC, animated: true)
@@ -108,7 +135,7 @@ class DiaryController: UIViewController {
             action.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
             return action
         }()
-        controller.addAction(privacyAction)
+        controller.addAction(sharePDFAction)
         
         // Cancel
         let cancelAction: UIAlertAction = {
@@ -130,7 +157,7 @@ class DiaryController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        vc.alertMessage.text = "Sign in to join travel groups"
+        // vc.alertMessage.text = "Sign in to join travel groups"
         navigationController?.present(vc, animated: true)
     }
     

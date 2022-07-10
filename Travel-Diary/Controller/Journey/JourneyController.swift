@@ -9,7 +9,6 @@ import UIKit
 import Kingfisher
 
 class JourneyController: UIViewController {
-    
     private lazy var journeyTableView: UITableView = {
         let table = UITableView()
         
@@ -20,13 +19,14 @@ class JourneyController: UIViewController {
         table.estimatedRowHeight = 200
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
     
     private lazy var addButton: UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "plus"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "add"), for: .normal)
         button.addTarget(self, action: #selector(addJourney), for: .touchUpInside)
         button.layer.cornerRadius = 30
         return button
@@ -49,14 +49,27 @@ class JourneyController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         updateData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let pulse = PulseAnimation(numberOfPulses: .greatestFiniteMagnitude,
+                                   radius: 50, position: self.addButton.center)
+        view.layer.insertSublayer(pulse, below: addButton.layer)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.layer.sublayers?.filter { $0 is PulseAnimation }.forEach { $0.removeFromSuperlayer() }
     }
 
     func configureUI() {
         view.addSubview(journeyTableView)
         view.addSubview(addButton)
         journeyTableView.addSubview(refreshControl)
-        
+    
         configureConstraint()
     }
     
@@ -174,7 +187,7 @@ class JourneyController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        vc.alertMessage.text = "Sign in to plan your journey"
+        // vc.alertMessage.text = "Sign in to plan your journey"
         self.present(vc, animated: true)
     }
     
@@ -185,9 +198,19 @@ class JourneyController: UIViewController {
                 self?.journeys = journeys
                 self?.journeyTableView.reloadData()
                 self?.refreshControl.endRefreshing()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
+            case .failure:
+                self?.error404()
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     

@@ -13,6 +13,7 @@ class EditDiaryController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
         button.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+        button.tintColor = .customBlue
         return button
     }()
     
@@ -48,10 +49,10 @@ class EditDiaryController: UIViewController {
         table.register(ComplexDiaryCell.self, forCellReuseIdentifier: ComplexDiaryCell.identifier)
         table.delegate = self
         table.dataSource = self
+        table.showsVerticalScrollIndicator = false
         
         table.estimatedRowHeight = 150
         table.rowHeight = UITableView.automaticDimension
-        // table.separatorStyle = .none
         return table
     }()
     
@@ -104,7 +105,7 @@ class EditDiaryController: UIViewController {
                 self?.collectionView.reloadData()
                 self?.tableView.reloadData()
             case .failure(let error):
-                print("Fetch journey failed: \(error)")
+                self?.error404()
             }
         }
     }
@@ -133,6 +134,7 @@ class EditDiaryController: UIViewController {
         titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor,
                          right: view.rightAnchor,
+                         paddingTop: 16,
                          height: 100)
         
         switchButton.translatesAutoresizingMaskIntoConstraints = false
@@ -155,6 +157,16 @@ class EditDiaryController: UIViewController {
         titleLabel.text = journey.title
         dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     // MARK: - selector

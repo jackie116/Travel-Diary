@@ -107,6 +107,16 @@ class NewTripController: UIViewController {
         return (components.day ?? 0) + 1
     }
     
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     @objc func submitTrip() {
         if self.tripNameTextField.text?.isEmpty == true {
             let controller = UIAlertController(title: "Please input name of trip!",
@@ -143,8 +153,8 @@ class NewTripController: UIViewController {
                     self?.navigationController?.dismiss(animated: false, completion: {
                         self?.delegate?.returnJourney(journey: journey)
                     })
-                case .failure(let error):
-                    print("Add Journey Failed \(error)")
+                case .failure:
+                    self?.error404()
                 }
             }
         }

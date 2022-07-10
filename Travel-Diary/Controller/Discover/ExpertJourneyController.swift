@@ -13,6 +13,25 @@ class ExpertJourneyController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
         button.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+        button.tintColor = .customBlue
+        return button
+    }()
+    
+    lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapBack))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
+    lazy var commentButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "text.bubble"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapComment))
+        button.tintColor = .customBlue
         return button
     }()
     
@@ -51,7 +70,7 @@ class ExpertJourneyController: UIViewController {
         
         table.estimatedRowHeight = 150
         table.rowHeight = UITableView.automaticDimension
-        // table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
         return table
     }()
     
@@ -81,6 +100,7 @@ class ExpertJourneyController: UIViewController {
     }()
     
     var journey: Journey?
+    var journeyId: String?
     var isComplex: Bool = true
     // MARK: - Copy End
     
@@ -102,10 +122,8 @@ class ExpertJourneyController: UIViewController {
     }
     
     func configureUI() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "text.bubble"),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(didTapComment))
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.rightBarButtonItem = commentButton
 // MARK: - copy start
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dateLabel)
@@ -124,6 +142,7 @@ class ExpertJourneyController: UIViewController {
         titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor,
                          right: view.rightAnchor,
+                         paddingTop: 16,
                          height: 100)
         
         switchButton.translatesAutoresizingMaskIntoConstraints = false
@@ -141,11 +160,22 @@ class ExpertJourneyController: UIViewController {
     }
     
     func configureData() {
-        guard let journey = journey else { return }
-        
-        titleLabel.text = journey.title
-        dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        guard let journeyId = journeyId else { return }
+
+        JourneyManager.shared.fetchSpecificJourney(id: journeyId) { [weak self] result in
+            switch result {
+            case .success(let journey):
+                self?.journey = journey
+                self?.titleLabel.text = journey.title
+                self?.dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+                + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+                self?.tableView.reloadData()
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                self?.error404()
+            }
+        }
+
     }
     
     func showCommentController() {
@@ -156,8 +186,17 @@ class ExpertJourneyController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        vc.alertMessage.text = "Sign in to make comments"
         navigationController?.present(vc, animated: true)
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     // MARK: - selector
@@ -176,6 +215,10 @@ class ExpertJourneyController: UIViewController {
                 self?.showLoginController()
             }
         }
+    }
+    
+    @objc func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -230,8 +273,7 @@ extension ExpertJourneyController: UITableViewDataSource {
 extension ExpertJourneyController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.layer.borderColor = UIColor.customBlue.cgColor
-        cell?.layer.borderWidth = 1
+        cell?.backgroundColor = .customBlue
         cell?.isSelected = true
         let tablePath = IndexPath(row: NSNotFound, section: indexPath.item)
         tableView.scrollToRow(at: tablePath, at: .top, animated: true)
@@ -239,8 +281,7 @@ extension ExpertJourneyController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.layer.borderColor = UIColor.lightGray.cgColor
-        cell?.layer.borderWidth = 0.5
+        cell?.backgroundColor = .clear
         cell?.isSelected = false
     }
 }
@@ -256,7 +297,13 @@ extension ExpertJourneyController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        5.0
     }
 }
 
@@ -271,14 +318,6 @@ extension ExpertJourneyController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
-        
-        if cell.isSelected {
-            cell.layer.borderColor = UIColor.customBlue.cgColor
-            cell.layer.borderWidth = 1
-        } else {
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.layer.borderWidth = 0.5
-        }
         
         cell.configureData(day: indexPath.item)
         return cell

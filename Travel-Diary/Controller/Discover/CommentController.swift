@@ -52,8 +52,6 @@ class CommentController: UIViewController {
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.contentMode = .scaleAspectFill
-//        view.layer.borderWidth = 0.5
-//        view.layer.borderColor = UIColor.white.cgColor
         return view
     }()
     
@@ -66,6 +64,8 @@ class CommentController: UIViewController {
         table.estimatedRowHeight = 80
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
+        
         return table
     }()
     
@@ -93,7 +93,8 @@ class CommentController: UIViewController {
     
     func configureConstraint() {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                         left: view.leftAnchor, right: view.rightAnchor)
+                         left: view.leftAnchor, right: view.rightAnchor,
+                         paddingTop: 16)
         buttomView.anchor(top: tableView.bottomAnchor,
                                left: view.leftAnchor,
                           bottom: view.bottomAnchor,
@@ -124,7 +125,7 @@ class CommentController: UIViewController {
                     self?.userPhoto.kf.setImage(with: url)
                 }
             case .failure(let error):
-                print(error)
+                self?.error404()
             }
         }
         fetchAllComments()
@@ -150,7 +151,7 @@ class CommentController: UIViewController {
                                                        commentTime: comment.commentTime)
                                 self?.showComments.append(data)
                             case .failure(let error):
-                                print("\(error)")
+                                self?.error404()
                             }
                             semaphore.signal()
                         }
@@ -161,8 +162,18 @@ class CommentController: UIViewController {
                     }
                 }
             case .failure(let error):
-                print("\(error)")
+                self?.error404()
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -175,6 +186,7 @@ class CommentController: UIViewController {
             switch result {
             case .success:
                 self?.commentView.text.removeAll()
+                self?.sendButton.isHidden = true
                 self?.fetchAllComments()
             case .failure(let error):
                 print("\(error)")

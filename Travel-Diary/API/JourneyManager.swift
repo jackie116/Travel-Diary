@@ -18,6 +18,7 @@ class JourneyManager {
         
     let db = Firestore.firestore()
     let collectionRef = Firestore.firestore().collection("Journeys")
+    let userCollectionRef = Firestore.firestore().collection("users")
     let storageRef = Storage.storage().reference()
     let coverImageRef = Storage.storage().reference().child("cover_images")
     let spotImageRef = Storage.storage().reference().child("spot_images")
@@ -162,11 +163,54 @@ class JourneyManager {
         }
     }
     
+    func fetchGroupUsers(id: String, completion: @escaping (Result<[User], Error>) -> Void) {
+        
+        var users = [User]()
+    
+        collectionRef.document(id).getDocument(as: Journey.self) { [weak self] result in
+            switch result {
+            case .success(let journey):
+                let group = DispatchGroup()
+                for user in journey.users {
+                    group.enter()
+                    
+                    self?.userCollectionRef.document(user).getDocument(as: User.self) { result in
+                        switch result {
+                        case .success(let user):
+                            users.append(user)
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    completion(.success(users))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func joinGroup(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
         collectionRef.document(id).updateData([
             "users": FieldValue.arrayUnion([user.uid])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func removeFromGroup(journeyId: String, userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        collectionRef.document(journeyId).updateData([
+            "users": FieldValue.arrayRemove([userId])
         ]) { error in
             if let error = error {
                 completion(.failure(error))
@@ -203,21 +247,6 @@ class JourneyManager {
             }
         }
     }
-    // MARK: - update data
-//    func updateData(id: String, data: [DailySpot], completion: @escaping (Result<[DailySpot], Error>) -> Void) {
-//        let docRef = collectionRef.document(id)
-//        docRef.updateData([
-//            "data": data
-//        ]) { err in
-//            print("======test========")
-//            if let err = err {
-//                print("err: \(err)")
-//                completion(.failure(err))
-//            } else {
-//                completion(.success(data))
-//            }
-//        }
-//    }
     
     // MARK: - 上傳spot照片敘述
     func uploadSpotDetail(journey: Journey,
@@ -263,6 +292,19 @@ class JourneyManager {
             if let error = error {
                 completion(.failure(error))
             } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func deleteJourneyByUserId(userId: String, completion: @escaping (Result<(), Error>) -> Void) {
+        collectionRef.whereField("owner", isEqualTo: userId).getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                for document in querySnapshot!.documents {
+                    document.reference.delete()
+                }
                 completion(.success(()))
             }
         }

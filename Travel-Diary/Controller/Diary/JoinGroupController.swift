@@ -18,35 +18,28 @@ class JoinGroupController: UIViewController {
     
     lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.tintColor = .black
+        button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.addTarget(self, action: #selector(closePage), for: .touchUpInside)
+        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
         return button
     }()
     
     let coverImage: UIImageView = {
         let view = UIImageView()
-        
         return view
     }()
     
     let tripName: UILabel = {
         let label = UILabel()
-        // label.text = "testestet"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     
     let tripDate: UILabel = {
         let label = UILabel()
-        // label.text = "2022.06.17-2022.06.30"
         return label
     }()
-    
-//    let ownerPhoto: UIImageView = {
-//        let view = UIImageView()
-//        return view
-//    }()
     
     lazy var joinButton: UIButton = {
         let button = UIButton()
@@ -99,11 +92,9 @@ class JoinGroupController: UIViewController {
         coverImage.centerX(inView: showView)
         coverImage.setDimensions(width: UIScreen.width * 0.8,
                                  height: UIScreen.height * 0.3)
-        coverImage.anchor(top: closeButton.bottomAnchor)
+        coverImage.anchor(top: showView.topAnchor)
         
         joinButton.anchor(width: UIScreen.width * 0.4)
-        
-        // joinButton.setDimensions(width: UIScreen.width * 0.4, height: UIScreen.height * 0.05)
         
         vStackView.centerX(inView: showView)
         vStackView.anchor(top: coverImage.bottomAnchor,
@@ -121,17 +112,29 @@ class JoinGroupController: UIViewController {
         coverImage.kf.setImage(with: url)
     }
     
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     @objc func joinGroup() {
         guard let id = journey?.id else { return }
 
-        JourneyManager.shared.joinGroup(id: id) { result in
+        JourneyManager.shared.joinGroup(id: id) { [weak self] result in
             switch result {
             case .success:
-                print("Success")
+                let presentingVC = self?.presentingViewController
+                self?.dismiss(animated: true, completion: {
+                    presentingVC?.viewWillAppear(true)
+                })
             case .failure(let error):
-                print("\(error)")
+                self?.error404()
             }
-            self.dismiss(animated: true)
         }
     }
     

@@ -2,40 +2,17 @@
 //  PrivacyController.swift
 //  Travel-Diary
 //
-//  Created by 黃昱崴 on 2022/6/23.
+//  Created by 黃昱崴 on 2022/7/5.
 //
 
 import UIKit
-import PDFKit
-import Kingfisher
-
-struct PdfSpot {
-    let name: String
-    let image: UIImage?
-    let address: String
-    var isDay: Bool = false
-}
-
-struct PdfResource {
-    let title: String
-    let coverImage: UIImage?
-    let tripDate: String
-    let spots: [PdfSpot]
-}
 
 class PrivacyController: UIViewController {
+    
     let publicLabel: UILabel = {
         let label = UILabel()
         label.text = "Public"
         return label
-    }()
-    
-    private lazy var shareButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
-                                         style: .plain, target: self,
-                                         action: #selector(shareAlert))
-        button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        return button
     }()
     
     lazy var publicSwitch: UISwitch = {
@@ -51,150 +28,168 @@ class PrivacyController: UIViewController {
         return view
     }()
     
-    let pdfView: PDFView = {
-        let view = PDFView()
-        return view
+    lazy var collection: UICollectionView = {
+        let collection = UICollectionView(
+            frame: CGRect(x: 0, y: 0, width: UIScreen.width, height: UIScreen.height),
+            collectionViewLayout: createLayout())
+        collection.register(UsersCell.self, forCellWithReuseIdentifier: UsersCell.identifier)
+        collection.delegate = self
+        collection.dataSource = self
+        return collection
     }()
     
     var journey: Journey?
-    var documentData: Data?
-    
+    var users = [User]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureData()
+        setUpUI()
+        setUpData()
     }
     
-    func configureUI() {
-        navigationItem.rightBarButtonItem = shareButton
+    func setUpUI() {
         view.backgroundColor = .white
         view.addSubview(publicLabel)
         view.addSubview(publicSwitch)
         view.addSubview(underlineView)
-        view.addSubview(pdfView)
-        configureConstraint()
+        view.addSubview(collection)
+        setUpConstraint()
     }
     
-    func configureConstraint() {
+    func setUpConstraint() {
         publicLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                            left: view.leftAnchor,
-                           paddingTop: 16, paddingLeft: 16)
+                           paddingTop: 32, paddingLeft: 16)
         publicSwitch.anchor(right: view.rightAnchor, paddingRight: 16)
         publicSwitch.centerYAnchor.constraint(equalTo: publicLabel.centerYAnchor).isActive = true
         underlineView.anchor(top: publicLabel.bottomAnchor,
                              left: view.leftAnchor,
                              right: view.rightAnchor,
                              paddingTop: 16, height: 1)
-        pdfView.anchor(top: underlineView.bottomAnchor,
-                       left: view.leftAnchor,
-                       bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                       right: view.rightAnchor,
-                       paddingTop: 8, paddingLeft: 16,
-                       paddingBottom: 8, paddingRight: 16)
-    }
-    
-    func configureData() {
-        guard let journey = journey else { return }
-        publicSwitch.isOn = journey.isPublic
         
-        downloadAllResource { [weak self] resource in
-            DispatchQueue.main.async {
-                let pdfCreator = PDFCreator(resource: resource)
-                self?.documentData = pdfCreator.createPDF()
-                if let documentData = self?.documentData {
-                    self?.pdfView.document = PDFDocument(data: documentData)
-                    self?.pdfView.autoScales = true
-                }
-            }
-        }
+        collection.anchor(top: underlineView.bottomAnchor,
+                          left: view.leftAnchor,
+                          bottom: view.bottomAnchor,
+                          right: view.rightAnchor)
     }
     
-    func downloadAllResource(completion: @escaping (PdfResource) -> Void) {
-        guard let journey = journey else { return }
+    func setUpData() {
+        guard let journey = journey else {
+            return
+        }
 
-        let title = journey.title
-        let tripDate = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
-        var coverImage: UIImage?
-        var spots = [PdfSpot]()
-        
-        DispatchQueue.global().async {
-            let semaphore = DispatchSemaphore(value: 0)
-            self.downloadImage(urlString: journey.coverPhoto) { result in
-                switch result {
-                case .success(let image):
-                    coverImage = image
-                    semaphore.signal()
-                case .failure(let error):
-                    print(error)
-                    semaphore.signal()
-                }
-            }
-            semaphore.wait()
-            var days: Int = 0
-            for day in journey.data {
-                days += 1
-                spots.append(PdfSpot(name: "Day \(days)", image: nil, address: "", isDay: true))
-                for spot in day.spot {
-                    var spotImage: UIImage?
-                    self.downloadImage(urlString: spot.photo) { result in
-                        switch result {
-                        case .success(let image):
-                            spotImage = image
-                            semaphore.signal()
-                        case .failure(let error):
-                            print(error)
-                            semaphore.signal()
-                        }
-                    }
-                    semaphore.wait()
-                    spots.append(PdfSpot(name: spot.name, image: spotImage, address: spot.address))
-                    
-                }
-            }
-            completion(PdfResource(title: title, coverImage: coverImage, tripDate: tripDate, spots: spots))
-        }
-        
+        publicSwitch.isOn = journey.isPublic
+        fetchUsers(id: journey.id!)
     }
     
-    func downloadImage(urlString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        if let url = URL(string: urlString) {
-            let resource = ImageResource(downloadURL: url)
-            KingfisherManager.shared.retrieveImage(with: resource) { result in
+    func fetchUsers(id: String) {
+        JourneyManager.shared.fetchGroupUsers(id: id) { [weak self] result in
+            switch result {
+            case .success(let users):
+                self?.users = users
+                self?.collection.reloadData()
+            case .failure(let error):
+                self?.error404()
+            }
+        }
+    }
+    
+    func createLayout() -> UICollectionViewCompositionalLayout {
+        // Item
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .fractionalHeight(1)))
+        
+        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        // Group
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .fractionalHeight(0.4)),
+            subitem: item,
+            count: 2)
+        // Section
+        let section = NSCollectionLayoutSection(group: group)
+        // return
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func showDeleteAlert(indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Delete user",
+                                      message: "Are you sure you want to delete user?",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            JourneyManager.shared.removeFromGroup(journeyId: (self?.journey?.id)!,
+                                                  userId: (self?.users[indexPath.item].id!)!) { result in
                 switch result {
-                case .success(let result):
-                    completion(.success(result.image))
+                case .success:
+                    self?.users.remove(at: indexPath.item)
+                    self?.collection.deleteItems(at: [indexPath])
                 case .failure(let error):
-                    completion(.failure(error))
+                    self?.error404()
                 }
             }
-        } else {
-            completion(.success(UIImage()))
-        }
+            
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        
+        present(alert, animated: true)
     }
     
     @objc func switchPublic(sender: UISwitch) {
         guard let journey = journey else { return }
-        JourneyManager.shared.switchPublic(id: journey.id!, isPublic: sender.isOn) { result in
+        JourneyManager.shared.switchPublic(id: journey.id!, isPublic: sender.isOn) { [weak self] result in
             switch result {
             case .success:
                 print("Success")
             case .failure(let error):
-                print("Change public state failed. \(error)")
+                self?.error404()
             }
         }
+    }
+}
 
+extension PrivacyController: UICollectionViewDelegate {
+    
+}
+
+extension PrivacyController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        users.count
     }
     
-    @objc func shareAlert() {
-        downloadAllResource { [weak self] resource in
-            DispatchQueue.main.async {
-                let pdfCreator = PDFCreator(resource: resource)
-                let pdfData = pdfCreator.createPDF()
-                let vc = UIActivityViewController(activityItems: [pdfData], applicationActivities: [])
-                vc.popoverPresentationController?.sourceView = self?.view
-                self?.present(vc, animated: true, completion: nil)
-            }
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: UsersCell.identifier,
+            for: indexPath) as? UsersCell else { return UICollectionViewCell() }
+        cell.setupCell(userImageUrl: users[indexPath.item].profileImageUrl,
+                       userName: users[indexPath.item].username)
+        
+        if journey?.owner == users[indexPath.item].id {
+            cell.closeButton.isHidden = true
+        } else {
+            cell.closeButton.isHidden = false
         }
+        
+        cell.callback = { [weak self] cell in
+            guard let indexPath = self?.collection.indexPath(for: cell) else { return }
+            self?.showDeleteAlert(indexPath: indexPath)
+        }
+        
+        return cell
     }
 }

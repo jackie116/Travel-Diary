@@ -10,6 +10,7 @@ import FirebaseFirestoreSwift
 
 struct User: Codable, Identifiable {
     @DocumentID var id: String?
-    var username: String = ""
+    var username: String = UUID().uuidString
     var profileImageUrl: String = ""
+    var blocklist: [String] = []
 }

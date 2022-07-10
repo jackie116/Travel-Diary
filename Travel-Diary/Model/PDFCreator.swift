@@ -81,8 +81,8 @@ class PDFCreator: NSObject {
     
     func addCornerImage(pageRect: CGRect) {
         let image = UIImage(named: "gy_bike")
-        let maxHeight = pageRect.height * 0.1
-        let maxWidth = pageRect.height * 0.1
+        let maxHeight = pageRect.height * 0.05
+        let maxWidth = pageRect.height * 0.05
         
         let aspectWidth = maxWidth / image!.size.width
         let aspectHeight = maxHeight / image!.size.height
@@ -90,8 +90,8 @@ class PDFCreator: NSObject {
         let scaledWidth = image!.size.width * aspectWidth
         let scaledHeight = image!.size.height * aspectHeight
 
-        let imageRect = CGRect(x: pageRect.width - pageRect.height * 0.1,
-                               y: pageRect.height * 0.9,
+        let imageRect = CGRect(x: pageRect.width - pageRect.height * 0.05,
+                               y: pageRect.height * 0.95,
                                width: scaledWidth, height: scaledHeight)
 
         image!.draw(in: imageRect)

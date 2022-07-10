@@ -19,7 +19,9 @@ class DiaryCell: UITableViewCell {
     
     let functionButton: UIButton = {
         let button = UIButton()
+        button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+//        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
         return button
     }()
     
@@ -58,8 +60,9 @@ class DiaryCell: UITableViewCell {
     
     func configureUI() {
         contentView.addSubview(coverImageView)
+        createGradientBackgroud()
         contentView.addSubview(functionButton)
-        contentView.addSubview(vStackView)
+        coverImageView.addSubview(vStackView)
         vStackView.addArrangedSubview(titleLabel)
         vStackView.addArrangedSubview(dateLabel)
         configureConstraint()
@@ -87,5 +90,15 @@ class DiaryCell: UITableViewCell {
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: end))
         let url = URL(string: coverPhoto)
         coverImageView.kf.setImage(with: url)
+    }
+    
+    func createGradientBackgroud() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.width - 32, height: 200)
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor
+        ]
+        coverImageView.layer.addSublayer(gradientLayer)
     }
 }

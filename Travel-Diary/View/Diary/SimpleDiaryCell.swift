@@ -28,7 +28,7 @@ class SimpleDiaryCell: UITableViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
@@ -36,6 +36,7 @@ class SimpleDiaryCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
+        label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()

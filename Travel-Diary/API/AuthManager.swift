@@ -20,6 +20,10 @@ class AuthManager {
     let storageRef = Storage.storage().reference()
     let userImageRef = Storage.storage().reference().child("user_images")
     
+    var userId: String {
+        return Auth.auth().currentUser?.uid ?? ""
+    }
+    
     func checkUser(completion: @escaping (Bool) -> Void) {
         let currentUser = Auth.auth().currentUser
         if currentUser != nil {
@@ -34,9 +38,7 @@ class AuthManager {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
         
-        let docRef = collectionRef.document(user.uid)
-        
-        docRef.getDocument(as: User.self) { result in
+        collectionRef.document(user.uid).getDocument(as: User.self) { result in
             switch result {
             case .success(let user):
                 completion(.success(user))
@@ -60,25 +62,10 @@ class AuthManager {
         }
     }
     
-//    func getUserPhotoURL(completion: @escaping (Result<String, Error>) -> Void) {
-//        getUserInfo { result in
-//            switch result {
-//            case .success(let user):
-//                completion(.success(user.profileImageUrl))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//    }
-    
-    func checkUserInfo(uid: String) {
-        
-    }
-    
     func initialUserInfo(completion: @escaping (Result<Void, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else { return }
-        let data = User(username: "Default", profileImageUrl: "")
+        let data = User()
 
         do {
             try collectionRef.document(user.uid).setData(from: data)
@@ -122,6 +109,73 @@ class AuthManager {
         }
     }
     
+    func fetchBlocklist(completion: @escaping (Result<[User], Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success([]))
+            return
+        }
+        var users = [User]()
+        
+        let docRef = collectionRef.document(user.uid)
+        
+        docRef.getDocument(as: User.self) { [weak self] result in
+            switch result {
+            case .success(let user):
+                let group = DispatchGroup()
+                for blockUser in user.blocklist {
+                    group.enter()
+                    let docRef = self?.collectionRef.document(blockUser)
+                    
+                    docRef?.getDocument(as: User.self) { result in
+                        switch result {
+                        case .success(let user):
+                            users.append(user)
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    completion(.success(users))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func moveIntoBlocklist(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        
+        collectionRef.document(user.uid).updateData([
+            "blocklist": FieldValue.arrayUnion([id])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func moveOutBlocklist(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        
+        collectionRef.document(user.uid).updateData([
+            "blocklist": FieldValue.arrayRemove([id])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
     func signOut(completion: @escaping (Result<Void, Error>) -> Void) {
         let firebaseAuth = Auth.auth()
         do {
@@ -132,4 +186,39 @@ class AuthManager {
         }
     }
     
+    func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else { return }
+        let data = User()
+        
+        let group = DispatchGroup()
+        
+        group.enter()
+        JourneyManager.shared.deleteJourneyByUserId(userId: user.uid) { _ in
+            group.leave()
+        }
+        
+        group.enter()
+        CommentManager.shared.deleteCommentByUserId(userId: user.uid) { _ in
+            group.leave()
+        }
+        
+        group.enter()
+        do {
+            try collectionRef.document(user.uid).setData(from: data)
+            group.leave()
+        } catch {
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            user.delete { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        }
+    }
 }
