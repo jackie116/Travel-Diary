@@ -19,6 +19,7 @@ class JourneyController: UIViewController {
         table.estimatedRowHeight = 200
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
@@ -197,9 +198,19 @@ class JourneyController: UIViewController {
                 self?.journeys = journeys
                 self?.journeyTableView.reloadData()
                 self?.refreshControl.endRefreshing()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
+            case .failure:
+                self?.error404()
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     

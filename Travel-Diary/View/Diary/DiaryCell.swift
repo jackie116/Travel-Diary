@@ -21,6 +21,7 @@ class DiaryCell: UITableViewCell {
         let button = UIButton()
         button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+//        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
         return button
     }()
     

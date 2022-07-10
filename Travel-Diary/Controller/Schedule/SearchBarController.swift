@@ -15,6 +15,15 @@ protocol HandleScheduleDelegate: AnyObject {
 class SearchBarController: UIViewController {
     weak var delegate: HandleScheduleDelegate?
     
+    lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapBack))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
     var resultSearchController: UISearchController?
     let mapView = MKMapView()
     var daySection: Int?
@@ -22,7 +31,7 @@ class SearchBarController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .white
         
         view.addSubview(mapView)
@@ -61,6 +70,10 @@ class SearchBarController: UIViewController {
         definesPresentationContext = true
         searchTable.delegate = self
         searchTable.mapView = mapView
+    }
+    
+    @objc func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

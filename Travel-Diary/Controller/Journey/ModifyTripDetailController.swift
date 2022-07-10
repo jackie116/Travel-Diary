@@ -10,8 +10,16 @@ import Kingfisher
 
 class ModifyTripDetailController: UIViewController {
     
-    // private let imagePicker = UIImagePickerController()
     private var coverImage: UIImage?
+    
+    lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapBack))
+        button.tintColor = .customBlue
+        return button
+    }()
     
     lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -101,8 +109,6 @@ class ModifyTripDetailController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // imagePicker.delegate = self
-        // imagePicker.allowsEditing = true
         configureUI()
         initData()
     }
@@ -131,6 +137,7 @@ class ModifyTripDetailController: UIViewController {
     }
     
     func configureUI() {
+        navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .white
         view.addSubview(plusPhotoButton)
         startStackView.addArrangedSubview(startDateLabel)
@@ -141,11 +148,6 @@ class ModifyTripDetailController: UIViewController {
         vStackView.addArrangedSubview(startStackView)
         vStackView.addArrangedSubview(endStackView)
         view.addSubview(vStackView)
-//        view.addSubview(titleTextField)
-//        view.addSubview(startDateLabel)
-//        view.addSubview(startDatePicker)
-//        view.addSubview(endDateLabel)
-//        view.addSubview(endDatePicker)
         view.addSubview(submitButton)
         setConstraint()
     }
@@ -171,6 +173,16 @@ class ModifyTripDetailController: UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         controller.addAction(okAction)
         present(controller, animated: true, completion: nil)
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     // MARK: - Selectors
@@ -250,7 +262,7 @@ class ModifyTripDetailController: UIViewController {
                         print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        print("Update failed \(error)")
+                        self?.error404()
                     }
                 }
             } else {
@@ -260,11 +272,15 @@ class ModifyTripDetailController: UIViewController {
                         print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        print("Update failed \(error)")
+                        self?.error404()
                     }
                 }
             }
         }
+    }
+    
+    @objc func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

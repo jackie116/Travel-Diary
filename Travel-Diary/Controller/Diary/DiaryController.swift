@@ -21,6 +21,7 @@ class DiaryController: UIViewController {
         table.estimatedRowHeight = UIScreen.height / 3
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
@@ -30,6 +31,7 @@ class DiaryController: UIViewController {
                                          style: .plain, target: self,
                                          action: #selector(didTapQR))
         button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.tintColor = .customBlue
         return button
     }()
     
@@ -66,15 +68,25 @@ class DiaryController: UIViewController {
     }
     
     func fetchJourneys() {
-        JourneyManager.shared.fetchDiarys { result in
+        JourneyManager.shared.fetchDiarys { [weak self] result in
             switch result {
             case .success(let journeys):
-                self.journeys = journeys
-                self.tableView.reloadData()
-                self.refreshControl.endRefreshing()
-            case .failure(let error):
-                print("Fetch data failed \(error)")
+                self?.journeys = journeys
+                self?.tableView.reloadData()
+                self?.refreshControl.endRefreshing()
+            case .failure:
+                self?.error404()
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -88,8 +100,6 @@ class DiaryController: UIViewController {
                     self?.dismiss(animated: false) {
                         let vc = PrivacyController()
                         vc.journey = self?.journeys[indexPath.row]
-//                        let navVC = UINavigationController(rootViewController: vc)
-//                        self?.navigationController?.present(navVC, animated: true)
                         self?.present(vc, animated: true)
                     }
                 }
