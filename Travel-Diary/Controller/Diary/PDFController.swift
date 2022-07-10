@@ -30,6 +30,7 @@ class PDFController: UIViewController {
                                          style: .plain, target: self,
                                          action: #selector(shareAlert))
         button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.tintColor = .customBlue
         return button
     }()
     

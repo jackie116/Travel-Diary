@@ -84,7 +84,6 @@ class ComplexDiaryCell: UITableViewCell {
                 switch result {
                 case .success:
                     self?.image.isHidden = false
-                    print("download success")
                 case .failure(let error):
                     print("Error: \(error)")
                 }

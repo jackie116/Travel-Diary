@@ -19,6 +19,15 @@ class ScheduleMapController: UIViewController {
         return button
     }()
     
+    lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapBack))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
     var tripData: Journey?
     
     var selectedPin: MKPlacemark?
@@ -59,6 +68,7 @@ class ScheduleMapController: UIViewController {
     }
     
     func setUI() {
+        navigationItem.leftBarButtonItem = backButton
         setMapUI()
         setScheduleUI()
     }
@@ -103,6 +113,10 @@ class ScheduleMapController: UIViewController {
         let overlay = MKPolyline(coordinates: coordinates, count: coordinates.count)
         overlay.title = "\(offset)"
         self.mapView.addOverlay(overlay, level: .aboveRoads)
+    }
+    
+    @objc func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

@@ -8,14 +8,27 @@
 import UIKit
 
 class ProfileCell: UITableViewCell {
+    
+    let buttonView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 20
+        view.layer.borderWidth = 3
+        view.layer.borderColor = UIColor.customBlue.cgColor
+        view.backgroundColor = UIColor(red: 0, green: 181 / 255, blue: 181 / 255, alpha: 0.1)
+        return view
+    }()
+    
     let iconView: UIImageView = {
         let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0.1
+        view.clipsToBounds = true
         return view
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         return label
     }()
     
@@ -30,20 +43,31 @@ class ProfileCell: UITableViewCell {
     }
     
     func configureUI() {
-        self.addSubview(titleLabel)
-        self.addSubview(iconView)
+        self.addSubview(buttonView)
+        buttonView.addSubview(iconView)
+        buttonView.addSubview(titleLabel)
         configureConstraint()
     }
     
     func configureConstraint() {
-        iconView.anchor(left: self.leftAnchor, paddingLeft: 32, width: 40, height: 40)
-        iconView.centerY(inView: self)
-        titleLabel.anchor(top: self.topAnchor,
-                          left: iconView.rightAnchor,
+        buttonView.anchor(top: self.topAnchor,
+                          left: self.leftAnchor,
                           bottom: self.bottomAnchor,
                           right: self.rightAnchor,
-                          paddingTop: 16, paddingLeft: 32,
-                          paddingBottom: 16, paddingRight: 32)
+                          paddingTop: 8, paddingLeft: 16,
+                          paddingBottom: 8, paddingRight: 16,
+                          height: 88)
+        
+        iconView.anchor(top: buttonView.topAnchor,
+                        left: buttonView.centerXAnchor,
+                        bottom: buttonView.bottomAnchor,
+                        right: buttonView.rightAnchor)
+        
+        titleLabel.centerY(inView: buttonView)
+        titleLabel.anchor(left: buttonView.leftAnchor,
+                          right: buttonView.rightAnchor,
+                          paddingLeft: 16, paddingRight: 16)
+        
     }
     
     func configureData(title: String, systemName: String) {

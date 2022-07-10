@@ -16,6 +16,15 @@ class QRcodeScannerController: UIViewController {
         return view
     }()
     
+    lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(closeScanner))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
     lazy var albumButton: UIButton = {
         let button = UIButton(type: .system)
         var config = UIButton.Configuration.plain()
@@ -23,6 +32,7 @@ class QRcodeScannerController: UIViewController {
         config.background.imageContentMode = .scaleAspectFill
         button.configuration = config
         button.addTarget(self, action: #selector(scanAlbumQR), for: .touchUpInside)
+        button.tintColor = .customBlue
         return button
     }()
     
@@ -74,10 +84,7 @@ class QRcodeScannerController: UIViewController {
     }
     
     func configureUI() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"),
-                                                           style: .done,
-                                                           target: self,
-                                                           action: #selector(closeScanner))
+        navigationItem.leftBarButtonItem = closeButton
         view.backgroundColor = .white
         view.addSubview(camView)
         camView.addSubview(albumButton)

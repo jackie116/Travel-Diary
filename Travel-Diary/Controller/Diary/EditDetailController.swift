@@ -13,17 +13,18 @@ class EditDetailController: UIViewController {
                                      style: .plain, target: self,
                                      action: #selector(backward))
         button.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        button.tintColor = .customBlue
         return button
     }()
     
-//    private lazy var imagePicker: UIImagePickerController = {
-//        let picker = UIImagePickerController()
-//
-//        picker.delegate = self
-//        picker.allowsEditing = true
-//
-//        return picker
-//    }()
+    private lazy var saveButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Save",
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(saveTap))
+        button.tintColor = .customBlue
+        return button
+    }()
     
     private var spotImage: UIImage?
     
@@ -92,10 +93,7 @@ class EditDetailController: UIViewController {
     
     func configureUI() {
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(saveTap))
+        navigationItem.rightBarButtonItem = saveButton
         view.backgroundColor = .white
         view.addSubview(plusPhotoButton)
         view.addSubview(stackView)
@@ -136,6 +134,16 @@ class EditDetailController: UIViewController {
             plusPhotoButton.kf.setImage(with: url, for: .normal)
         } else {
             plusPhotoButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -192,7 +200,7 @@ class EditDetailController: UIViewController {
                     self?.navigationController?.dismiss(animated: true)
                 }
             case .failure(let error):
-                print("Upload failed: \(error)")
+                self?.error404()
             }
         }
     }

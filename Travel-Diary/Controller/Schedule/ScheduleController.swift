@@ -59,6 +59,7 @@ class ScheduleController: UIViewController {
         table.dataSource = self
         table.dragDelegate = self
         table.dragInteractionEnabled = true
+        table.showsVerticalScrollIndicator = false
         
         return table
     }()
@@ -147,6 +148,16 @@ class ScheduleController: UIViewController {
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
     }
     
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     private func int64ToyMd(_ timestamp: Int64) -> String {
         let date = Date(milliseconds: timestamp)
         let dateFormatter = DateFormatter()
@@ -155,12 +166,12 @@ class ScheduleController: UIViewController {
     }
     
     private func uploadSchedule() {
-        JourneyManager.shared.updateJourney(journey: self.tripData!) { result in
+        JourneyManager.shared.updateJourney(journey: self.tripData!) { [weak self] result in
             switch result {
             case .success:
                 print("Upload success")
             case .failure(let error):
-                print("Upload failure: \(error)")
+                self?.error404()
             }
         }
     }

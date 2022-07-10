@@ -9,6 +9,24 @@ import UIKit
 
 class EditProfileController: UIViewController {
     
+    lazy var saveButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Save",
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(saveUserData))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
+    lazy var backButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(didTapBack))
+        button.tintColor = .customBlue
+        return button
+    }()
+
     lazy var userPhotoButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .lightGray
@@ -51,10 +69,8 @@ class EditProfileController: UIViewController {
     
     func configureUI() {
         view.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save",
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(saveUserData))
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.rightBarButtonItem = saveButton
         view.addSubview(userPhotoButton)
         view.addSubview(usernameText)
         
@@ -86,6 +102,16 @@ class EditProfileController: UIViewController {
                 print("Fetch user data failed \(error)")
                 self?.userPhotoButton.setImage(UIImage(systemName: "plus"), for: .normal)
             }
+        }
+    }
+    
+    func error404() {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: "Please check your internet connect!",
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -134,18 +160,19 @@ class EditProfileController: UIViewController {
                     self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-                print("Upload Failed \(error)")
+                self?.error404()
             }
         }
-
+    }
+    
+    @objc func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
 extension EditProfileController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//        guard let coverImage = info[.editedImage] as? UIImage else { return }
-//        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         guard let selectedImage = info[.editedImage] as? UIImage else {
           return
         }
