@@ -71,6 +71,7 @@ class EditProfileController: UIViewController {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = saveButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.addSubview(userPhotoButton)
         view.addSubview(usernameText)
         
@@ -187,4 +188,8 @@ extension EditProfileController: UIImagePickerControllerDelegate {
 
 extension EditProfileController: UINavigationControllerDelegate {
     
+}
+
+extension EditProfileController: UIGestureRecognizerDelegate {
+
 }

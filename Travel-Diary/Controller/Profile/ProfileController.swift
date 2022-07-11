@@ -135,7 +135,7 @@ class ProfileController: UIViewController {
     }
     
     func showStoreReview() {
-        let alert = UIAlertController(title: "Feedback",
+        let alert = UIAlertController(title: "Rate our app",
                                       message: "Are you enjoying the app?",
                                       preferredStyle: .alert)
         

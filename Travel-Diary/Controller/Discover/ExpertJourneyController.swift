@@ -124,6 +124,7 @@ class ExpertJourneyController: UIViewController {
     func configureUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = commentButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
 // MARK: - copy start
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dateLabel)
@@ -324,3 +325,7 @@ extension ExpertJourneyController: UICollectionViewDataSource {
     }
 }
 // MARK: - Copy end
+
+extension ExpertJourneyController: UIGestureRecognizerDelegate {
+
+}

@@ -69,6 +69,7 @@ class ScheduleMapController: UIViewController {
     
     func setUI() {
         navigationItem.leftBarButtonItem = backButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         setMapUI()
         setScheduleUI()
     }
@@ -199,4 +200,8 @@ extension ScheduleMapController: MKMapViewDelegate {
         ]
         targetItem.openInMaps(launchOptions: launchOptions)
     }
+}
+
+extension ScheduleMapController: UIGestureRecognizerDelegate {
+
 }

@@ -71,6 +71,7 @@ class BlocklistController: UIViewController {
     func setupUI() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = backButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.addSubview(collection)
         setupConstraint()
     }
@@ -151,4 +152,8 @@ extension BlocklistController: UICollectionViewDataSource {
         }
         return cell
     }
+}
+
+extension BlocklistController: UIGestureRecognizerDelegate {
+
 }

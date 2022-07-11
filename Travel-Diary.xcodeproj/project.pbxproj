@@ -436,7 +436,7 @@
 				E7131A562858F2430034FE12 /* Resources */,
 				B3D3177B25F92B30A70BB301 /* [CP] Embed Pods Frameworks */,
 				E7C69D3A28597F2C004910AC /* SwiftLint */,
-				E7EB33D52876D9CF000446FB /* ShellScript */,
+				E7EB33D52876D9CF000446FB /* FirebaseCrashlytics */,
 			);
 			buildRules = (
 			);
@@ -557,7 +557,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		E7EB33D52876D9CF000446FB /* ShellScript */ = {
+		E7EB33D52876D9CF000446FB /* FirebaseCrashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -568,6 +568,7 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = FirebaseCrashlytics;
 			outputFileListPaths = (
 			);
 			outputPaths = (

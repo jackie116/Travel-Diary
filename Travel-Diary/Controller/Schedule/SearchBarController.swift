@@ -32,6 +32,7 @@ class SearchBarController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = backButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
         
         view.addSubview(mapView)
@@ -82,4 +83,8 @@ extension SearchBarController: HandleMapSearchDelegate {
         self.delegate?.returnMark(mark: placemark, section: daySection ?? 0)
         navigationController?.popViewController(animated: true)
     }
+}
+
+extension SearchBarController: UIGestureRecognizerDelegate {
+
 }

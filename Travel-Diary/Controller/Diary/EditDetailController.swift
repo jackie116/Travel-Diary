@@ -94,6 +94,7 @@ class EditDetailController: UIViewController {
     func configureUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = saveButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
         view.addSubview(plusPhotoButton)
         view.addSubview(stackView)
@@ -225,4 +226,8 @@ extension EditDetailController: UIImagePickerControllerDelegate {
 
 extension EditDetailController: UINavigationControllerDelegate {
     
+}
+
+extension EditDetailController: UIGestureRecognizerDelegate {
+
 }

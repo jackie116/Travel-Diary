@@ -138,6 +138,7 @@ class ModifyTripDetailController: UIViewController {
     
     func configureUI() {
         navigationItem.leftBarButtonItem = backButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
         view.addSubview(plusPhotoButton)
         startStackView.addArrangedSubview(startDateLabel)
@@ -187,7 +188,6 @@ class ModifyTripDetailController: UIViewController {
     
     // MARK: - Selectors
     @objc func handleAddcoverPhoto() {
-//        present(imagePicker, animated: true, completion: nil)
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
                                             preferredStyle: .actionSheet)
@@ -301,4 +301,8 @@ extension ModifyTripDetailController: UIImagePickerControllerDelegate {
 
 extension ModifyTripDetailController: UINavigationControllerDelegate {
     
+}
+
+extension ModifyTripDetailController: UIGestureRecognizerDelegate {
+
 }

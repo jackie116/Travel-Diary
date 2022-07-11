@@ -85,6 +85,7 @@ class QRcodeScannerController: UIViewController {
     
     func configureUI() {
         navigationItem.leftBarButtonItem = closeButton
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
         view.addSubview(camView)
         camView.addSubview(albumButton)
@@ -266,4 +267,8 @@ extension QRcodeScannerController: UIImagePickerControllerDelegate {
 
 extension QRcodeScannerController: UINavigationControllerDelegate {
     
+}
+
+extension QRcodeScannerController: UIGestureRecognizerDelegate {
+
 }
