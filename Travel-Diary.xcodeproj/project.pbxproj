@@ -795,9 +795,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Use for set profile photo, add pictures to journey, and scan QR code";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save qrcode to your photo library";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Use for set profile photo, add pictures to journey, and select QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please provide Camera privacy for setting profile photo, adding pictures to journey, and scanning QR code";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please provide Photo Library Addition Privacy for saving qrcode to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please provide Photo Library Privacy for setting profile photo, adding pictures to journey, and opening QR code";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -831,9 +831,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Use for set profile photo, add pictures to journey, and scan QR code";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save qrcode to your photo library";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Use for set profile photo, add pictures to journey, and select QR code";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please provide Camera privacy for setting profile photo, adding pictures to journey, and scanning QR code";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Please provide Photo Library Addition Privacy for saving qrcode to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please provide Photo Library Privacy for setting profile photo, adding pictures to journey, and opening QR code";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

@@ -176,6 +176,7 @@ class EditDetailController: UIViewController {
                 let cameraPicker = UIImagePickerController()
                 cameraPicker.delegate = self
                 cameraPicker.sourceType = .camera
+                cameraPicker.allowsEditing = true
                 
                 self.present(cameraPicker, animated: true, completion: nil)
             }
@@ -210,10 +211,7 @@ class EditDetailController: UIViewController {
 extension EditDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-//        guard let spotImage = info[.editedImage] as? UIImage else { return }
-        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
-          return
-        }
+        guard let selectedImage = info[.editedImage] as? UIImage else { return }
         
         self.spotImage = selectedImage
 
