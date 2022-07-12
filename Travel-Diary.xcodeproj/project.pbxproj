@@ -795,9 +795,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Use for set profile photo, add pictures to journey, and scan QR code";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save qrcode to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Use for set profile photo, add pictures to journey, and select QR code";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -831,9 +831,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Travel Diary";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Open camera to take Picture";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save image to user's device";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Open Photo Library";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Use for set profile photo, add pictures to journey, and scan QR code";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save qrcode to your photo library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Use for set profile photo, add pictures to journey, and select QR code";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
