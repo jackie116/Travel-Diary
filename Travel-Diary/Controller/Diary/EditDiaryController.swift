@@ -95,6 +95,16 @@ class EditDiaryController: UIViewController {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
         navigationController?.setNavigationBarHidden(true, animated: false)
+        fetchJourneys()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    func fetchJourneys() {
         guard let id = id else { return }
 
         JourneyManager.shared.fetchSpecificJourney(id: id) { [weak self] result in
@@ -108,12 +118,6 @@ class EditDiaryController: UIViewController {
                 self?.error404()
             }
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
-        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     func configureUI() {

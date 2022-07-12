@@ -209,6 +209,7 @@ class ModifyTripDetailController: UIViewController {
                 let cameraPicker = UIImagePickerController()
                 cameraPicker.delegate = self
                 cameraPicker.sourceType = .camera
+                cameraPicker.allowsEditing = true
                 
                 self.present(cameraPicker, animated: true, completion: nil)
             }

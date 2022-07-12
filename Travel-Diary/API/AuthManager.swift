@@ -36,7 +36,10 @@ class AuthManager {
     // MARK: - Firebase 取得登入使用者的資訊
     func getUserInfo(completion: @escaping (Result<User, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
-        guard let user = currentUser else { return }
+        guard let user = currentUser else {
+            completion(.success(User()))
+            return
+        }
         
         collectionRef.document(user.uid).getDocument(as: User.self) { result in
             switch result {

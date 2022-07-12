@@ -78,13 +78,15 @@ class ComplexDiaryCell: UITableViewCell {
         describeLabel.text = describe
         
         if !image.isEmpty {
+            self.image.isHidden = false
             let url = URL(string: image)
             self.image.kf.indicatorType = .activity
             self.image.kf.setImage(with: url) { [weak self] result in
                 switch result {
                 case .success:
-                    self?.image.isHidden = false
+                    break
                 case .failure(let error):
+                    self?.image.isHidden = true
                     print("Error: \(error)")
                 }
             }
