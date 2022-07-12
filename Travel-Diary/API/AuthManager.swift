@@ -191,30 +191,62 @@ class AuthManager {
         guard let user = currentUser else { return }
         let data = User()
         
-        let group = DispatchGroup()
+        let journeysRef = Firestore.firestore().collection("Journeys")
+        let commentsRef = Firestore.firestore().collection("comments")
+        let usersRef = Firestore.firestore().collection("users")
+                
+        // Get new write batch
+        let batch = db.batch()
         
-        group.enter()
-        JourneyManager.shared.deleteJourneyByUserId(userId: user.uid) { _ in
-            group.leave()
-        }
-        
-        group.enter()
-        CommentManager.shared.deleteCommentByUserId(userId: user.uid) { _ in
-            group.leave()
-        }
-        
-        group.enter()
-        do {
-            try collectionRef.document(user.uid).setData(from: data)
-            group.leave()
-        } catch {
-            group.leave()
-        }
-        
-        group.notify(queue: .main) {
+        DispatchQueue.global().async {
+            let semaphore = DispatchSemaphore(value: 0)
+            
             user.delete { error in
                 if let error = error {
                     completion(.failure(error))
+                } else {
+                    semaphore.signal()
+                }
+            }
+            
+            semaphore.wait()
+            journeysRef.whereField("owner", isEqualTo: user.uid).getDocuments { querySnapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    for document in querySnapshot!.documents {
+                        batch.deleteDocument(document.reference)
+                    }
+                    semaphore.signal()
+                }
+            }
+            
+            semaphore.wait()
+            
+            commentsRef.whereField("userUID", isEqualTo: user.uid).getDocuments { querySnapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    for document in querySnapshot!.documents {
+                        batch.deleteDocument(document.reference)
+                    }
+                    semaphore.signal()
+                }
+            }
+            
+            semaphore.wait()
+            do {
+                try batch.setData(from: data, forDocument: usersRef.document(user.uid))
+                semaphore.signal()
+            } catch {
+                completion(.failure(error))
+            }
+            
+            semaphore.wait()
+            // Commit the batch
+            batch.commit { err in
+                if let err = err {
+                    completion(.failure(err))
                 } else {
                     completion(.success(()))
                 }

@@ -187,7 +187,6 @@ class JourneyController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        // vc.alertMessage.text = "Sign in to plan your journey"
         self.present(vc, animated: true)
     }
     

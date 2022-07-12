@@ -83,10 +83,6 @@ class LoginController: UIViewController {
         presentingViewController?.viewWillAppear(true)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         player = nil
@@ -104,8 +100,6 @@ class LoginController: UIViewController {
         buttonStackView.addArrangedSubview(googleSignInButton)
         buttonStackView.addArrangedSubview(licenseLabel)
         view.addSubview(buttonStackView)
-        // view.bringSubviewToFront(buttonStackView)
-
         configureConstraint()
     }
     
@@ -153,7 +147,7 @@ class LoginController: UIViewController {
         currentNonce = nonce
         
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName, .email]
+        request.requestedScopes = [.email]
         request.nonce = sha256(nonce)
 
         let controller = ASAuthorizationController(authorizationRequests: [request])

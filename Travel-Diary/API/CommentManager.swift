@@ -52,17 +52,4 @@ class CommentManager {
             completion(.failure(error))
         }
     }
-    
-    func deleteCommentByUserId(userId: String, completion: @escaping (Result<(), Error>) -> Void) {
-        collectionRef.whereField("userUID", isEqualTo: userId).getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                for document in querySnapshot!.documents {
-                    document.reference.delete()
-                }
-                completion(.success(()))
-            }
-        }
-    }
 }

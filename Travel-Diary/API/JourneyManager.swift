@@ -296,17 +296,4 @@ class JourneyManager {
             }
         }
     }
-    
-    func deleteJourneyByUserId(userId: String, completion: @escaping (Result<(), Error>) -> Void) {
-        collectionRef.whereField("owner", isEqualTo: userId).getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                for document in querySnapshot!.documents {
-                    document.reference.delete()
-                }
-                completion(.success(()))
-            }
-        }
-    }
 }

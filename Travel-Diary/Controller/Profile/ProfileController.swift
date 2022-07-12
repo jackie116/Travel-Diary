@@ -19,10 +19,7 @@ class ProfileController: UIViewController {
         return button
     }()
 
-    let userView: UIView = {
-        let view = UIView()
-        return view
-    }()
+    let userView = UIView()
     
     let userPhoto: UIImageView = {
         let view = UIImageView()
@@ -65,7 +62,7 @@ class ProfileController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,12 +78,12 @@ class ProfileController: UIViewController {
                     self?.userLabel.text = user.username
                 }
             case .failure(let error):
-                print("Fetch user data failed \(error)")
+                self?.error404(error: error)
             }
         }
     }
     
-    func configureUI() {
+    func setupUI() {
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = signOutButton
         navigationItem.title = "Profile"
@@ -95,10 +92,10 @@ class ProfileController: UIViewController {
         userView.addSubview(userPhoto)
         userView.addSubview(userLabel)
         view.addSubview(tableView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         
         userView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                       left: view.leftAnchor,
@@ -135,20 +132,10 @@ class ProfileController: UIViewController {
     }
     
     func showStoreReview() {
-        let alert = UIAlertController(title: "Rate our app",
-                                      message: "Are you enjoying the app?",
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Yes, I love it!", style: .default, handler: { [weak self] _ in
-            guard let scene = self?.view.window?.windowScene else {
-                return
-            }
-            SKStoreReviewController.requestReview(in: scene)
-        }))
-        
-        alert.addAction(UIAlertAction(title: "No, this sucks", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        guard let scene = self.view.window?.windowScene else {
+            return
+        }
+        SKStoreReviewController.requestReview(in: scene)
     }
     
     func showMailCompose() {
@@ -179,9 +166,11 @@ class ProfileController: UIViewController {
             AuthManager.shared.deleteAccount { result in
                 switch result {
                 case .success:
-                    self?.tabBarController?.selectedIndex = 0
+                    DispatchQueue.main.async {
+                        self?.tabBarController?.selectedIndex = 0
+                    }
                 case .failure(let error):
-                    self?.error404()
+                    self?.error404(error: error)
                 }
             }
         }))
@@ -191,25 +180,39 @@ class ProfileController: UIViewController {
         present(alert, animated: true)
     }
     
-    func error404() {
+    func showSignOutAlert() {
+        let alert = UIAlertController(title: "Sign Out",
+                                      message: "Are you sure you want to sign out?",
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            AuthManager.shared.signOut { [weak self] result in
+                switch result {
+                case .success:
+                    self?.tabBarController?.selectedIndex = 0
+                case .failure(let error):
+                    self?.error404(error: error)
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        
+        present(alert, animated: true)
+    }
+    
+    func error404(error: Error) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: error.localizedDescription,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
     @objc func signOut() {
-        AuthManager.shared.signOut { [weak self] result in
-            switch result {
-            case .success:
-                self?.tabBarController?.selectedIndex = 0
-            case .failure(let error):
-                print("Sign Out failed \(error)")
-            }
-        }
+        showSignOutAlert()
     }
 }
 
@@ -253,20 +256,7 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         if let error = error {
-            print(error)
-        } else {
-            switch result {
-            case .cancelled:
-                print("Cancell")
-            case .saved:
-                print("Saved")
-            case .sent:
-                print("Mail sent")
-            case .failed:
-                print("Failed")
-            @unknown default:
-                print("Else")
-            }
+            self.error404(error: error)
         }
         
         controller.dismiss(animated: true, completion: nil)
