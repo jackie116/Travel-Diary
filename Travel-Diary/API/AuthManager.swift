@@ -149,9 +149,12 @@ class AuthManager {
         }
     }
     
-    func moveIntoBlocklist(id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func moveIntoBlocklist(id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let currentUser = Auth.auth().currentUser
-        guard let user = currentUser else { return }
+        guard let user = currentUser else {
+            completion(.success(false))
+            return
+        }
         
         collectionRef.document(user.uid).updateData([
             "blocklist": FieldValue.arrayUnion([id])
@@ -159,7 +162,7 @@ class AuthManager {
             if let error = error {
                 completion(.failure(error))
             } else {
-                completion(.success(()))
+                completion(.success(true))
             }
         }
     }

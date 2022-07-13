@@ -41,6 +41,8 @@
 		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
+		E7944B8E287E8EE600478931 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8D287E8EE600478931 /* Report.swift */; };
+		E7944B90287E8F3400478931 /* ReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8F287E8F3400478931 /* ReportManager.swift */; };
 		E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC44B828670C7800CD836B /* PDFCreator.swift */; };
 		E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9258528603A0D007F266C /* JourneyManager.swift */; };
 		E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */; };
@@ -118,6 +120,8 @@
 		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
+		E7944B8D287E8EE600478931 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
+		E7944B8F287E8F3400478931 /* ReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportManager.swift; sourceTree = "<group>"; };
 		E7AC44B828670C7800CD836B /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		E7B9258528603A0D007F266C /* JourneyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyManager.swift; sourceTree = "<group>"; };
 		E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
@@ -231,6 +235,7 @@
 				E7AC44B828670C7800CD836B /* PDFCreator.swift */,
 				E7390CAC2869AFD00056D6D9 /* User.swift */,
 				E7D1D46F286B463500483754 /* Comment.swift */,
+				E7944B8D287E8EE600478931 /* Report.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 				E7B9258528603A0D007F266C /* JourneyManager.swift */,
 				E7390CAA2869AFAE0056D6D9 /* AuthManager.swift */,
 				E7DBA19C286EF7DE00C08C55 /* CommentManager.swift */,
+				E7944B8F287E8F3400478931 /* ReportManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -595,6 +601,7 @@
 				E7390CA928696D860056D6D9 /* LoginController.swift in Sources */,
 				E75B5FAB285B05F000B3A866 /* ScheduleController.swift in Sources */,
 				E7B9761F2864C70D00F575DC /* UICollectionViewCell+Extension.swift in Sources */,
+				E7944B8E287E8EE600478931 /* Report.swift in Sources */,
 				E7C69D402859B164004910AC /* MainTabController.swift in Sources */,
 				E74D67D5285E21D700700F09 /* ScheduleSectionFooter.swift in Sources */,
 				E7C69D3028597C83004910AC /* UIView+Extension.swift in Sources */,
@@ -643,6 +650,7 @@
 				E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */,
 				E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */,
 				E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */,
+				E7944B90287E8F3400478931 /* ReportManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
