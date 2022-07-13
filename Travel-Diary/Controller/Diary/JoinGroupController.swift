@@ -59,6 +59,9 @@ class JoinGroupController: UIViewController {
         return stack
     }()
     
+    private var centerYConstraint: NSLayoutConstraint!
+    private var bottomYConstraint: NSLayoutConstraint!
+    
     var journey: Journey?
 
     override func viewDidLoad() {
@@ -67,8 +70,13 @@ class JoinGroupController: UIViewController {
         configureData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        popupShowView()
+    }
+    
     func configureUI() {
-        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         view.addSubview(showView)
         showView.addSubview(coverImage)
         showView.addSubview(closeButton)
@@ -81,8 +89,12 @@ class JoinGroupController: UIViewController {
     }
     
     func configureConstraint() {
-        showView.center(inView: view)
+        showView.centerX(inView: view)
         showView.setDimensions(width: UIScreen.width * 0.8, height: UIScreen.height * 0.6)
+        bottomYConstraint = showView.topAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomYConstraint.isActive = true
+        centerYConstraint = showView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        centerYConstraint.isActive = false
         
         closeButton.anchor(top: showView.topAnchor,
                            right: showView.rightAnchor,
@@ -112,6 +124,29 @@ class JoinGroupController: UIViewController {
         coverImage.kf.setImage(with: url)
     }
     
+    func popupShowView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.bottomYConstraint.isActive = false
+            self.centerYConstraint.isActive = true
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func joinGroupSuccess() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.bottomYConstraint.isActive = true
+            self.centerYConstraint.isActive = false
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            self.view.layoutIfNeeded()
+        }) { [weak self] _ in
+            let presentingVC = self?.presentingViewController
+            self?.dismiss(animated: false, completion: {
+                presentingVC?.viewWillAppear(true)
+            })
+        }
+    }
+    
     func error404() {
         let alert = UIAlertController(title: "Error 404",
                                       message: "Please check your internet connect!",
@@ -128,10 +163,7 @@ class JoinGroupController: UIViewController {
         JourneyManager.shared.joinGroup(id: id) { [weak self] result in
             switch result {
             case .success:
-                let presentingVC = self?.presentingViewController
-                self?.dismiss(animated: true, completion: {
-                    presentingVC?.viewWillAppear(true)
-                })
+                self?.joinGroupSuccess()
             case .failure(let error):
                 self?.error404()
             }
@@ -139,6 +171,14 @@ class JoinGroupController: UIViewController {
     }
     
     @objc func closePage() {
-        self.dismiss(animated: true)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.bottomYConstraint.isActive = true
+            self.centerYConstraint.isActive = false
+            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            self.view.layoutIfNeeded()
+        }) { [weak self] _ in
+            self?.dismiss(animated: false)
+        }
+        
     }
 }

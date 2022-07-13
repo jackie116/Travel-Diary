@@ -35,7 +35,7 @@ class EditDetailController: UIViewController {
         button.layer.masksToBounds = true
         button.imageView?.contentMode = .scaleAspectFill
         button.imageView?.clipsToBounds = true
-        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderColor = UIColor.customBlue.cgColor
         button.layer.borderWidth = 3
         button.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
         return button
@@ -69,6 +69,11 @@ class EditDetailController: UIViewController {
         textView.layer.borderWidth = 3
         textView.layer.cornerRadius = 20
         textView.layer.borderColor = UIColor.customBlue.cgColor
+        
+        textView.clipsToBounds = true
+        textView.font = UIFont.systemFont(ofSize: 20)
+        textView.contentInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        
         return textView
     }()
     
@@ -108,20 +113,20 @@ class EditDetailController: UIViewController {
         plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                left: view.leftAnchor,
                                right: view.rightAnchor,
-                               paddingTop: 16, paddingLeft: 8,
-                               paddingRight: 8, height: 220)
+                               paddingTop: 32, paddingLeft: 16,
+                               paddingRight: 16, height: 220)
         
         stackView.anchor(top: plusPhotoButton.bottomAnchor,
                           left: view.leftAnchor,
                           right: view.rightAnchor,
-                          paddingTop: 8, paddingLeft: 8, paddingRight: 8)
+                          paddingTop: 16, paddingLeft: 16, paddingRight: 16)
         
         textView.anchor(top: stackView.bottomAnchor,
                         left: view.leftAnchor,
                         bottom: view.safeAreaLayoutGuide.bottomAnchor,
                         right: view.rightAnchor,
-                        paddingTop: 8, paddingLeft: 8,
-                        paddingBottom: 16, paddingRight: 8)
+                        paddingTop: 16, paddingLeft: 16,
+                        paddingBottom: 32, paddingRight: 16)
     }
     
     func configureData() {
@@ -154,7 +159,6 @@ class EditDetailController: UIViewController {
     }
     
     @objc func addPhoto() {
-//        present(imagePicker, animated: true, completion: nil)
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
                                             preferredStyle: .actionSheet)
