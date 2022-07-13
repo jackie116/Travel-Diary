@@ -10,7 +10,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-
 class ReportManager {
     static let shared = ReportManager()
         
