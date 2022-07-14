@@ -116,6 +116,7 @@ class DiaryController: UIViewController {
                 self?.tableView.reloadData()
                 self?.refreshControl.endRefreshing()
             case .failure:
+                self?.refreshControl.endRefreshing()
                 self?.error404()
             }
         }
