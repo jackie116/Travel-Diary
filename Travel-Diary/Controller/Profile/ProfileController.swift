@@ -206,7 +206,7 @@ class ProfileController: UIViewController {
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }

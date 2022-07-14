@@ -13,7 +13,7 @@ class ScheduleSectionFooter: UITableViewHeaderFooterView {
     lazy var button: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 20
-        button.setTitle("search to add", for: .normal)
+        button.setTitle("Search to add", for: .normal)
         button.backgroundColor = .customBlue
         return button
     }()

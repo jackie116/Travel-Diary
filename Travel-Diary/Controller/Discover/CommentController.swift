@@ -42,6 +42,7 @@ class CommentController: UIViewController {
         view.clipsToBounds = true
         view.isScrollEnabled = false
         view.font = UIFont.systemFont(ofSize: 20)
+        view.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
         view.delegate = self
         return view
     }()
@@ -52,6 +53,7 @@ class CommentController: UIViewController {
         view.clipsToBounds = true
         view.layer.masksToBounds = true
         view.contentMode = .scaleAspectFill
+        view.backgroundColor = .lightGray
         return view
     }()
     

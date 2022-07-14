@@ -21,7 +21,9 @@ class DiaryCell: UITableViewCell {
         let button = UIButton()
         button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-//        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
+//        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+//        button.clipsToBounds = true
+//        button.layer.cornerRadius = 20
         return button
     }()
     
@@ -84,7 +86,7 @@ class DiaryCell: UITableViewCell {
                          paddingBottom: 4, paddingRight: 4)
     }
     
-    func configureCell(title: String, start: Int64, end: Int64, coverPhoto: String) {
+    func setupUI(title: String, start: Int64, end: Int64, coverPhoto: String) {
         titleLabel.text = title
         dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: end))
@@ -96,6 +98,7 @@ class DiaryCell: UITableViewCell {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.width - 32, height: 200)
         gradientLayer.colors = [
+            UIColor(red: 1, green: 1, blue: 1, alpha: 0.3).cgColor,
             UIColor.clear.cgColor,
             UIColor(red: 0, green: 0, blue: 0, alpha: 0.3).cgColor
         ]

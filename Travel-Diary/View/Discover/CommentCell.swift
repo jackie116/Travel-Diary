@@ -21,7 +21,7 @@ class CommentCell: UITableViewCell {
     let commentView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.hexStringToUIColor(hex: "EBEBEB")
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 25
         return view
     }()
     
@@ -68,32 +68,32 @@ class CommentCell: UITableViewCell {
     func configureConstraint() {
         userPhoto.anchor(top: self.topAnchor,
                          left: self.leftAnchor,
-                         paddingTop: 4, paddingLeft: 8,
+                         paddingTop: 8, paddingLeft: 8,
                          width: 40, height: 40)
         
         commentView.anchor(top: self.topAnchor,
                            left: userPhoto.rightAnchor,
                            right: self.rightAnchor,
-                           paddingTop: 8, paddingLeft: 4, paddingRight: 16)
+                           paddingTop: 8, paddingLeft: 8, paddingRight: 16)
         
         commentTimeLabel.anchor(top: commentView.bottomAnchor,
                                 left: userPhoto.rightAnchor,
                                 bottom: self.bottomAnchor,
                                 right: self.rightAnchor,
-                                paddingTop: 4, paddingLeft: 8,
+                                paddingTop: 8, paddingLeft: 16,
                                 paddingBottom: 8, paddingRight: 16)
         
         userNameLabel.anchor(top: commentView.topAnchor,
                              left: commentView.leftAnchor,
                              right: commentView.rightAnchor,
-                             paddingTop: 4, paddingLeft: 8,
-                             paddingRight: 8)
+                             paddingTop: 8, paddingLeft: 16,
+                             paddingRight: 16)
         
         commentLabel.anchor(top: userNameLabel.bottomAnchor,
                        left: commentView.leftAnchor,
                        bottom: commentView.bottomAnchor,
                        right: commentView.rightAnchor,
-                       paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 8)
+                       paddingTop: 4, paddingLeft: 16, paddingBottom: 8, paddingRight: 16)
         
     }
     

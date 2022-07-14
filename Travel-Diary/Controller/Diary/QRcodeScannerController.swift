@@ -38,7 +38,8 @@ class QRcodeScannerController: UIViewController {
     
     let directionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Scan a QR code for quick join other journey"
+        label.text = "Scan QR code to join the journey"
+        label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
@@ -58,6 +59,7 @@ class QRcodeScannerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        qrcodeScanner()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +73,6 @@ class QRcodeScannerController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        qrcodeScanner()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -149,7 +150,7 @@ class QRcodeScannerController: UIViewController {
             // 初始化影片預覽層，並將其作為子層加入 viewPreview 視圖的圖層中
             videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            videoPreviewLayer?.frame = camView.layer.bounds
+            videoPreviewLayer?.frame = CGRect(x: 0, y: 0, width: UIScreen.width, height: UIScreen.height * 0.7)
             camView.layer.addSublayer(videoPreviewLayer!)
             camView.bringSubviewToFront(albumButton)
             
@@ -253,7 +254,7 @@ extension QRcodeScannerController: UIImagePickerControllerDelegate {
                     vc.modalPresentationStyle = .overFullScreen
                     let presentingVC = self?.presentingViewController
                     self?.navigationController?.dismiss(animated: false, completion: {
-                        presentingVC?.present(vc, animated: true)
+                        presentingVC?.present(vc, animated: false)
                     })
                 case .failure(let error):
                     self?.qrStringLabel.text = "Can't find the journey: \(error)"
