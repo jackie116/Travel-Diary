@@ -109,6 +109,7 @@ class DiscoverController: UIViewController {
                     }
                 }
             case .failure(let error):
+                self?.refreshControl.endRefreshing()
                 self?.error404(message: error.localizedDescription)
             }
         }

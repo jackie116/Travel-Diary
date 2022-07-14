@@ -241,6 +241,7 @@ class JourneyController: UIViewController {
                 self?.journeyTableView.reloadData()
                 self?.refreshControl.endRefreshing()
             case .failure:
+                self?.refreshControl.endRefreshing()
                 self?.error404()
             }
         }
