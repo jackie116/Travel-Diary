@@ -161,7 +161,7 @@ extension ScheduleMapController: MKMapViewDelegate {
 
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: "Pins", for: annotation)
         
-        guard let marker = view as? MKMarkerAnnotationView else { return view}
+        guard let marker = view as? MKMarkerAnnotationView else { return view }
         marker.glyphText = annotation.subtitle as? String
         marker.subtitleVisibility = .hidden
         view.canShowCallout = true

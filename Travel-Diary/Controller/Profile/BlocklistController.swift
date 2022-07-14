@@ -16,7 +16,34 @@ class BlocklistController: UIViewController {
         collection.register(UsersCell.self, forCellWithReuseIdentifier: UsersCell.identifier)
         collection.delegate = self
         collection.dataSource = self
+        collection.showsVerticalScrollIndicator = false
+        collection.backgroundColor = .clear
         return collection
+    }()
+    
+    private let backgroundStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 32
+        stack.alignment = .center
+        stack.distribution = .equalCentering
+        return stack
+    }()
+    
+    private let backgroundView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "gy_eat")
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0.5
+        return view
+    }()
+    
+    private let backgroundLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Empty blocklist"
+        label.alpha = 0.5
+        return label
     }()
     
     lazy var backButton: UIBarButtonItem = {
@@ -32,7 +59,7 @@ class BlocklistController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationItem.title = "Blocklist"
         setupUI()
         fetchBlocklist()
     }
@@ -72,11 +99,17 @@ class BlocklistController: UIViewController {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        backgroundStack.addArrangedSubview(backgroundView)
+        backgroundStack.addArrangedSubview(backgroundLabel)
+        view.addSubview(backgroundStack)
         view.addSubview(collection)
         setupConstraint()
     }
     
     func setupConstraint() {
+        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
+        backgroundStack.center(inView: view)
         collection.addConstraintsToFillSafeArea(view)
     }
     
@@ -135,7 +168,14 @@ extension BlocklistController: UICollectionViewDelegate {
 
 extension BlocklistController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        blockUsers.count
+        if blockUsers.count == 0 {
+            backgroundView.isHidden = false
+            backgroundLabel.isHidden = false
+        } else {
+            backgroundView.isHidden = true
+            backgroundLabel.isHidden = true
+        }
+        return blockUsers.count
     }
     
     func collectionView(_ collectionView: UICollectionView,

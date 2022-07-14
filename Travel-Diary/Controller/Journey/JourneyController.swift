@@ -20,6 +20,7 @@ class JourneyController: UIViewController {
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
+        table.backgroundColor = .clear
         
         return table
     }()
@@ -38,7 +39,42 @@ class JourneyController: UIViewController {
         return refreshControl
     }()
     
-    var journeys = [Journey]()
+    private let backgroundStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 32
+        stack.alignment = .center
+        stack.distribution = .equalCentering
+        return stack
+    }()
+    
+    private let backgroundView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "gy_photo")
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0.5
+        return view
+    }()
+    
+    private let backgroundLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Click '+' to add new journey"
+        label.alpha = 0.5
+        return label
+    }()
+    
+    var journeys = [Journey]() {
+        didSet {
+            if journeys.count == 0 {
+                backgroundView.isHidden = false
+                backgroundLabel.isHidden = false
+            } else {
+                backgroundView.isHidden = true
+                backgroundLabel.isHidden = true
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,12 +96,15 @@ class JourneyController: UIViewController {
         view.layer.insertSublayer(pulse, below: addButton.layer)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         view.layer.sublayers?.filter { $0 is PulseAnimation }.forEach { $0.removeFromSuperlayer() }
     }
 
     func configureUI() {
+        backgroundStack.addArrangedSubview(backgroundView)
+        backgroundStack.addArrangedSubview(backgroundLabel)
+        view.addSubview(backgroundStack)
         view.addSubview(journeyTableView)
         view.addSubview(addButton)
         journeyTableView.addSubview(refreshControl)
@@ -74,6 +113,10 @@ class JourneyController: UIViewController {
     }
     
     func configureConstraint() {
+
+        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
+        backgroundStack.center(inView: view)
+        
         journeyTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 left: view.leftAnchor,
                                 bottom: view.safeAreaLayoutGuide.bottomAnchor,
@@ -265,7 +308,7 @@ extension JourneyController: UITableViewDataSource {
             withIdentifier: DiaryCell.identifier,
             for: indexPath) as? DiaryCell else { return UITableViewCell() }
         
-        cell.configureCell(title: journeys[indexPath.row].title,
+        cell.setupUI(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,
                            end: journeys[indexPath.row].end,
                            coverPhoto: journeys[indexPath.row].coverPhoto)
