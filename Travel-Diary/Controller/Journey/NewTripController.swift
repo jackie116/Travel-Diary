@@ -60,7 +60,7 @@ class NewTripController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        self.title = "A New Trip"
+        self.title = "Add journey"
         setUI()
     }
     

@@ -38,7 +38,8 @@ class QRcodeScannerController: UIViewController {
     
     let directionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Scan a QR code for quick join other journey"
+        label.text = "Scan QR code to join the journey"
+        label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label

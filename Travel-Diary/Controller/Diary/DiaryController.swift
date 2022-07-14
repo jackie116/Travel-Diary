@@ -22,6 +22,7 @@ class DiaryController: UIViewController {
         table.rowHeight = UITableView.automaticDimension
         table.separatorStyle = .none
         table.showsVerticalScrollIndicator = false
+        table.backgroundColor = .clear
         
         return table
     }()
@@ -41,7 +42,42 @@ class DiaryController: UIViewController {
         return refreshControl
     }()
     
-    var journeys = [Journey]()
+    private let backgroundStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 32
+        stack.alignment = .center
+        stack.distribution = .equalCentering
+        return stack
+    }()
+    
+    private let backgroundView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "gy_eat")
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        view.alpha = 0.5
+        return view
+    }()
+    
+    private let backgroundLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Edit diary after add new journey"
+        label.alpha = 0.5
+        return label
+    }()
+    
+    var journeys = [Journey]() {
+        didSet {
+            if journeys.count == 0 {
+                backgroundView.isHidden = false
+                backgroundLabel.isHidden = false
+            } else {
+                backgroundView.isHidden = true
+                backgroundLabel.isHidden = true
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,12 +94,17 @@ class DiaryController: UIViewController {
     
     func configureUI() {
         navigationItem.rightBarButtonItem = qrcodeButton
+        backgroundStack.addArrangedSubview(backgroundView)
+        backgroundStack.addArrangedSubview(backgroundLabel)
+        view.addSubview(backgroundStack)
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
         configureConstraint()
     }
     
     func configureConstraint() {
+        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
+        backgroundStack.center(inView: view)
         tableView.addConstraintsToFillSafeArea(view)
     }
     
@@ -157,7 +198,6 @@ class DiaryController: UIViewController {
     
     func showLoginController() {
         let vc = LoginController()
-        // vc.alertMessage.text = "Sign in to join travel groups"
         navigationController?.present(vc, animated: true)
     }
     
@@ -202,7 +242,7 @@ extension DiaryController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: DiaryCell.identifier,
                                                        for: indexPath) as? DiaryCell else { return UITableViewCell() }
         
-        cell.configureCell(title: journeys[indexPath.row].title,
+        cell.setupUI(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,
                            end: journeys[indexPath.row].end,
                            coverPhoto: journeys[indexPath.row].coverPhoto)

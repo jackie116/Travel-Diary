@@ -154,8 +154,13 @@ class ModifyTripDetailController: UIViewController {
     }
     
     func setConstraint() {
-        plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
-                               right: view.rightAnchor, height: UIScreen.height / 3)
+        plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                               left: view.leftAnchor,
+                               right: view.rightAnchor,
+                               paddingTop: 32,
+                               paddingLeft: 16,
+                               paddingRight: 16,
+                               height: 220)
         vStackView.centerX(inView: view, topAnchor: plusPhotoButton.bottomAnchor, paddingTop: 32)
         
         submitButton.centerX(inView: view, topAnchor: vStackView.bottomAnchor, paddingTop: 32)
