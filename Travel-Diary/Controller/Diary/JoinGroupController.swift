@@ -13,6 +13,7 @@ class JoinGroupController: UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 20
+        view.clipsToBounds = true
         return view
     }()
     
@@ -21,12 +22,16 @@ class JoinGroupController: UIViewController {
         button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.addTarget(self, action: #selector(closePage), for: .touchUpInside)
-        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
+        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+        button.clipsToBounds = true
+        button.layer.cornerRadius = UIScreen.height * 0.025
         return button
     }()
     
     let coverImage: UIImageView = {
         let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
@@ -60,7 +65,7 @@ class JoinGroupController: UIViewController {
     }()
     
     private var centerYConstraint: NSLayoutConstraint!
-    private var bottomYConstraint: NSLayoutConstraint!
+    private var bottomConstraint: NSLayoutConstraint!
     
     var journey: Journey?
 
@@ -91,13 +96,15 @@ class JoinGroupController: UIViewController {
     func configureConstraint() {
         showView.centerX(inView: view)
         showView.setDimensions(width: UIScreen.width * 0.8, height: UIScreen.height * 0.6)
-        bottomYConstraint = showView.topAnchor.constraint(equalTo: view.bottomAnchor)
-        bottomYConstraint.isActive = true
+        bottomConstraint = showView.topAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomConstraint.isActive = true
         centerYConstraint = showView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         centerYConstraint.isActive = false
         
         closeButton.anchor(top: showView.topAnchor,
                            right: showView.rightAnchor,
+                           paddingTop: 8,
+                           paddingRight: 8,
                            width: UIScreen.height * 0.05,
                            height: UIScreen.height * 0.05)
         
@@ -126,20 +133,24 @@ class JoinGroupController: UIViewController {
     
     func popupShowView() {
         UIView.animate(withDuration: 0.5, animations: {
-            self.bottomYConstraint.isActive = false
+            self.bottomConstraint.isActive = false
             self.centerYConstraint.isActive = true
             self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
             self.view.layoutIfNeeded()
         })
     }
     
+    func declineShowView() {
+        bottomConstraint.isActive = true
+        centerYConstraint.isActive = false
+        view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
+        view.layoutIfNeeded()
+    }
+    
     func joinGroupSuccess() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.bottomYConstraint.isActive = true
-            self.centerYConstraint.isActive = false
-            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-            self.view.layoutIfNeeded()
-        }) { [weak self] _ in
+        UIView.animate(withDuration: 0.5) {
+            self.declineShowView()
+        } completion: { [weak self] _ in
             let presentingVC = self?.presentingViewController
             self?.dismiss(animated: false, completion: {
                 presentingVC?.viewWillAppear(true)
@@ -147,7 +158,7 @@ class JoinGroupController: UIViewController {
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
                                       message: "Please check your internet connect!",
                                       preferredStyle: .alert)
@@ -165,20 +176,16 @@ class JoinGroupController: UIViewController {
             case .success:
                 self?.joinGroupSuccess()
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
     
     @objc func closePage() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.bottomYConstraint.isActive = true
-            self.centerYConstraint.isActive = false
-            self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-            self.view.layoutIfNeeded()
-        }) { [weak self] _ in
+        UIView.animate(withDuration: 0.5) {
+            self.declineShowView()
+        } completion: { [weak self] _ in
             self?.dismiss(animated: false)
         }
-        
     }
 }
