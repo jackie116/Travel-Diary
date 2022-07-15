@@ -220,6 +220,24 @@ class JourneyManager {
         }
     }
     
+    func leaveGroup(journeyId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success(false))
+            return
+        }
+        
+        collectionRef.document(journeyId).updateData([
+            "users": FieldValue.arrayRemove([user.uid])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
+        }
+    }
+    
     // MARK: - 更新旅程名稱含封面照
     func updateJourneyWithCoverImage(journey: Journey, coverImage: UIImage?,
                                      completion: @escaping (Result<Void, Error>) -> Void) {

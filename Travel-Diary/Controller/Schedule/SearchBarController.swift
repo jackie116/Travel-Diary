@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import SwiftUI
 
 protocol HandleScheduleDelegate: AnyObject {
     func returnMark(mark: Spot, section: Int)
@@ -27,21 +28,30 @@ class SearchBarController: UIViewController {
     var resultSearchController: UISearchController?
     let mapView = MKMapView()
     var daySection: Int?
-    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "search")
+    
+//    let centerView: UIView = {
+//        let view = UIView()
+//        view.clipsToBounds = true
+//        view.contentMode = .scaleAspectFill
+//        return view
+//    }()
+    
+    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "emptyAnimation")
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        setSearchBar()
+    }
+    
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
         
-        view.addSubview(mapView)
-        mapView.alpha = 0.5
-        mapView.addConstraintsToFillView(view)
-        mapView.addSubview(animationView)
-        animationView.center(inView: mapView)
-
-        setSearchBar()
+        view.addSubview(animationView)
+        animationView.center(inView: view)
+        animationView.setDimensions(width: UIScreen.width * 0.8, height: UIScreen.width * 0.8)
     }
     
     override func viewWillAppear(_ animated: Bool) {

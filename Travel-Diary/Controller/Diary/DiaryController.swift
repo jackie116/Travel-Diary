@@ -115,16 +115,16 @@ class DiaryController: UIViewController {
                 self?.journeys = journeys
                 self?.tableView.reloadData()
                 self?.refreshControl.endRefreshing()
-            case .failure:
+            case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -149,19 +149,30 @@ class DiaryController: UIViewController {
                 return action
             }()
             controller.addAction(privacyAction)
+        } else {
+            let leaveAction: UIAlertAction = {
+                let action = UIAlertAction(title: "Leave group", style: .default) { [weak self] _ in
+                    self?.showLeaveGroupAlert(indexPath: indexPath)
+                }
+                action.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
+                return action
+            }()
+            controller.addAction(leaveAction)
         }
         
         // Group
-        let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
-            self?.dismiss(animated: false) {
-                let vc = QRcodeGeneratorController()
-                vc.id = self?.journeys[indexPath.row].id
-                let navVC = UINavigationController(rootViewController: vc)
-                self?.navigationController?.present(navVC, animated: true)
+        let groupAction: UIAlertAction = {
+            let action = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
+                self?.dismiss(animated: false) {
+                    let vc = QRcodeGeneratorController()
+                    vc.id = self?.journeys[indexPath.row].id
+                    let navVC = UINavigationController(rootViewController: vc)
+                    self?.navigationController?.present(navVC, animated: true)
+                }
             }
-            
-        }
-        groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
+            action.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
+            return action
+        }()
         controller.addAction(groupAction)
         
         // share pdf
@@ -188,6 +199,30 @@ class DiaryController: UIViewController {
         controller.addAction(cancelAction)
         
         present(controller, animated: true)
+    }
+    
+    func showLeaveGroupAlert(indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Leave group", message: "Are your sure you want to leave the group?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+            JourneyManager.shared.leaveGroup(journeyId: (self?.journeys[indexPath.row].id)!) { result in
+                switch result {
+                case .success(let isLeave):
+                    if isLeave {
+                        self?.journeys.remove(at: indexPath.row)
+                        self?.tableView.deleteRows(at: [indexPath], with: .fade)
+                    } else {
+                        self?.error404(message: "Can't find journey")
+                    }
+                case .failure(let error):
+                    self?.error404(message: error.localizedDescription)
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alert, animated: true)
     }
     
     func showQRcodeScannerController() {
