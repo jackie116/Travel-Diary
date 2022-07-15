@@ -143,9 +143,9 @@ class EditDetailController: UIViewController {
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -207,7 +207,7 @@ class EditDetailController: UIViewController {
                     self?.navigationController?.dismiss(animated: true)
                 }
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }

@@ -173,7 +173,7 @@ class ExpertJourneyController: UIViewController {
                 self?.tableView.reloadData()
                 self?.collectionView.reloadData()
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
 
@@ -190,9 +190,9 @@ class ExpertJourneyController: UIViewController {
         navigationController?.present(vc, animated: true)
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {

@@ -136,7 +136,7 @@ class CommentController: UIViewController {
                     self?.userPhoto.kf.setImage(with: url)
                 }
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
         fetchAllComments()
@@ -162,7 +162,7 @@ class CommentController: UIViewController {
                                                        commentTime: comment.commentTime)
                                 self?.showComments.append(data)
                             case .failure(let error):
-                                self?.error404()
+                                self?.error404(message: error.localizedDescription)
                             }
                             semaphore.signal()
                         }
@@ -173,14 +173,14 @@ class CommentController: UIViewController {
                     }
                 }
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -200,7 +200,7 @@ class CommentController: UIViewController {
                 self?.sendButton.isHidden = true
                 self?.fetchAllComments()
             case .failure(let error):
-                print("\(error)")
+                self?.error404(message: error.localizedDescription)
             }
         }
     }

@@ -188,7 +188,7 @@ class JourneyController: UIViewController {
                     self?.journeyTableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
                     self?.journeyTableView.endUpdates()
                 case .failure(let error):
-                    print("Delete failed \(error)")
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }
@@ -213,7 +213,7 @@ class JourneyController: UIViewController {
                     self?.journeyTableView.deleteRows(at: [indexPath], with: .left)
                     self?.journeyTableView.endUpdates()
                 case .failure(let error):
-                    print("Delete failed \(error)")
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }
@@ -243,16 +243,16 @@ class JourneyController: UIViewController {
                 self?.journeys = journeys
                 self?.journeyTableView.reloadData()
                 self?.refreshControl.endRefreshing()
-            case .failure:
+            case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {

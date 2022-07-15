@@ -78,7 +78,7 @@ class ProfileController: UIViewController {
                     self?.userLabel.text = user.username
                 }
             case .failure(let error):
-                self?.error404(error: error)
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
@@ -171,7 +171,7 @@ class ProfileController: UIViewController {
                         self?.tabBarController?.selectedIndex = 0
                     }
                 case .failure(let error):
-                    self?.error404(error: error)
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }))
@@ -193,7 +193,7 @@ class ProfileController: UIViewController {
                 case .success:
                     self?.tabBarController?.selectedIndex = 0
                 case .failure(let error):
-                    self?.error404(error: error)
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }))
@@ -203,9 +203,9 @@ class ProfileController: UIViewController {
         present(alert, animated: true)
     }
     
-    func error404(error: Error) {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: error.localizedDescription,
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -258,7 +258,7 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         if let error = error {
-            self.error404(error: error)
+            self.error404(message: error.localizedDescription)
         }
         
         controller.dismiss(animated: true, completion: nil)

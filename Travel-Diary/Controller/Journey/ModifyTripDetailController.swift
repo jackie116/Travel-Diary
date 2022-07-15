@@ -182,9 +182,9 @@ class ModifyTripDetailController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -270,7 +270,7 @@ class ModifyTripDetailController: UIViewController {
                         print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404()
+                        self?.error404(message: error.localizedDescription)
                     }
                 }
             } else {
@@ -280,7 +280,7 @@ class ModifyTripDetailController: UIViewController {
                         print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404()
+                        self?.error404(message: error.localizedDescription)
                     }
                 }
             }
