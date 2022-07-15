@@ -99,16 +99,15 @@ class EditProfileController: UIViewController {
                         self?.userPhotoButton.setImage(UIImage(systemName: "plus"), for: .normal)
                     }
                 }
-            case .failure(let error):
-                print("Fetch user data failed \(error)")
+            case .failure:
                 self?.userPhotoButton.setImage(UIImage(systemName: "plus"), for: .normal)
             }
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -120,6 +119,7 @@ class EditProfileController: UIViewController {
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
                                             preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = .customBlue
         
         let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
             if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
@@ -162,7 +162,7 @@ class EditProfileController: UIViewController {
                     self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }

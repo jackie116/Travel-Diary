@@ -34,6 +34,7 @@ class DiscoverCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.backgroundColor = .lightGray
+        image.layer.cornerRadius = 10
         return image
     }()
     
@@ -113,8 +114,8 @@ class DiscoverCell: UITableViewCell {
         vStackView.anchor(left: coverImageView.leftAnchor,
                           bottom: coverImageView.bottomAnchor,
                           right: coverImageView.rightAnchor,
-                          paddingLeft: 4, paddingBottom: 4,
-                          paddingRight: 4)
+                          paddingLeft: 8, paddingBottom: 4,
+                          paddingRight: 8)
     }
     
     func configureCell(name: String, photo: String, title: String, start: Int64, end: Int64, coverPhoto: String) {

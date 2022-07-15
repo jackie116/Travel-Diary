@@ -135,30 +135,7 @@ class DiaryController: UIViewController {
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        if journeys[indexPath.row].owner == AuthManager.shared.userId {
-            let privacyAction: UIAlertAction = {
-                let action = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
-                    self?.dismiss(animated: false) {
-                        let vc = PrivacyController()
-                        vc.journey = self?.journeys[indexPath.row]
-                        self?.present(vc, animated: true)
-                    }
-                }
-                action.setValue(UIImage(systemName: "person.3"), forKey: "image")
-                return action
-            }()
-            controller.addAction(privacyAction)
-        } else {
-            let leaveAction: UIAlertAction = {
-                let action = UIAlertAction(title: "Leave group", style: .default) { [weak self] _ in
-                    self?.showLeaveGroupAlert(indexPath: indexPath)
-                }
-                action.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
-                return action
-            }()
-            controller.addAction(leaveAction)
-        }
+        controller.view.tintColor = .customBlue
         
         // Group
         let groupAction: UIAlertAction = {
@@ -190,6 +167,30 @@ class DiaryController: UIViewController {
         }()
         controller.addAction(sharePDFAction)
         
+        if journeys[indexPath.row].owner == AuthManager.shared.userId {
+            let privacyAction: UIAlertAction = {
+                let action = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
+                    self?.dismiss(animated: false) {
+                        let vc = PrivacyController()
+                        vc.journey = self?.journeys[indexPath.row]
+                        self?.present(vc, animated: true)
+                    }
+                }
+                action.setValue(UIImage(systemName: "person.3"), forKey: "image")
+                return action
+            }()
+            controller.addAction(privacyAction)
+        } else {
+            let leaveAction: UIAlertAction = {
+                let action = UIAlertAction(title: "Leave group", style: .destructive) { [weak self] _ in
+                    self?.showLeaveGroupAlert(indexPath: indexPath)
+                }
+                action.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
+                return action
+            }()
+            controller.addAction(leaveAction)
+        }
+        
         // Cancel
         let cancelAction: UIAlertAction = {
             let action = UIAlertAction(title: "Cancel", style: .cancel)
@@ -203,6 +204,7 @@ class DiaryController: UIViewController {
     
     func showLeaveGroupAlert(indexPath: IndexPath) {
         let alert = UIAlertController(title: "Leave group", message: "Are your sure you want to leave the group?", preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             JourneyManager.shared.leaveGroup(journeyId: (self?.journeys[indexPath.row].id)!) { result in

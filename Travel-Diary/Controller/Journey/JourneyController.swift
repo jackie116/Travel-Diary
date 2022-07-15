@@ -132,6 +132,7 @@ class JourneyController: UIViewController {
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        controller.view.tintColor = .customBlue
     
         // Detail
         let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
@@ -174,6 +175,7 @@ class JourneyController: UIViewController {
         let controller = UIAlertController(title: "Copy",
                                            message: "Are you sure you want to copy this trip?",
                                            preferredStyle: .alert)
+        controller.view.tintColor = .customBlue
         let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
             var journey = self.journeys[indexPath.row]
             journey.title += "_copy"
@@ -186,7 +188,7 @@ class JourneyController: UIViewController {
                     self?.journeyTableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
                     self?.journeyTableView.endUpdates()
                 case .failure(let error):
-                    print("Delete failed \(error)")
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }
@@ -201,6 +203,7 @@ class JourneyController: UIViewController {
         let controller = UIAlertController(title: "Delete",
                                            message: "Are you sure you want to delete this trip?",
                                            preferredStyle: .alert)
+        controller.view.tintColor = .customBlue
         let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
             JourneyManager.shared.deleteJourney(id: (self.journeys[indexPath.row].id)!) { [weak self] result in
                 switch result {
@@ -210,7 +213,7 @@ class JourneyController: UIViewController {
                     self?.journeyTableView.deleteRows(at: [indexPath], with: .left)
                     self?.journeyTableView.endUpdates()
                 case .failure(let error):
-                    print("Delete failed \(error)")
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }
@@ -240,16 +243,16 @@ class JourneyController: UIViewController {
                 self?.journeys = journeys
                 self?.journeyTableView.reloadData()
                 self?.refreshControl.endRefreshing()
-            case .failure:
+            case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {

@@ -78,7 +78,7 @@ class ProfileController: UIViewController {
                     self?.userLabel.text = user.username
                 }
             case .failure(let error):
-                self?.error404(error: error)
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
@@ -161,6 +161,7 @@ class ProfileController: UIViewController {
         let alert = UIAlertController(title: "Delete Account",
                                       message: "Are you sure you want to delete account?/nYou will lose all you data",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             AuthManager.shared.deleteAccount { result in
@@ -170,12 +171,12 @@ class ProfileController: UIViewController {
                         self?.tabBarController?.selectedIndex = 0
                     }
                 case .failure(let error):
-                    self?.error404(error: error)
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }
@@ -184,6 +185,7 @@ class ProfileController: UIViewController {
         let alert = UIAlertController(title: "Sign Out",
                                       message: "Are you sure you want to sign out?",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             AuthManager.shared.signOut { [weak self] result in
@@ -191,19 +193,19 @@ class ProfileController: UIViewController {
                 case .success:
                     self?.tabBarController?.selectedIndex = 0
                 case .failure(let error):
-                    self?.error404(error: error)
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }
     
-    func error404(error: Error) {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: error.localizedDescription,
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -256,7 +258,7 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         if let error = error {
-            self.error404(error: error)
+            self.error404(message: error.localizedDescription)
         }
         
         controller.dismiss(animated: true, completion: nil)
