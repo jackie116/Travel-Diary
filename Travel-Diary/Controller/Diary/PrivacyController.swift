@@ -129,6 +129,7 @@ class PrivacyController: UIViewController {
         let alert = UIAlertController(title: "Delete user",
                                       message: "Are you sure you want to delete user?",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             JourneyManager.shared.removeFromGroup(journeyId: (self?.journey?.id)!,
@@ -144,7 +145,7 @@ class PrivacyController: UIViewController {
             
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }

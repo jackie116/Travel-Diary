@@ -132,6 +132,7 @@ class JourneyController: UIViewController {
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        controller.view.tintColor = .customBlue
     
         // Detail
         let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
@@ -174,6 +175,7 @@ class JourneyController: UIViewController {
         let controller = UIAlertController(title: "Copy",
                                            message: "Are you sure you want to copy this trip?",
                                            preferredStyle: .alert)
+        controller.view.tintColor = .customBlue
         let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
             var journey = self.journeys[indexPath.row]
             journey.title += "_copy"
@@ -201,6 +203,7 @@ class JourneyController: UIViewController {
         let controller = UIAlertController(title: "Delete",
                                            message: "Are you sure you want to delete this trip?",
                                            preferredStyle: .alert)
+        controller.view.tintColor = .customBlue
         let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
             JourneyManager.shared.deleteJourney(id: (self.journeys[indexPath.row].id)!) { [weak self] result in
                 switch result {

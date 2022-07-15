@@ -161,6 +161,7 @@ class ProfileController: UIViewController {
         let alert = UIAlertController(title: "Delete Account",
                                       message: "Are you sure you want to delete account?/nYou will lose all you data",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             AuthManager.shared.deleteAccount { result in
@@ -175,7 +176,7 @@ class ProfileController: UIViewController {
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }
@@ -184,6 +185,7 @@ class ProfileController: UIViewController {
         let alert = UIAlertController(title: "Sign Out",
                                       message: "Are you sure you want to sign out?",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             AuthManager.shared.signOut { [weak self] result in
@@ -196,7 +198,7 @@ class ProfileController: UIViewController {
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }

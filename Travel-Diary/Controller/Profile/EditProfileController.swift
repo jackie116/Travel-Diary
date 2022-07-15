@@ -120,6 +120,7 @@ class EditProfileController: UIViewController {
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
                                             preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = .customBlue
         
         let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
             if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {

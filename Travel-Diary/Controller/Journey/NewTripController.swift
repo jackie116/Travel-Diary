@@ -123,6 +123,7 @@ class NewTripController: UIViewController {
                                                message: "Trip name is empty.",
                                                preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
             controller.addAction(okAction)
             present(controller, animated: true, completion: nil)
         } else if self.startDatePicker.date > endDatePicker.date {
@@ -130,6 +131,7 @@ class NewTripController: UIViewController {
                                                message: "Trip's end date is before start date.",
                                                preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
             controller.addAction(okAction)
             present(controller, animated: true, completion: nil)
         } else {

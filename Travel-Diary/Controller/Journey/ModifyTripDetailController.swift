@@ -177,6 +177,7 @@ class ModifyTripDetailController: UIViewController {
                                            message: message,
                                            preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
         controller.addAction(okAction)
         present(controller, animated: true, completion: nil)
     }
@@ -196,6 +197,7 @@ class ModifyTripDetailController: UIViewController {
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
                                             preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = .customBlue
         
         let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
             if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
