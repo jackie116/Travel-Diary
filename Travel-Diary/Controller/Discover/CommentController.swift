@@ -71,6 +71,8 @@ class CommentController: UIViewController {
         return table
     }()
     
+    let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "emptyBox")
+    
     var journeyId: String?
     var comments = [Comment]()
     var showComments = [ShowComment]()
@@ -86,6 +88,7 @@ class CommentController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(tableView)
         view.addSubview(buttomView)
+        tableView.addSubview(animationView)
         buttomView.addSubview(buttomStackView)
         buttomStackView.addArrangedSubview(userPhoto)
         buttomStackView.addArrangedSubview(commentView)
@@ -94,19 +97,25 @@ class CommentController: UIViewController {
     }
     
     func configureConstraint() {
+        animationView.center(inView: tableView)
+        animationView.setDimensions(width: UIScreen.width * 0.4, height: UIScreen.width * 0.4)
+        
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor, right: view.rightAnchor,
                          paddingTop: 16)
+        
         buttomView.anchor(top: tableView.bottomAnchor,
                                left: view.leftAnchor,
                           bottom: view.bottomAnchor,
                                right: view.rightAnchor)
+        
         buttomStackView.anchor(top: buttomView.topAnchor,
                                left: buttomView.leftAnchor,
                                bottom: buttomView.bottomAnchor,
                                right: buttomView.rightAnchor,
                                paddingTop: 16, paddingLeft: 16,
                                paddingBottom: 32, paddingRight: 16)
+        
         userPhoto.setDimensions(width: 50, height: 50)
         sendButton.anchor(width: 32)
         sendButton.isHidden = true
@@ -203,7 +212,10 @@ extension CommentController: UITableViewDelegate {
 
 extension CommentController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        showComments.count
+        if showComments.count != 0 {
+            animationView.removeFromSuperview()
+        }
+        return showComments.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
