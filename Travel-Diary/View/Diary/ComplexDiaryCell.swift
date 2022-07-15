@@ -27,6 +27,7 @@ class ComplexDiaryCell: UITableViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
+        image.layer.cornerRadius = 10
         return image
     }()
     

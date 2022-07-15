@@ -11,8 +11,6 @@ class UsersCell: UICollectionViewCell {
     let userView: UIView = {
         let view = UIImageView()
         view.layer.cornerRadius = 20
-        view.layer.borderWidth = 5
-        view.layer.borderColor = UIColor.customBlue.cgColor
         view.backgroundColor = UIColor(red: 0, green: 181 / 255, blue: 181 / 255, alpha: 0.1)
         return view
     }()

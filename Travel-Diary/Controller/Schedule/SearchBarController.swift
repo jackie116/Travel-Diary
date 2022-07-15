@@ -29,13 +29,6 @@ class SearchBarController: UIViewController {
     let mapView = MKMapView()
     var daySection: Int?
     
-//    let centerView: UIView = {
-//        let view = UIView()
-//        view.clipsToBounds = true
-//        view.contentMode = .scaleAspectFill
-//        return view
-//    }()
-    
     let animationView = LottieAnimation.shared.createLoopAnimation(lottieName: "emptyAnimation")
 
     override func viewDidLoad() {

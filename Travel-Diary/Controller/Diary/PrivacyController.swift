@@ -89,7 +89,7 @@ class PrivacyController: UIViewController {
                 self?.users = users
                 self?.collection.reloadData()
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }
@@ -115,9 +115,9 @@ class PrivacyController: UIViewController {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
-    func error404() {
+    func error404(message: String) {
         let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
+                                      message: message,
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
@@ -129,6 +129,7 @@ class PrivacyController: UIViewController {
         let alert = UIAlertController(title: "Delete user",
                                       message: "Are you sure you want to delete user?",
                                       preferredStyle: .alert)
+        alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
             JourneyManager.shared.removeFromGroup(journeyId: (self?.journey?.id)!,
@@ -138,13 +139,13 @@ class PrivacyController: UIViewController {
                     self?.users.remove(at: indexPath.item)
                     self?.collection.deleteItems(at: [indexPath])
                 case .failure(let error):
-                    self?.error404()
+                    self?.error404(message: error.localizedDescription)
                 }
             }
             
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }
@@ -156,7 +157,7 @@ class PrivacyController: UIViewController {
             case .success:
                 print("Success")
             case .failure(let error):
-                self?.error404()
+                self?.error404(message: error.localizedDescription)
             }
         }
     }

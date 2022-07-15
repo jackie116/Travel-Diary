@@ -73,11 +73,38 @@ class JourneyManager {
         do {
             var data = journey
             data.owner = user.uid
+            data.users = [user.uid]
+            data.isPublic = false
             let docRef = try collectionRef.addDocument(from: data)
             data.id = docRef.documentID
             completion(.success(data))
         } catch {
             completion(.failure(error))
+        }
+    }
+    
+    func copyExpertJourney(journeyId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            completion(.success(false))
+            return
+        }
+        
+        collectionRef.document(journeyId).getDocument(as: Journey.self) { [weak self] result in
+            switch result {
+            case .success(var journey):
+                journey.owner = user.uid
+                journey.users = [user.uid]
+                journey.isPublic = false
+                do {
+                    try self?.collectionRef.addDocument(from: journey)
+                    completion(.success(true))
+                } catch {
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     

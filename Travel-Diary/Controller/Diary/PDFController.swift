@@ -94,7 +94,7 @@ class PDFController: UIViewController {
                     coverImage = image
                     semaphore.signal()
                 case .failure(let error):
-                    print(error)
+                    self.error404(message: error.localizedDescription)
                     semaphore.signal()
                 }
             }
@@ -105,13 +105,13 @@ class PDFController: UIViewController {
                 spots.append(PdfSpot(name: "Day \(days)", image: nil, address: "", isDay: true))
                 for spot in day.spot {
                     var spotImage: UIImage?
-                    self.downloadImage(urlString: spot.photo) { result in
+                    self.downloadImage(urlString: spot.photo) { [weak self] result in
                         switch result {
                         case .success(let image):
                             spotImage = image
                             semaphore.signal()
                         case .failure(let error):
-                            print(error)
+                            self?.error404(message: error.localizedDescription)
                             semaphore.signal()
                         }
                     }
@@ -128,16 +128,26 @@ class PDFController: UIViewController {
     func downloadImage(urlString: String, completion: @escaping (Result<UIImage, Error>) -> Void) {
         if let url = URL(string: urlString) {
             let resource = ImageResource(downloadURL: url)
-            KingfisherManager.shared.retrieveImage(with: resource) { result in
+            KingfisherManager.shared.retrieveImage(with: resource) { [weak self] result in
                 switch result {
                 case .success(let result):
                     completion(.success(result.image))
                 case .failure(let error):
-                    completion(.failure(error))
+                    self?.error404(message: error.localizedDescription)
                 }
             }
         } else {
             completion(.success(UIImage()))
+        }
+    }
+    
+    func error404(message: String) {
+        let alert = UIAlertController(title: "Error 404",
+                                      message: message,
+                                      preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     

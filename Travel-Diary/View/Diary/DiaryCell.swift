@@ -14,6 +14,7 @@ class DiaryCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.backgroundColor = .lightGray
+        image.layer.cornerRadius = 10
         return image
     }()
     
@@ -21,9 +22,6 @@ class DiaryCell: UITableViewCell {
         let button = UIButton()
         button.tintColor = .customBlue
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-//        button.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-//        button.clipsToBounds = true
-//        button.layer.cornerRadius = 20
         return button
     }()
     
@@ -82,8 +80,8 @@ class DiaryCell: UITableViewCell {
                               width: 40, height: 40)
 
         vStackView.anchor(left: coverImageView.leftAnchor, bottom: coverImageView.bottomAnchor,
-                         right: coverImageView.rightAnchor, paddingLeft: 4,
-                         paddingBottom: 4, paddingRight: 4)
+                         right: coverImageView.rightAnchor, paddingLeft: 8,
+                         paddingBottom: 4, paddingRight: 8)
     }
     
     func setupUI(title: String, start: Int64, end: Int64, coverPhoto: String) {
