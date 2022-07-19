@@ -9,7 +9,8 @@ import UIKit
 import Kingfisher
 
 class JourneyController: UIViewController {
-    private lazy var journeyTableView: UITableView = {
+    
+    private lazy var tableView: UITableView = {
         let table = UITableView()
         
         table.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
@@ -78,9 +79,8 @@ class JourneyController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         navigationItem.title = "Journey"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,13 +101,14 @@ class JourneyController: UIViewController {
         view.layer.sublayers?.filter { $0 is PulseAnimation }.forEach { $0.removeFromSuperlayer() }
     }
 
-    func configureUI() {
+    func setupUI() {
+        view.backgroundColor = .white
         backgroundStack.addArrangedSubview(backgroundView)
         backgroundStack.addArrangedSubview(backgroundLabel)
         view.addSubview(backgroundStack)
-        view.addSubview(journeyTableView)
+        view.addSubview(tableView)
         view.addSubview(addButton)
-        journeyTableView.addSubview(refreshControl)
+        tableView.addSubview(refreshControl)
     
         configureConstraint()
     }
@@ -117,7 +118,7 @@ class JourneyController: UIViewController {
         backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
         backgroundStack.center(inView: view)
         
-        journeyTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 left: view.leftAnchor,
                                 bottom: view.safeAreaLayoutGuide.bottomAnchor,
                                 right: view.rightAnchor)
@@ -184,9 +185,9 @@ class JourneyController: UIViewController {
                 switch result {
                 case .success(let journey):
                     self?.journeys.insert(journey, at: 0)
-                    self?.journeyTableView.beginUpdates()
-                    self?.journeyTableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-                    self?.journeyTableView.endUpdates()
+                    self?.tableView.beginUpdates()
+                    self?.tableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+                    self?.tableView.endUpdates()
                 case .failure(let error):
                     self?.error404(message: error.localizedDescription)
                 }
@@ -209,9 +210,9 @@ class JourneyController: UIViewController {
                 switch result {
                 case .success:
                     self?.journeys.remove(at: indexPath.row)
-                    self?.journeyTableView.beginUpdates()
-                    self?.journeyTableView.deleteRows(at: [indexPath], with: .left)
-                    self?.journeyTableView.endUpdates()
+                    self?.tableView.beginUpdates()
+                    self?.tableView.deleteRows(at: [indexPath], with: .left)
+                    self?.tableView.endUpdates()
                 case .failure(let error):
                     self?.error404(message: error.localizedDescription)
                 }
@@ -241,7 +242,7 @@ class JourneyController: UIViewController {
             switch result {
             case .success(let journeys):
                 self?.journeys = journeys
-                self?.journeyTableView.reloadData()
+                self?.tableView.reloadData()
                 self?.refreshControl.endRefreshing()
             case .failure(let error):
                 self?.refreshControl.endRefreshing()
@@ -262,8 +263,8 @@ class JourneyController: UIViewController {
     
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
-        let point = sender.convert(CGPoint.zero, to: journeyTableView)
-        if let indexPath = journeyTableView.indexPathForRow(at: point) {
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        if let indexPath = tableView.indexPathForRow(at: point) {
             showAlertController(indexPath: indexPath)
         }
     }

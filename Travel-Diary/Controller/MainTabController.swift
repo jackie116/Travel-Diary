@@ -51,7 +51,6 @@ class MainTabController: UITabBarController {
     
     func showLoginController() {
         let vc = LoginController()
-        // vc.alertMessage.text = "Sign in to edit your profile"
         self.present(vc, animated: true)
     }
     

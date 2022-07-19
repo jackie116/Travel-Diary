@@ -26,7 +26,7 @@ class DaysCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureData(day: Int) {
+    func setupData(day: Int) {
         dayLabel.text = "Day \(day + 1)"
         
         if self.isSelected {

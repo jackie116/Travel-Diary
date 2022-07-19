@@ -15,7 +15,7 @@ class ScheduleMapController: UIViewController {
         let button = UIButton(frame: CGRect(
             origin: CGPoint.zero,
             size: CGSize(width: 48, height: 48)))
-        button.setBackgroundImage(UIImage(named: "Map"), for: .normal)
+        button.setBackgroundImage(UIImage.asset(.map), for: .normal)
         return button
     }()
     
@@ -28,31 +28,32 @@ class ScheduleMapController: UIViewController {
         return button
     }()
     
+    lazy var mapView: MKMapView = {
+        let mapView = MKMapView()
+        mapView.delegate = self
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Pins")
+        return mapView
+    }()
+    
     var tripData: Journey?
     
     var selectedPin: MKPlacemark?
-    
-    let mapView = MKMapView()
     
     let lineColor: [UIColor] = [.red, .orange, .yellow, .green, .blue, .indigo, .purple]
     
     var annotationData = [DailySpot]()
     
-    private lazy var scheduleVC = ScheduleController()
-    
     var barAppearance = UINavigationBarAppearance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        mapView.delegate = self
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "Pins")
-        setUI()
+
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // 透明Navigation Bar
+        
         barAppearance.configureWithTransparentBackground()
         navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
         
@@ -60,29 +61,30 @@ class ScheduleMapController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
+        super.viewWillDisappear(animated)
+        
         barAppearance.configureWithDefaultBackground()
         navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
         
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func setUI() {
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-        setMapUI()
-        setScheduleUI()
-    }
-    
-    func setMapUI() {
         view.addSubview(mapView)
-        mapView.anchor(top: view.topAnchor, left: view.leftAnchor,
-                       bottom: view.bottomAnchor, right: view.rightAnchor,
-                       paddingTop: 0, paddingLeft: 0,
-                       paddingBottom: 0, paddingRight: 0)
+        setupConstraint()
+        setupScheduleUI()
     }
     
-    func setScheduleUI() {
+    func setupConstraint() {
+        mapView.anchor(top: view.topAnchor, left: view.leftAnchor,
+                       bottom: view.bottomAnchor, right: view.rightAnchor)
+    }
+    
+    func setupScheduleUI() {
+        let scheduleVC = ScheduleController()
+        
         scheduleVC.delegate = self
         scheduleVC.tripData = tripData
         
