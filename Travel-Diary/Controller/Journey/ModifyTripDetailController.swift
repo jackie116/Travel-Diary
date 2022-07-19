@@ -10,8 +10,7 @@ import Kingfisher
 
 class ModifyTripDetailController: UIViewController {
     
-    private var coverImage: UIImage?
-    
+    // MARK: - Properties
     lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                      style: .plain,
@@ -105,12 +104,15 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
+    private var coverImage: UIImage?
+    
     var journey: Journey?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        initData()
+        setupUI()
+        setupData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,7 +125,8 @@ class ModifyTripDetailController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func initData() {
+    // MARK: - Helpers
+    func setupData() {
         guard let journey = journey else { return }
         titleTextField.text = journey.title
         startDatePicker.date = Date(milliseconds: journey.start)
@@ -136,7 +139,7 @@ class ModifyTripDetailController: UIViewController {
         }
     }
     
-    func configureUI() {
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
@@ -150,10 +153,10 @@ class ModifyTripDetailController: UIViewController {
         vStackView.addArrangedSubview(endStackView)
         view.addSubview(vStackView)
         view.addSubview(submitButton)
-        setConstraint()
+        setupConstraint()
     }
     
-    func setConstraint() {
+    func setupConstraint() {
         plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                left: view.leftAnchor,
                                right: view.rightAnchor,
@@ -161,6 +164,7 @@ class ModifyTripDetailController: UIViewController {
                                paddingLeft: 16,
                                paddingRight: 16,
                                height: 220)
+        
         vStackView.centerX(inView: view, topAnchor: plusPhotoButton.bottomAnchor, paddingTop: 32)
         
         submitButton.centerX(inView: view, topAnchor: vStackView.bottomAnchor, paddingTop: 32)
@@ -170,26 +174,6 @@ class ModifyTripDetailController: UIViewController {
     func daysBetween(start: Date, end: Date) -> Int {
         let components = Calendar.current.dateComponents([.day], from: start, to: end)
         return (components.day ?? 0) + 1
-    }
-    
-    func showAlert(title: String, message: String) {
-        let controller = UIAlertController(title: title,
-                                           message: message,
-                                           preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
-        controller.addAction(okAction)
-        present(controller, animated: true, completion: nil)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
     
     // MARK: - Selectors
@@ -231,9 +215,9 @@ class ModifyTripDetailController: UIViewController {
     
     @objc func didSubmit() {
         if self.titleTextField.text?.isEmpty == true {
-            showAlert(title: "Please input name of trip!", message: "Trip name is empty.")
+            AlertHelper.shared.showAlert(title: "Empty title", message: "Please input name of trip!", over: self)
         } else if self.startDatePicker.date > endDatePicker.date {
-            showAlert(title: "Date Error!!!", message: "Trip's end date is before start date.")
+            AlertHelper.shared.showAlert(title: "Date Error!", message: "Trip's end date is before start date", over: self)
         } else {
             guard let title = self.titleTextField.text else { return }
             guard var journey = journey else { return }
@@ -267,20 +251,18 @@ class ModifyTripDetailController: UIViewController {
                     journey: journey, coverImage: coverImage) { [weak self] result in
                     switch result {
                     case .success:
-                        print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404(message: error.localizedDescription)
+                        AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                     }
                 }
             } else {
                 JourneyManager.shared.updateJourney(journey: journey) { [weak self] result in
                     switch result {
                     case .success:
-                        print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404(message: error.localizedDescription)
+                        AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                     }
                 }
             }

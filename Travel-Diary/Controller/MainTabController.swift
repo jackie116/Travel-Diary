@@ -49,17 +49,12 @@ class MainTabController: UITabBarController {
         return nav
     }
     
-    func showLoginController() {
-        let vc = LoginController()
-        self.present(vc, animated: true)
-    }
-    
     func isSignIn() -> Bool {
         var isSignIn = false
         AuthManager.shared.checkUser { [weak self] bool in
             isSignIn = bool
             if !isSignIn {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
         return isSignIn

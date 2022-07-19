@@ -81,7 +81,7 @@ class DiscoverController: UIViewController {
                         case .success(let user):
                             filteredJourneys = journeys.filter { !user.blocklist.contains($0.owner) }
                         case .failure(let error):
-                            self?.error404(message: error.localizedDescription)
+                            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                         }
                         group.leave()
                     }
@@ -99,7 +99,7 @@ class DiscoverController: UIViewController {
                                                                   userInfo: user)
                                 self?.expertJourneys.append(expertJourney)
                             case .failure(let error):
-                                self?.error404(message: error.localizedDescription)
+                                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                             }
                             group.leave()
                         }
@@ -111,7 +111,7 @@ class DiscoverController: UIViewController {
                 }
             case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
@@ -168,10 +168,10 @@ class DiscoverController: UIViewController {
                     if isCopy {
                         print("Success")
                     } else {
-                        self?.error404(message: "Can't find data")
+                        AlertHelper.shared.showErrorAlert(message: "Can't find journey", over: self)
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }
@@ -235,7 +235,7 @@ class DiscoverController: UIViewController {
             case .success:
                 self?.showReportSuccessAlert()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
@@ -261,12 +261,12 @@ class DiscoverController: UIViewController {
                 switch result {
                 case .success(let isSignIn):
                     if !isSignIn {
-                        self?.error404(message: "Please sign in first")
+                        AlertHelper.shared.showErrorAlert(message: "Please sign in first", over: self)
                     } else {
                         self?.fetchJourneys()
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }))
@@ -274,16 +274,6 @@ class DiscoverController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
     
     // MARK: - selector

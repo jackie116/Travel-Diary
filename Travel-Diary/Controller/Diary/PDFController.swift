@@ -88,13 +88,13 @@ class PDFController: UIViewController {
         
         DispatchQueue.global().async {
             let semaphore = DispatchSemaphore(value: 0)
-            self.downloadImage(urlString: journey.coverPhoto) { result in
+            self.downloadImage(urlString: journey.coverPhoto) { [weak self] result in
                 switch result {
                 case .success(let image):
                     coverImage = image
                     semaphore.signal()
                 case .failure(let error):
-                    self.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                     semaphore.signal()
                 }
             }
@@ -111,7 +111,7 @@ class PDFController: UIViewController {
                             spotImage = image
                             semaphore.signal()
                         case .failure(let error):
-                            self?.error404(message: error.localizedDescription)
+                            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                             semaphore.signal()
                         }
                     }
@@ -133,21 +133,11 @@ class PDFController: UIViewController {
                 case .success(let result):
                     completion(.success(result.image))
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         } else {
             completion(.success(UIImage()))
-        }
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     

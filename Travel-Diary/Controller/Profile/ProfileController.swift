@@ -78,7 +78,7 @@ class ProfileController: UIViewController {
                     self?.userLabel.text = user.username
                 }
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
@@ -171,7 +171,7 @@ class ProfileController: UIViewController {
                         self?.tabBarController?.selectedIndex = 0
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }))
@@ -193,7 +193,7 @@ class ProfileController: UIViewController {
                 case .success:
                     self?.tabBarController?.selectedIndex = 0
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }))
@@ -201,16 +201,6 @@ class ProfileController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alert, animated: true)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
     
     @objc func signOut() {
@@ -258,7 +248,7 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
                                didFinishWith result: MFMailComposeResult,
                                error: Error?) {
         if let error = error {
-            self.error404(message: error.localizedDescription)
+            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
         }
         
         controller.dismiss(animated: true, completion: nil)

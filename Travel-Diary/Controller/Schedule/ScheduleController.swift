@@ -146,23 +146,13 @@ class ScheduleController: UIViewController {
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error ",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     private func uploadSchedule() {
         JourneyManager.shared.updateJourney(journey: self.tripData!) { [weak self] result in
             switch result {
             case .success:
                 print("Upload success")
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }

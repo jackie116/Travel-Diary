@@ -12,7 +12,10 @@ protocol NewTripControllerDelegate: AnyObject {
 }
 
 class NewTripController: UIViewController {
+    // MARK: - Delegate
     weak var delegate: NewTripControllerDelegate?
+    
+    // MARK: - Properties
     let tripNameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Please input name of trip"
@@ -47,7 +50,7 @@ class NewTripController: UIViewController {
         return dataPicker
     }()
     
-    private lazy var submitButton: UIButton = {
+    lazy var submitButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .customBlue
         button.setTitle("Submit", for: .normal)
@@ -56,15 +59,18 @@ class NewTripController: UIViewController {
         return button
     }()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
+        
         self.title = "Add journey"
-        setUI()
+        setupUI()
     }
     
-    func setUI() {
+    // MARK: - Helpers
+    func setupUI() {
+        view.backgroundColor = .white
+        
         view.addSubview(tripNameTextField)
         view.addSubview(startDateLabel)
         view.addSubview(startDatePicker)
@@ -72,6 +78,10 @@ class NewTripController: UIViewController {
         view.addSubview(endDatePicker)
         view.addSubview(submitButton)
         
+        setupConstraint()
+    }
+    
+    func setupConstraint() {
         tripNameTextField.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                  left: view.leftAnchor,
                                  right: view.rightAnchor,
@@ -107,33 +117,20 @@ class NewTripController: UIViewController {
         return (components.day ?? 0) + 1
     }
     
-    func error404() {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
+    // MARK: - selector
     @objc func submitTrip() {
         if self.tripNameTextField.text?.isEmpty == true {
-            let controller = UIAlertController(title: "Please input name of trip!",
-                                               message: "Trip name is empty.",
-                                               preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
-            controller.addAction(okAction)
-            present(controller, animated: true, completion: nil)
+            
+            AlertHelper.shared.showAlert(title: "Empty title",
+                                         message: "Please input name of trip!",
+                                         over: self)
+            
         } else if self.startDatePicker.date > endDatePicker.date {
-            let controller = UIAlertController(title: "Date Error!!!",
-                                               message: "Trip's end date is before start date.",
-                                               preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
-            controller.addAction(okAction)
-            present(controller, animated: true, completion: nil)
+            
+            AlertHelper.shared.showAlert(title: "Date Error!",
+                                         message: "Journey's end date is before start date",
+                                         over: self)
+            
         } else {
             guard let tripName = self.tripNameTextField.text else { return }
             
@@ -155,8 +152,8 @@ class NewTripController: UIViewController {
                     self?.navigationController?.dismiss(animated: false, completion: {
                         self?.delegate?.returnJourney(journey: journey)
                     })
-                case .failure:
-                    self?.error404()
+                case .failure(let error):
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }

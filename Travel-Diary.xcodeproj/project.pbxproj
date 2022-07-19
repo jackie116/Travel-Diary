@@ -39,6 +39,10 @@
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
 		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
+		E790ABFA2886984C0010ADA9 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABF92886984C0010ADA9 /* AlertHelper.swift */; };
+		E790ABFC2886A5150010ADA9 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABFB2886A5150010ADA9 /* LoginHelper.swift */; };
+		E790ABFE2886B0370010ADA9 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */; };
+		E790AC01288704D20010ADA9 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790AC00288704D20010ADA9 /* Constant.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7944B8E287E8EE600478931 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8D287E8EE600478931 /* Report.swift */; };
@@ -117,6 +121,10 @@
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
 		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
+		E790ABF92886984C0010ADA9 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertHelper.swift; path = "Travel-Diary/Helper/AlertHelper.swift"; sourceTree = SOURCE_ROOT; };
+		E790ABFB2886A5150010ADA9 /* LoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginHelper.swift; path = "Travel-Diary/Helper/LoginHelper.swift"; sourceTree = SOURCE_ROOT; };
+		E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Extension.swift"; sourceTree = "<group>"; };
+		E790AC00288704D20010ADA9 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constant.swift; path = "Travel-Diary/Extension/Constant.swift"; sourceTree = SOURCE_ROOT; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7944B8D287E8EE600478931 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
@@ -211,6 +219,7 @@
 				E7390CA72869536C0056D6D9 /* Travel-Diary.entitlements */,
 				E7131A772858F3330034FE12 /* Utlis */,
 				E7131A762858F3280034FE12 /* API */,
+				E790ABFF288704B30010ADA9 /* Helper */,
 				E7131A752858F3220034FE12 /* Extension */,
 				E7131A732858F3150034FE12 /* Controller */,
 				E7131A722858F3100034FE12 /* View */,
@@ -285,6 +294,7 @@
 				E7B9761E2864C70D00F575DC /* UICollectionViewCell+Extension.swift */,
 				E7DBA1A92870B14A00C08C55 /* NSMutableAttributedString+Extension.swift */,
 				E7DBA1AF2870B58D00C08C55 /* UItapGestureRecognizer+Extension.swift */,
+				E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -303,6 +313,7 @@
 		E7131A772858F3330034FE12 /* Utlis */ = {
 			isa = PBXGroup;
 			children = (
+				E790AC00288704D20010ADA9 /* Constant.swift */,
 			);
 			path = Utlis;
 			sourceTree = "<group>";
@@ -343,6 +354,15 @@
 				E74D67D2285E1C5000700F09 /* SearchBarController.swift */,
 			);
 			path = Schedule;
+			sourceTree = "<group>";
+		};
+		E790ABFF288704B30010ADA9 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				E790ABF92886984C0010ADA9 /* AlertHelper.swift */,
+				E790ABFB2886A5150010ADA9 /* LoginHelper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		E7B975E728640A9400F575DC /* Search */ = {
@@ -606,7 +626,9 @@
 				E765F7BF287B105300590BED /* DiscoverCell.swift in Sources */,
 				E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */,
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
+				E790ABFE2886B0370010ADA9 /* UIAlertAction+Extension.swift in Sources */,
 				E7390CAF2869B2840056D6D9 /* EditProfileController.swift in Sources */,
+				E790AC01288704D20010ADA9 /* Constant.swift in Sources */,
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
 				E7DBA1B02870B58D00C08C55 /* UItapGestureRecognizer+Extension.swift in Sources */,
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,
@@ -639,6 +661,7 @@
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
 				E7DBA19D286EF7DE00C08C55 /* CommentManager.swift in Sources */,
+				E790ABFC2886A5150010ADA9 /* LoginHelper.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
 				E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */,
@@ -646,6 +669,7 @@
 				E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */,
 				E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */,
 				E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */,
+				E790ABFA2886984C0010ADA9 /* AlertHelper.swift in Sources */,
 				E7944B90287E8F3400478931 /* ReportManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
