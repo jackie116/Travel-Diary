@@ -241,13 +241,9 @@ class DiscoverController: UIViewController {
     }
     
     func showReportSuccessAlert() {
-        let alert = UIAlertController(title: "Thanks for reporting this journey",
-                                      message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        AlertHelper.shared.showAlert(title: "Thanks for reporting this journey",
+                                     message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
+                                     over: self)
     }
     
     func showBlockAlert(indexPath: IndexPath) {

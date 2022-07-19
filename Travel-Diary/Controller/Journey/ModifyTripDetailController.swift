@@ -215,9 +215,15 @@ class ModifyTripDetailController: UIViewController {
     
     @objc func didSubmit() {
         if self.titleTextField.text?.isEmpty == true {
+            
             AlertHelper.shared.showAlert(title: "Empty title", message: "Please input name of trip!", over: self)
+            
         } else if self.startDatePicker.date > endDatePicker.date {
-            AlertHelper.shared.showAlert(title: "Date Error!", message: "Trip's end date is before start date", over: self)
+            
+            AlertHelper.shared.showAlert(title: "Date Error!",
+                                         message: "Trip's end date is before start date",
+                                         over: self)
+            
         } else {
             guard let title = self.titleTextField.text else { return }
             guard var journey = journey else { return }
