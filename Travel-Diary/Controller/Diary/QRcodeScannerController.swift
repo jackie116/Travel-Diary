@@ -221,7 +221,7 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
                                 presentingVC?.present(vc, animated: true)
                             })
                         case .failure(let error):
-                            self?.qrStringLabel.text = "Can't find the journey: \(error)"
+                            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                         }
                     }
                 }
@@ -257,7 +257,7 @@ extension QRcodeScannerController: UIImagePickerControllerDelegate {
                         presentingVC?.present(vc, animated: false)
                     })
                 case .failure(let error):
-                    self?.qrStringLabel.text = "Can't find the journey: \(error)"
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }

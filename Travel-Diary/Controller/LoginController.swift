@@ -203,7 +203,7 @@ class LoginController: UIViewController {
                         case .success:
                             break
                         case .failure(let error):
-                            print("\(error)")
+                            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                         }
                     }
                 }
