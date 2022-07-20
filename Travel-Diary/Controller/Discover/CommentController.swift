@@ -6,9 +6,14 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 class CommentController: UIViewController {
+    
+    // MARK: - Properties
     var textViewHC: NSLayoutConstraint!
+    var bottomConstraint: NSLayoutConstraint!
+    var bottomTopConstraint: NSLayoutConstraint!
     
     lazy var sendButton: UIButton = {
         let button = UIButton()
@@ -17,7 +22,7 @@ class CommentController: UIViewController {
         return button
     }()
     
-    let buttomView: UIView = {
+    let bottomView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.borderWidth = 0.7
@@ -25,7 +30,7 @@ class CommentController: UIViewController {
         return view
     }()
     
-    let buttomStackView: UIStackView = {
+    let bottomStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 8
@@ -34,7 +39,7 @@ class CommentController: UIViewController {
         return stack
     }()
     
-    lazy var commentView: UITextView = {
+    lazy var commentTextView: UITextView = {
         let view = UITextView()
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.borderWidth = 0.5
@@ -42,12 +47,12 @@ class CommentController: UIViewController {
         view.clipsToBounds = true
         view.isScrollEnabled = false
         view.font = UIFont.systemFont(ofSize: 20)
-        view.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         view.delegate = self
         return view
     }()
     
-    let userPhoto: UIImageView = {
+    let userImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 25
         view.clipsToBounds = true
@@ -78,25 +83,43 @@ class CommentController: UIViewController {
     var showComments = [ShowComment]()
     var user: User?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureData()
+        IQKeyboardManager.shared.enable = false
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        setupUI()
+        setupData()
     }
     
-    func configureUI() {
+    deinit {
+        IQKeyboardManager.shared.enable = true
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Helpers
+    func setupUI() {
         view.backgroundColor = .white
         view.addSubview(tableView)
-        view.addSubview(buttomView)
+        view.addSubview(bottomView)
         tableView.addSubview(animationView)
-        buttomView.addSubview(buttomStackView)
-        buttomStackView.addArrangedSubview(userPhoto)
-        buttomStackView.addArrangedSubview(commentView)
-        buttomStackView.addArrangedSubview(sendButton)
-        configureConstraint()
+        bottomView.addSubview(bottomStackView)
+        bottomStackView.addArrangedSubview(userImageView)
+        bottomStackView.addArrangedSubview(commentTextView)
+        bottomStackView.addArrangedSubview(sendButton)
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         animationView.center(inView: tableView)
         animationView.setDimensions(width: UIScreen.width * 0.4, height: UIScreen.width * 0.4)
         
@@ -104,39 +127,41 @@ class CommentController: UIViewController {
                          left: view.leftAnchor, right: view.rightAnchor,
                          paddingTop: 16)
         
-        buttomView.anchor(top: tableView.bottomAnchor,
-                               left: view.leftAnchor,
-                          bottom: view.bottomAnchor,
-                               right: view.rightAnchor)
+        bottomView.anchor(top: tableView.bottomAnchor,
+                          left: view.leftAnchor,
+                          right: view.rightAnchor)
         
-        buttomStackView.anchor(top: buttomView.topAnchor,
-                               left: buttomView.leftAnchor,
-                               bottom: buttomView.bottomAnchor,
-                               right: buttomView.rightAnchor,
+        bottomConstraint = bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomConstraint.isActive = true
+        
+        bottomStackView.anchor(top: bottomView.topAnchor,
+                               left: bottomView.leftAnchor,
+                               bottom: bottomView.bottomAnchor,
+                               right: bottomView.rightAnchor,
                                paddingTop: 16, paddingLeft: 16,
                                paddingBottom: 32, paddingRight: 16)
         
-        userPhoto.setDimensions(width: 50, height: 50)
+        userImageView.setDimensions(width: 50, height: 50)
         sendButton.anchor(width: 32)
         sendButton.isHidden = true
-        commentView.translatesAutoresizingMaskIntoConstraints = false
-        textViewHC = commentView.heightAnchor.constraint(equalToConstant: 40)
-        textViewHC.constant = commentView.contentSize.height
-        commentView.layoutIfNeeded()
-        commentView.layer.cornerRadius = commentView.frame.height * 0.5
+        commentTextView.translatesAutoresizingMaskIntoConstraints = false
+        textViewHC = commentTextView.heightAnchor.constraint(equalToConstant: 40)
+        textViewHC.constant = commentTextView.contentSize.height
+        commentTextView.layoutIfNeeded()
+        commentTextView.layer.cornerRadius = commentTextView.frame.height * 0.5
     }
     
-    func configureData() {
+    func setupData() {
         AuthManager.shared.getUserInfo { [weak self] result in
             switch result {
             case .success(let user):
                 DispatchQueue.main.async {
                     self?.user = user
                     let url = URL(string: user.profileImageUrl)
-                    self?.userPhoto.kf.setImage(with: url)
+                    self?.userImageView.kf.setImage(with: url)
                 }
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
         fetchAllComments()
@@ -162,7 +187,7 @@ class CommentController: UIViewController {
                                                        commentTime: comment.commentTime)
                                 self?.showComments.append(data)
                             case .failure(let error):
-                                self?.error404(message: error.localizedDescription)
+                                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                             }
                             semaphore.signal()
                         }
@@ -170,46 +195,62 @@ class CommentController: UIViewController {
                     }
                     DispatchQueue.main.async {
                         self?.tableView.reloadData()
+                        self?.scrollToBottom()
                     }
                 }
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
+    func scrollToBottom() {
+        if showComments.count >= 1 {
+            let indexPath = IndexPath(row: self.showComments.count - 1, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
     
+    // MARK: - Selector
     @objc func sendComment() {
         guard let journeyId = journeyId else { return }
         let current = Date().millisecondsSince1970
         CommentManager.shared.sendComment(journeyId: journeyId,
-                                          comment: commentView.text,
+                                          comment: commentTextView.text,
                                           commentTime: current) { [weak self] result in
             switch result {
             case .success:
-                self?.commentView.text.removeAll()
+                self?.commentTextView.text.removeAll()
                 self?.sendButton.isHidden = true
                 self?.fetchAllComments()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            
+            let keyboardHeight = keyboardRectangle.height
+            
+            bottomConstraint.constant = -keyboardHeight
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        bottomConstraint.constant = 0
+    }
 }
 
+// MARK: - UITableViewDelegate
 extension CommentController: UITableViewDelegate {
     
 }
 
+// MARK: - UITableViewDataSource
 extension CommentController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if showComments.count != 0 {
@@ -233,6 +274,7 @@ extension CommentController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITextViewDelegate
 extension CommentController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         let numberOfText = textView.text.count

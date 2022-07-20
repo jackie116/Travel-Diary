@@ -117,18 +117,8 @@ class DiaryController: UIViewController {
                 self?.refreshControl.endRefreshing()
             case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
-        }
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -203,7 +193,10 @@ class DiaryController: UIViewController {
     }
     
     func showLeaveGroupAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Leave group", message: "Are your sure you want to leave the group?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Leave group",
+                                      message: "Are your sure you want to leave the group?",
+                                      preferredStyle: .alert)
+        
         alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
@@ -214,10 +207,10 @@ class DiaryController: UIViewController {
                         self?.journeys.remove(at: indexPath.row)
                         self?.tableView.deleteRows(at: [indexPath], with: .fade)
                     } else {
-                        self?.error404(message: "Can't find journey")
+                        AlertHelper.shared.showErrorAlert(message: "Can't find journey", over: self)
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }))
@@ -232,11 +225,6 @@ class DiaryController: UIViewController {
         let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
-    }
-    
-    func showLoginController() {
-        let vc = LoginController()
-        navigationController?.present(vc, animated: true)
     }
     
     // MARK: - selector
@@ -256,7 +244,7 @@ class DiaryController: UIViewController {
             if bool {
                 self?.showQRcodeScannerController()
             } else {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
     }

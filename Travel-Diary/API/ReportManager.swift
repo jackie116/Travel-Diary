@@ -21,7 +21,7 @@ class ReportManager {
         let report = Report(journeyID: journeyId, userUID: user?.uid ?? "", message: message)
         
         do {
-            try collectionRef.addDocument(from: report)
+            _ = try collectionRef.addDocument(from: report)
             completion(.success(()))
         } catch {
             completion(.failure(error))

@@ -143,16 +143,6 @@ class EditDetailController: UIViewController {
         }
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     // MARK: - Selectors
     @objc func backward() {
         navigationController?.dismiss(animated: true)
@@ -207,7 +197,7 @@ class EditDetailController: UIViewController {
                     self?.navigationController?.dismiss(animated: true)
                 }
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }

@@ -158,16 +158,6 @@ class JoinGroupController: UIViewController {
         }
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     @objc func joinGroup() {
         guard let id = journey?.id else { return }
 
@@ -176,7 +166,7 @@ class JoinGroupController: UIViewController {
             case .success:
                 self?.joinGroupSuccess()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }

@@ -115,7 +115,7 @@ class EditDiaryController: UIViewController {
                 self?.collectionView.reloadData()
                 self?.tableView.reloadData()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
@@ -161,16 +161,6 @@ class EditDiaryController: UIViewController {
         titleLabel.text = journey.title
         dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
     
     // MARK: - selector
@@ -299,7 +289,7 @@ extension EditDiaryController: UICollectionViewDataSource {
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.configureData(day: indexPath.item)
+        cell.setupData(day: indexPath.item)
         return cell
     }
 }

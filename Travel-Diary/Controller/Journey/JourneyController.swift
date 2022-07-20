@@ -6,10 +6,11 @@
 //
 
 import UIKit
-import Kingfisher
 
 class JourneyController: UIViewController {
-    private lazy var journeyTableView: UITableView = {
+    
+    // MARK: - Properties
+    private lazy var tableView: UITableView = {
         let table = UITableView()
         
         table.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
@@ -39,7 +40,7 @@ class JourneyController: UIViewController {
         return refreshControl
     }()
     
-    private let backgroundStack: UIStackView = {
+    private let backgroundStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 32
@@ -48,7 +49,7 @@ class JourneyController: UIViewController {
         return stack
     }()
     
-    private let backgroundView: UIImageView = {
+    private let backgroundImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "gy_photo")
         view.clipsToBounds = true
@@ -67,20 +68,20 @@ class JourneyController: UIViewController {
     var journeys = [Journey]() {
         didSet {
             if journeys.count == 0 {
-                backgroundView.isHidden = false
+                backgroundImageView.isHidden = false
                 backgroundLabel.isHidden = false
             } else {
-                backgroundView.isHidden = true
+                backgroundImageView.isHidden = true
                 backgroundLabel.isHidden = true
             }
         }
     }
-
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         navigationItem.title = "Journey"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,24 +101,26 @@ class JourneyController: UIViewController {
         super.viewDidDisappear(animated)
         view.layer.sublayers?.filter { $0 is PulseAnimation }.forEach { $0.removeFromSuperlayer() }
     }
-
-    func configureUI() {
-        backgroundStack.addArrangedSubview(backgroundView)
-        backgroundStack.addArrangedSubview(backgroundLabel)
-        view.addSubview(backgroundStack)
-        view.addSubview(journeyTableView)
+    
+    // MARK: - Helpers
+    func setupUI() {
+        view.backgroundColor = .white
+        backgroundStackView.addArrangedSubview(backgroundImageView)
+        backgroundStackView.addArrangedSubview(backgroundLabel)
+        view.addSubview(backgroundStackView)
+        view.addSubview(tableView)
         view.addSubview(addButton)
-        journeyTableView.addSubview(refreshControl)
+        tableView.addSubview(refreshControl)
     
         configureConstraint()
     }
     
     func configureConstraint() {
 
-        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
-        backgroundStack.center(inView: view)
+        backgroundImageView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
+        backgroundStackView.center(inView: view)
         
-        journeyTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                 left: view.leftAnchor,
                                 bottom: view.safeAreaLayoutGuide.bottomAnchor,
                                 right: view.rightAnchor)
@@ -127,6 +130,27 @@ class JourneyController: UIViewController {
                          paddingBottom: 32,
                          paddingRight: 32,
                          width: 60, height: 60)
+    }
+    
+    func showNewTripController() {
+        let vc = NewTripController()
+        vc.delegate = self
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func updateData() {
+        JourneyManager.shared.fetchJourneys { [weak self] result in
+            switch result {
+            case .success(let journeys):
+                self?.journeys = journeys
+                self?.tableView.reloadData()
+                self?.refreshControl.endRefreshing()
+            case .failure(let error):
+                self?.refreshControl.endRefreshing()
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
+            }
+        }
     }
     
     // MARK: - UIAlertController
@@ -176,19 +200,20 @@ class JourneyController: UIViewController {
                                            message: "Are you sure you want to copy this trip?",
                                            preferredStyle: .alert)
         controller.view.tintColor = .customBlue
-        let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            var journey = self.journeys[indexPath.row]
+        let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+            
+            guard var journey = self?.journeys[indexPath.row] else { return }
             journey.title += "_copy"
             
-            JourneyManager.shared.copyJourey(journey: journey) { [weak self] result in
+            JourneyManager.shared.copyJourey(journey: journey) { result in
                 switch result {
                 case .success(let journey):
                     self?.journeys.insert(journey, at: 0)
-                    self?.journeyTableView.beginUpdates()
-                    self?.journeyTableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-                    self?.journeyTableView.endUpdates()
+                    self?.tableView.beginUpdates()
+                    self?.tableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+                    self?.tableView.endUpdates()
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }
@@ -209,11 +234,11 @@ class JourneyController: UIViewController {
                 switch result {
                 case .success:
                     self?.journeys.remove(at: indexPath.row)
-                    self?.journeyTableView.beginUpdates()
-                    self?.journeyTableView.deleteRows(at: [indexPath], with: .left)
-                    self?.journeyTableView.endUpdates()
+                    self?.tableView.beginUpdates()
+                    self?.tableView.deleteRows(at: [indexPath], with: .left)
+                    self?.tableView.endUpdates()
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }
@@ -224,46 +249,10 @@ class JourneyController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    func showNewTripController() {
-        let vc = NewTripController()
-        vc.delegate = self
-        let navVC = UINavigationController(rootViewController: vc)
-        navigationController?.present(navVC, animated: true)
-    }
-    
-    func showLoginController() {
-        let vc = LoginController()
-        self.present(vc, animated: true)
-    }
-    
-    func updateData() {
-        JourneyManager.shared.fetchJourneys { [weak self] result in
-            switch result {
-            case .success(let journeys):
-                self?.journeys = journeys
-                self?.journeyTableView.reloadData()
-                self?.refreshControl.endRefreshing()
-            case .failure(let error):
-                self?.refreshControl.endRefreshing()
-                self?.error404(message: error.localizedDescription)
-            }
-        }
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
-        let point = sender.convert(CGPoint.zero, to: journeyTableView)
-        if let indexPath = journeyTableView.indexPathForRow(at: point) {
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        if let indexPath = tableView.indexPathForRow(at: point) {
             showAlertController(indexPath: indexPath)
         }
     }
@@ -273,7 +262,7 @@ class JourneyController: UIViewController {
             if bool {
                 self?.showNewTripController()
             } else {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
     }

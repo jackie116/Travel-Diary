@@ -173,7 +173,7 @@ class ExpertJourneyController: UIViewController {
                 self?.tableView.reloadData()
                 self?.collectionView.reloadData()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
 
@@ -183,21 +183,6 @@ class ExpertJourneyController: UIViewController {
         let vc = CommentController()
         vc.journeyId = journey?.id
         navigationController?.present(vc, animated: true)
-    }
-    
-    func showLoginController() {
-        let vc = LoginController()
-        navigationController?.present(vc, animated: true)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
     
     // MARK: - selector
@@ -213,7 +198,7 @@ class ExpertJourneyController: UIViewController {
             if bool {
                 self?.showCommentController()
             } else {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
     }
@@ -320,7 +305,7 @@ extension ExpertJourneyController: UICollectionViewDataSource {
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.configureData(day: indexPath.item)
+        cell.setupData(day: indexPath.item)
         return cell
     }
 }
