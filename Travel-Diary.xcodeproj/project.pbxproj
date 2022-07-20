@@ -42,7 +42,6 @@
 		E790ABFA2886984C0010ADA9 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABF92886984C0010ADA9 /* AlertHelper.swift */; };
 		E790ABFC2886A5150010ADA9 /* LoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABFB2886A5150010ADA9 /* LoginHelper.swift */; };
 		E790ABFE2886B0370010ADA9 /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */; };
-		E790AC01288704D20010ADA9 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790AC00288704D20010ADA9 /* Constant.swift */; };
 		E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */; };
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7944B8E287E8EE600478931 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8D287E8EE600478931 /* Report.swift */; };
@@ -124,7 +123,6 @@
 		E790ABF92886984C0010ADA9 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertHelper.swift; path = "Travel-Diary/Helper/AlertHelper.swift"; sourceTree = SOURCE_ROOT; };
 		E790ABFB2886A5150010ADA9 /* LoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginHelper.swift; path = "Travel-Diary/Helper/LoginHelper.swift"; sourceTree = SOURCE_ROOT; };
 		E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Extension.swift"; sourceTree = "<group>"; };
-		E790AC00288704D20010ADA9 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constant.swift; path = "Travel-Diary/Extension/Constant.swift"; sourceTree = SOURCE_ROOT; };
 		E793AF82285C2E7600606CF7 /* SearchPlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceCell.swift; sourceTree = "<group>"; };
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7944B8D287E8EE600478931 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
@@ -313,7 +311,6 @@
 		E7131A772858F3330034FE12 /* Utlis */ = {
 			isa = PBXGroup;
 			children = (
-				E790AC00288704D20010ADA9 /* Constant.swift */,
 			);
 			path = Utlis;
 			sourceTree = "<group>";
@@ -628,7 +625,6 @@
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
 				E790ABFE2886B0370010ADA9 /* UIAlertAction+Extension.swift in Sources */,
 				E7390CAF2869B2840056D6D9 /* EditProfileController.swift in Sources */,
-				E790AC01288704D20010ADA9 /* Constant.swift in Sources */,
 				E793AF83285C2E7600606CF7 /* SearchPlaceCell.swift in Sources */,
 				E7DBA1B02870B58D00C08C55 /* UItapGestureRecognizer+Extension.swift in Sources */,
 				E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */,

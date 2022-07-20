@@ -11,6 +11,7 @@ import AVFoundation
 
 class DiscoverController: UIViewController {
     
+    // MARK: - Properties
     struct ExpertJourney {
         var id: String
         var title: String
@@ -44,6 +45,7 @@ class DiscoverController: UIViewController {
     
     var expertJourneys = [ExpertJourney]()
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,6 +59,7 @@ class DiscoverController: UIViewController {
         fetchJourneys()
     }
     
+    // MARK: - Helper
     func configureUI() {
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
@@ -111,6 +114,17 @@ class DiscoverController: UIViewController {
                 }
             case .failure(let error):
                 self?.refreshControl.endRefreshing()
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
+            }
+        }
+    }
+    
+    func sendReport(journeyId: String, message: String) {
+        ReportManager.shared.sendReport(journeyId: journeyId, message: message) { [weak self] result in
+            switch result {
+            case .success:
+                self?.showReportSuccessAlert()
+            case .failure(let error):
                 AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
@@ -229,17 +243,6 @@ class DiscoverController: UIViewController {
         present(alert, animated: true)
     }
     
-    func sendReport(journeyId: String, message: String) {
-        ReportManager.shared.sendReport(journeyId: journeyId, message: message) { [weak self] result in
-            switch result {
-            case .success:
-                self?.showReportSuccessAlert()
-            case .failure(let error):
-                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
-            }
-        }
-    }
-    
     func showReportSuccessAlert() {
         AlertHelper.shared.showAlert(title: "Thanks for reporting this journey",
                                      message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
@@ -273,7 +276,6 @@ class DiscoverController: UIViewController {
     }
     
     // MARK: - selector
-    
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView.indexPathForRow(at: point) {
@@ -286,6 +288,7 @@ class DiscoverController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension DiscoverController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpertJourneyController()
@@ -294,6 +297,7 @@ extension DiscoverController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension DiscoverController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return expertJourneys.count
