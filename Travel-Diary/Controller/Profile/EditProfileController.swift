@@ -147,7 +147,6 @@ class EditProfileController: UIViewController {
         AuthManager.shared.updateUserInfo(userInfo: userInfo!, userImage: userImage) { [weak self] result in
             switch result {
             case .success:
-                print("upload success")
                 DispatchQueue.main.async {
                     self?.navigationController?.popViewController(animated: true)
                 }

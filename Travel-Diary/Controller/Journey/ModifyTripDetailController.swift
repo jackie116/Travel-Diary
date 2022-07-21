@@ -176,6 +176,20 @@ class ModifyTripDetailController: UIViewController {
         return (components.day ?? 0) + 1
     }
     
+    func modifyJourneyDays(journey: Journey, days: Int, dataCount: Int) -> Journey {
+        var journey = journey
+        if days > dataCount {
+            for _ in (dataCount + 1)...days {
+                journey.data.append(DailySpot())
+            }
+        } else if days < dataCount {
+            for _ in (days + 1)...dataCount {
+                journey.data.removeLast()
+            }
+        }
+        return journey
+    }
+    
     // MARK: - Selectors
     @objc func handleAddcoverPhoto() {
         let actionSheet = UIAlertController(title: "Select Photo",
@@ -242,15 +256,7 @@ class ModifyTripDetailController: UIViewController {
             
             let dataCount = journey.data.count
             
-            if days > dataCount {
-                for _ in (dataCount + 1)...days {
-                    journey.data.append(DailySpot())
-                }
-            } else if days < dataCount {
-                for _ in (days + 1)...dataCount {
-                    journey.data.removeLast()
-                }
-            }
+            journey = modifyJourneyDays(journey: journey, days: days, dataCount: dataCount)
             
             if coverImage != nil {
                 JourneyManager.shared.updateJourneyWithCoverImage(
