@@ -176,8 +176,10 @@ class ModifyTripDetailController: UIViewController {
         return (components.day ?? 0) + 1
     }
     
-    func modifyJourneyDays(journey: Journey, days: Int, dataCount: Int) -> Journey {
+    func modifyJourneyDays(journey: Journey, days: Int) -> Journey {
         var journey = journey
+        let dataCount = journey.data.count
+        
         if days > dataCount {
             for _ in (dataCount + 1)...days {
                 journey.data.append(DailySpot())
@@ -254,9 +256,7 @@ class ModifyTripDetailController: UIViewController {
             journey.end = endDate.millisecondsSince1970
             journey.days = days
             
-            let dataCount = journey.data.count
-            
-            journey = modifyJourneyDays(journey: journey, days: days, dataCount: dataCount)
+            journey = modifyJourneyDays(journey: journey, days: days)
             
             if coverImage != nil {
                 JourneyManager.shared.updateJourneyWithCoverImage(

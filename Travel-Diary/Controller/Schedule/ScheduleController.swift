@@ -150,7 +150,7 @@ class ScheduleController: UIViewController {
         JourneyManager.shared.updateJourney(journey: self.tripData!) { [weak self] result in
             switch result {
             case .success:
-                print("Upload success")
+                break
             case .failure(let error):
                 AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
