@@ -9,6 +9,7 @@ import UIKit
 
 class DiaryController: UIViewController {
     
+    // MARK: - Properties
     private lazy var tableView: UITableView = {
         let table = UITableView()
         
@@ -78,12 +79,12 @@ class DiaryController: UIViewController {
         }
     }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
         navigationItem.title = "Diary"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,17 +92,19 @@ class DiaryController: UIViewController {
         fetchJourneys()
     }
     
-    func configureUI() {
+    // MARK: - Helpers
+    func setupUI() {
+        view.backgroundColor = .white
         navigationItem.rightBarButtonItem = qrcodeButton
         backgroundStack.addArrangedSubview(backgroundView)
         backgroundStack.addArrangedSubview(backgroundLabel)
         view.addSubview(backgroundStack)
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
         backgroundStack.center(inView: view)
         tableView.addConstraintsToFillSafeArea(view)
@@ -119,6 +122,13 @@ class DiaryController: UIViewController {
                 AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
+    }
+    
+    func showQRcodeScannerController() {
+        let vc = QRcodeScannerController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
     }
     
     // MARK: - UIAlertController
@@ -219,13 +229,6 @@ class DiaryController: UIViewController {
         present(alert, animated: true)
     }
     
-    func showQRcodeScannerController() {
-        let vc = QRcodeScannerController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
-    }
-    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
@@ -249,15 +252,16 @@ class DiaryController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension DiaryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = EditDiaryController()
         vc.id = journeys[indexPath.row].id
-        let navVC = UINavigationController(rootViewController: vc)
-        navigationController?.present(navVC, animated: true)
+        present(vc, animated: true)
     }
 }
 
+// MARK: - UITableViewDataSource
 extension DiaryController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         journeys.count

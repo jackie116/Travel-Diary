@@ -51,7 +51,7 @@ class DiscoverController: UIViewController {
         
         view.backgroundColor = .white
         navigationItem.title = "Discover"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,13 +60,13 @@ class DiscoverController: UIViewController {
     }
     
     // MARK: - Helper
-    func configureUI() {
+    func setupUI() {
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         tableView.addConstraintsToFillSafeArea(view)
     }
     

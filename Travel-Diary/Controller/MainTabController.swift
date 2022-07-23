@@ -8,11 +8,8 @@
 import UIKit
 
 class MainTabController: UITabBarController {
-
-    // MARK: - Properties
     
     // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,10 +17,7 @@ class MainTabController: UITabBarController {
         delegate = self
     }
     
-    // MARK: - Selectors
-    
     // MARK: - Helpers
-
     func configureViewControllers() {
         let journey = JourneyController()
         let nav1 = templateNavigationController(image: UIImage.asset(.tab_marker), rootViewController: journey)
@@ -61,6 +55,7 @@ class MainTabController: UITabBarController {
     }
 }
 
+// MARK: - UITabBarControllerDelegate
 extension MainTabController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {

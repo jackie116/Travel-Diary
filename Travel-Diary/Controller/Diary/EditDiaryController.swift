@@ -9,6 +9,7 @@ import UIKit
 
 class EditDiaryController: UIViewController {
     
+    // MARK: - Properties
     lazy var switchButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
@@ -17,20 +18,11 @@ class EditDiaryController: UIViewController {
         return button
     }()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    let titleLabel = UILabel()
     
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    let dateLabel = UILabel()
     
-    let titleView: UIView = {
-        let view = UIView()
-        return view
-    }()
+    let titleView = UIView()
     
     let stackView: UIStackView = {
         let stack = UIStackView()
@@ -84,26 +76,27 @@ class EditDiaryController: UIViewController {
     var journey: Journey?
     var isComplex: Bool = true
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        hideTabBar()
         fetchJourneys()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        showTabBar()
     }
     
+    // MARK: - Helpers
     func fetchJourneys() {
         guard let id = id else { return }
 
@@ -111,7 +104,7 @@ class EditDiaryController: UIViewController {
             switch result {
             case .success(let journey):
                 self?.journey = journey
-                self?.configureData()
+                self?.setupData()
                 self?.collectionView.reloadData()
                 self?.tableView.reloadData()
             case .failure(let error):
@@ -120,7 +113,8 @@ class EditDiaryController: UIViewController {
         }
     }
     
-    func configureUI() {
+    func setupUI() {
+        view.backgroundColor = .white
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(dateLabel)
         stackView.addArrangedSubview(collectionView)
@@ -128,10 +122,10 @@ class EditDiaryController: UIViewController {
         view.addSubview(titleView)
         view.addSubview(switchButton)
         view.addSubview(tableView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         collectionView.setDimensions(width: UIScreen.width, height: 50)
         stackView.addConstraintsToFillView(titleView)
         
@@ -141,13 +135,11 @@ class EditDiaryController: UIViewController {
                          paddingTop: 16,
                          height: 100)
         
-        switchButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            switchButton.topAnchor.constraint(equalTo: titleView.topAnchor, constant: 8),
-            switchButton.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: 8),
-            switchButton.rightAnchor.constraint(equalTo: titleView.rightAnchor, constant: -8),
-            switchButton.widthAnchor.constraint(equalToConstant: 40)
-        ])
+        switchButton.anchor(top: titleView.topAnchor,
+                            bottom: collectionView.topAnchor,
+                            right: titleView.rightAnchor,
+                            paddingTop: 8, paddingBottom: 8,
+                            paddingRight: 8, width: 40)
         
         tableView.anchor(top: titleView.bottomAnchor,
                          left: view.leftAnchor,
@@ -155,7 +147,7 @@ class EditDiaryController: UIViewController {
                          right: view.rightAnchor)
     }
     
-    func configureData() {
+    func setupData() {
         guard let journey = journey else { return }
         
         titleLabel.text = journey.title
@@ -164,7 +156,6 @@ class EditDiaryController: UIViewController {
     }
     
     // MARK: - selector
-    
     @objc func switchMode() {
         isComplex.toggle()
         self.tableView.reloadData()
@@ -183,7 +174,7 @@ extension EditDiaryController: UITableViewDelegate {
                 vc.journey = self?.journey
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.modalPresentationStyle = .fullScreen
-                self?.navigationController?.present(navVC, animated: true)
+                self?.present(navVC, animated: true)
                 completionHandler(true)
             }
             action.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
