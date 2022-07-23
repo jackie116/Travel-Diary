@@ -16,8 +16,10 @@ protocol DrawAnnotationDelegate: AnyObject {
 
 class ScheduleController: UIViewController {
     
+    // MARK: - Delegate
     weak var delegate: DrawAnnotationDelegate?
-        
+    
+    // MARK: - Properties
     lazy var collectionView: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -76,24 +78,35 @@ class ScheduleController: UIViewController {
         }
     }
     
+    // MARK: - Lifecycle
+    init(tripData: Journey) {
+        self.tripData = tripData
+        super.init(nibName: nil, bundle: nil)
+        initSchedule()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        initSchedule()
-        setupUI()
-        configureData()
         
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
+        setupUI()
+        setupData()
+    
+        NotificationCenter.default.addObserver(self,
                                        selector: #selector(appMovedToBackground),
                                        name: UIApplication.didEnterBackgroundNotification,
                                        object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         uploadSchedule()
     }
         
+    // MARK: - Helpers
     func initSchedule() {
         guard let tripData = tripData else { return }
 
@@ -138,7 +151,7 @@ class ScheduleController: UIViewController {
         tableView.tableHeaderView = headerView
     }
     
-    func configureData() {
+    func setupData() {
         guard let tripData = tripData else { return }
 
         tripTitle.text = tripData.title
@@ -152,11 +165,12 @@ class ScheduleController: UIViewController {
             case .success:
                 break
             case .failure(let error):
-                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
+                AlertHelper.shared.showAlert(title: "Upload Failed", message: error.localizedDescription, over: self)
             }
         }
     }
     
+    // MARK: - Selectors
     @objc func searchPlace(_ sender: UIButton) {
         let vc = SearchBarController()
         vc.daySection = sender.tag

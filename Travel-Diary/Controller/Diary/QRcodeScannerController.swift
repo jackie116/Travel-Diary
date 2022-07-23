@@ -10,11 +10,8 @@ import AVFoundation
 
 class QRcodeScannerController: UIViewController {
     
-    var barAppearance = UINavigationBarAppearance()
-    let camView: UIView = {
-        let view = UIView()
-        return view
-    }()
+    // MARK: - Properties
+    let camView = UIView()
     
     lazy var closeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark"),
@@ -55,7 +52,8 @@ class QRcodeScannerController: UIViewController {
     var captureSession = AVCaptureSession()
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
-
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -64,26 +62,19 @@ class QRcodeScannerController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
         
-        // 透明Navigation Bar
-        barAppearance.configureWithTransparentBackground()
-        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        hideNavBar()
+        hideTabBar()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        barAppearance.configureWithDefaultBackground()
-        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
-        
-        self.tabBarController?.tabBar.isHidden = false
+        showNavBar()
+        showTabBar()
     }
     
+    // MARK: - Helpers
     func configureUI() {
         navigationItem.leftBarButtonItem = closeButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -174,6 +165,7 @@ class QRcodeScannerController: UIViewController {
         }
     }
     
+    // MARK: - Selectors
     @objc func closeScanner() {
         navigationController?.dismiss(animated: true)
     }
@@ -186,6 +178,7 @@ class QRcodeScannerController: UIViewController {
     }
 }
 
+// MARK: - AVCaptureMetadataOutputObjectsDelegate
 extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput,
                         didOutput metadataObjects: [AVMetadataObject],
@@ -230,6 +223,7 @@ extension QRcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension QRcodeScannerController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -266,10 +260,12 @@ extension QRcodeScannerController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension QRcodeScannerController: UINavigationControllerDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension QRcodeScannerController: UIGestureRecognizerDelegate {
 
 }

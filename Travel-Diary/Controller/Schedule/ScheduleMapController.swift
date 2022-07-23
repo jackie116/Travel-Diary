@@ -11,6 +11,7 @@ import FloatingPanel
 
 class ScheduleMapController: UIViewController {
     
+    // MARK: - Properties
     lazy var navigationButton: UIButton = {
         let button = UIButton(frame: CGRect(
             origin: CGPoint.zero,
@@ -43,7 +44,15 @@ class ScheduleMapController: UIViewController {
     
     var annotationData = [DailySpot]()
     
-    var barAppearance = UINavigationBarAppearance()
+    // MARK: - Lifecycle
+    init(tripData: Journey) {
+        self.tripData = tripData
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,21 +63,18 @@ class ScheduleMapController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        barAppearance.configureWithTransparentBackground()
-        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
-        
-        self.tabBarController?.tabBar.isHidden = true
+        hideNavBar()
+        hideTabBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        barAppearance.configureWithDefaultBackground()
-        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
-        
-        self.tabBarController?.tabBar.isHidden = false
+        showNavBar()
+        showTabBar()
     }
     
+    // MARK: - Helpers
     func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -83,10 +89,8 @@ class ScheduleMapController: UIViewController {
     }
     
     func setupScheduleUI() {
-        let scheduleVC = ScheduleController()
-        
+        let scheduleVC = ScheduleController(tripData: tripData!)
         scheduleVC.delegate = self
-        scheduleVC.tripData = tripData
         
         let panel = FloatingPanelController()
         panel.set(contentViewController: scheduleVC)
@@ -118,11 +122,13 @@ class ScheduleMapController: UIViewController {
         self.mapView.addOverlay(overlay, level: .aboveRoads)
     }
     
+    // MARK: - Selectors
     @objc func didTapBack() {
         navigationController?.popViewController(animated: true)
     }
 }
 
+// MARK: - DrawAnnotationDelegate
 extension ScheduleMapController: DrawAnnotationDelegate {
     func zoomSelectedSpot(indexPath: IndexPath) {
         guard let zoomPoint = annotationData[safe: indexPath.section]?.spot[safe: indexPath.row]?
@@ -158,6 +164,7 @@ extension ScheduleMapController: DrawAnnotationDelegate {
     }
 }
 
+// MARK: - MKMapViewDelegate
 extension ScheduleMapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
@@ -204,6 +211,7 @@ extension ScheduleMapController: MKMapViewDelegate {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension ScheduleMapController: UIGestureRecognizerDelegate {
 
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreMedia
 
 class DiaryController: UIViewController {
     

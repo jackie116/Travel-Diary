@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIAlertAction {
-    static var ok: UIAlertAction {
+    var ok: UIAlertAction {
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         action.setValue(UIColor.customBlue, forKey: "titleTextColor")
         return action
