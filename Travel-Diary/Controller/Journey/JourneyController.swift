@@ -160,10 +160,12 @@ class JourneyController: UIViewController {
     
         // Detail
         let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
-            self?.dismiss(animated: false) {
-                let vc = ModifyTripDetailController()
-                vc.journey = self?.journeys[indexPath.row]
-                self?.navigationController?.pushViewController(vc, animated: true)
+            guard let self = self else {
+                return
+            }
+            self.dismiss(animated: false) {
+                let vc = ModifyTripDetailController(journey: self.journeys[indexPath.row])
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
         changeTripAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
