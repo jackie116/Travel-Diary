@@ -80,6 +80,7 @@ class ScheduleMapController: UIViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.addSubview(mapView)
         setupConstraint()
+        setupTitleView()
         setupScheduleUI()
     }
     
@@ -95,6 +96,16 @@ class ScheduleMapController: UIViewController {
         let panel = FloatingPanelController()
         panel.set(contentViewController: scheduleVC)
         panel.addPanel(toParent: self)
+    }
+    
+    func setupTitleView() {
+        guard let journey = tripData else { return }
+        
+        let title = journey.title
+        let subtitle = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        
+        navigationItem.setTitle(title, subtitle: subtitle)
     }
     
     func placeAnnotation(offset: Int, mark: Spot) {

@@ -56,18 +56,6 @@ class ScheduleController: UIViewController {
         
         return table
     }()
-    
-    let headerStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 8
-        stack.alignment = .center
-        stack.distribution = .fill
-        return stack
-    }()
-    
-    let tripTitle = UILabel()
-    let tripDuration = UILabel()
 
     var tripData: Journey?
 
@@ -93,7 +81,6 @@ class ScheduleController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        setupData()
     
         NotificationCenter.default.addObserver(self,
                                        selector: #selector(appMovedToBackground),
@@ -124,7 +111,6 @@ class ScheduleController: UIViewController {
         view.addSubview(tableView)
         
         setupConstraint()
-        setupTableViewHeader()
     }
     
     func setupConstraint() {
@@ -139,26 +125,7 @@ class ScheduleController: UIViewController {
                                  bottom: view.bottomAnchor,
                                  right: view.rightAnchor)
     }
-    
-    func setupTableViewHeader() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
-        
-        headerStackView.addArrangedSubview(tripTitle)
-        headerStackView.addArrangedSubview(tripDuration)
-        headerView.addSubview(headerStackView)
-        headerStackView.center(inView: headerView)
 
-        tableView.tableHeaderView = headerView
-    }
-    
-    func setupData() {
-        guard let tripData = tripData else { return }
-
-        tripTitle.text = tripData.title
-        tripDuration.text = Date.dateFormatter.string(from: Date.init(milliseconds: tripData.start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
-    }
-    
     private func uploadSchedule() {
         JourneyManager.shared.updateJourney(journey: self.tripData!) { [weak self] result in
             switch result {

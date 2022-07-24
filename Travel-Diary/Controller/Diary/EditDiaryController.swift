@@ -10,27 +10,22 @@ import UIKit
 class EditDiaryController: UIViewController {
     
     // MARK: - Properties
-    lazy var switchButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
-        button.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+    lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(didTapClose))
         button.tintColor = .customBlue
         return button
     }()
     
-    let titleLabel = UILabel()
-    
-    let dateLabel = UILabel()
-    
-    let titleView = UIView()
-    
-    let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 2
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
+    lazy var switchButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "arrow.left.arrow.right"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(switchMode))
+        button.tintColor = .customBlue
+        return button
     }()
     
     lazy var tableView: UITableView = {
@@ -104,7 +99,7 @@ class EditDiaryController: UIViewController {
             switch result {
             case .success(let journey):
                 self?.journey = journey
-                self?.setupData()
+                self?.setupTitleView()
                 self?.collectionView.reloadData()
                 self?.tableView.reloadData()
             case .failure(let error):
@@ -114,51 +109,46 @@ class EditDiaryController: UIViewController {
     }
     
     func setupUI() {
+        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.rightBarButtonItem = switchButton
         view.backgroundColor = .white
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(dateLabel)
-        stackView.addArrangedSubview(collectionView)
-        titleView.addSubview(stackView)
-        view.addSubview(titleView)
-        view.addSubview(switchButton)
+        view.addSubview(collectionView)
         view.addSubview(tableView)
         setupConstraint()
     }
     
     func setupConstraint() {
-        collectionView.setDimensions(width: UIScreen.width, height: 50)
-        stackView.addConstraintsToFillView(titleView)
+        collectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                              left: view.leftAnchor,
+                              right: view.rightAnchor,
+                              paddingTop: 8,
+                              height: 50)
         
-        titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        tableView.anchor(top: collectionView.bottomAnchor,
                          left: view.leftAnchor,
+                         bottom: view.bottomAnchor,
                          right: view.rightAnchor,
-                         paddingTop: 16,
-                         height: 100)
-        
-        switchButton.anchor(top: titleView.topAnchor,
-                            bottom: collectionView.topAnchor,
-                            right: titleView.rightAnchor,
-                            paddingTop: 8, paddingBottom: 8,
-                            paddingRight: 8, width: 40)
-        
-        tableView.anchor(top: titleView.bottomAnchor,
-                         left: view.leftAnchor,
-                         bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                         right: view.rightAnchor)
+                         paddingTop: 8)
     }
     
-    func setupData() {
+    func setupTitleView() {
         guard let journey = journey else { return }
         
-        titleLabel.text = journey.title
-        dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        let title = journey.title
+        let subtitle = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        
+        navigationItem.setTitle(title, subtitle: subtitle)
     }
     
-    // MARK: - selector
+    // MARK: - Selectors
     @objc func switchMode() {
         isComplex.toggle()
         self.tableView.reloadData()
+    }
+    
+    @objc func didTapClose() {
+        navigationController?.dismiss(animated: true)
     }
 }
 

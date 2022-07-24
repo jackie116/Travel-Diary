@@ -70,7 +70,7 @@ class LoginController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,7 +88,7 @@ class LoginController: UIViewController {
         player = nil
     }
     
-    func configureUI() {
+    func setupUI() {
         view.backgroundColor = .white
         
         view.addSubview(videoLayer)
@@ -100,10 +100,10 @@ class LoginController: UIViewController {
         buttonStackView.addArrangedSubview(googleSignInButton)
         buttonStackView.addArrangedSubview(licenseLabel)
         view.addSubview(buttonStackView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         videoLayer.addConstraintsToFillView(view)
         
         titleView.centerX(inView: view)
