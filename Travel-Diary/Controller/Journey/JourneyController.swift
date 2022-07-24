@@ -86,7 +86,7 @@ class JourneyController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         updateData()
     }
     
@@ -160,10 +160,12 @@ class JourneyController: UIViewController {
     
         // Detail
         let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
-            self?.dismiss(animated: false) {
-                let vc = ModifyTripDetailController()
-                vc.journey = self?.journeys[indexPath.row]
-                self?.navigationController?.pushViewController(vc, animated: true)
+            guard let self = self else {
+                return
+            }
+            self.dismiss(animated: false) {
+                let vc = ModifyTripDetailController(journey: self.journeys[indexPath.row])
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
         changeTripAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
@@ -209,9 +211,7 @@ class JourneyController: UIViewController {
                 switch result {
                 case .success(let journey):
                     self?.journeys.insert(journey, at: 0)
-                    self?.tableView.beginUpdates()
                     self?.tableView.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-                    self?.tableView.endUpdates()
                 case .failure(let error):
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
@@ -275,8 +275,7 @@ class JourneyController: UIViewController {
 // MARK: - NewTripControllerDelegate
 extension JourneyController: NewTripControllerDelegate {
     func returnJourney(journey: Journey) {
-        let vc = ScheduleMapController()
-        vc.tripData = journey
+        let vc = ScheduleMapController(tripData: journey)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -284,8 +283,7 @@ extension JourneyController: NewTripControllerDelegate {
 // MARK: - UITableViewDelegate
 extension JourneyController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ScheduleMapController()
-        vc.tripData = journeys[indexPath.row]
+        let vc = ScheduleMapController(tripData: journeys[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
 }

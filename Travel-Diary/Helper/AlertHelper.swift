@@ -30,7 +30,7 @@ class AlertHelper {
         }
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(.ok)
+        alert.addAction(UIAlertAction().ok)
         viewController.present(alert, animated: true)
     }
 }

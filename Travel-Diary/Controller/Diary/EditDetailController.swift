@@ -82,8 +82,8 @@ class EditDetailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureData()
+        setupUI()
+        setupData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,7 +96,7 @@ class EditDetailController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func configureUI() {
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = saveButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -106,10 +106,10 @@ class EditDetailController: UIViewController {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(addressLabel)
         view.addSubview(textView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                left: view.leftAnchor,
                                right: view.rightAnchor,
@@ -129,7 +129,7 @@ class EditDetailController: UIViewController {
                         paddingBottom: 32, paddingRight: 16)
     }
     
-    func configureData() {
+    func setupData() {
         guard let journey = journey, let indexPath = indexPath else { return }
         guard let spot = journey.data[safe: indexPath.section]?.spot[indexPath.row] else { return }
         titleLabel.text = spot.name

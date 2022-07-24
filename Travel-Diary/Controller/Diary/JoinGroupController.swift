@@ -71,8 +71,8 @@ class JoinGroupController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureData()
+        setupUI()
+        setupData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,7 +80,7 @@ class JoinGroupController: UIViewController {
         popupShowView()
     }
     
-    func configureUI() {
+    func setupUI() {
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         view.addSubview(showView)
         showView.addSubview(coverImage)
@@ -90,10 +90,10 @@ class JoinGroupController: UIViewController {
         vStackView.addArrangedSubview(tripDate)
         vStackView.addArrangedSubview(joinButton)
         showView.addSubview(vStackView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         showView.centerX(inView: view)
         showView.setDimensions(width: UIScreen.width * 0.8, height: UIScreen.height * 0.6)
         bottomConstraint = showView.topAnchor.constraint(equalTo: view.bottomAnchor)
@@ -121,7 +121,7 @@ class JoinGroupController: UIViewController {
                           paddingTop: 16, paddingBottom: 16)
     }
     
-    func configureData() {
+    func setupData() {
         guard let journey = journey else { return }
         
         tripName.text = journey.title

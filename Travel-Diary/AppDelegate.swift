@@ -19,11 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         FirebaseApp.configure()
         
-        let customBackImage = UIImage(
-            systemName: "chevron.backward")?.withTintColor(.customBlue, renderingMode: .alwaysOriginal)
         let barAppearance = UINavigationBarAppearance()
         barAppearance.configureWithDefaultBackground()
-        barAppearance.setBackIndicatorImage(customBackImage, transitionMaskImage: customBackImage)
         
         UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
         UINavigationBar.appearance().standardAppearance = barAppearance

@@ -9,6 +9,16 @@ import UIKit
 
 class PrivacyController: UIViewController {
     
+    // MARK: - Properties
+    lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(didTapClose))
+        button.tintColor = .customBlue
+        return button
+    }()
+    
     let publicLabel: UILabel = {
         let label = UILabel()
         label.text = "Public"
@@ -41,25 +51,29 @@ class PrivacyController: UIViewController {
     var journey: Journey?
     var users = [User]()
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
-        setUpData()
+        title = "Privacy setting"
+        setupUI()
+        setupData()
     }
     
-    func setUpUI() {
+    // MARK: - Helpers
+    func setupUI() {
+        navigationItem.leftBarButtonItem = closeButton
         view.backgroundColor = .white
         view.addSubview(publicLabel)
         view.addSubview(publicSwitch)
         view.addSubview(underlineView)
         view.addSubview(collection)
-        setUpConstraint()
+        setupConstraint()
     }
     
-    func setUpConstraint() {
+    func setupConstraint() {
         publicLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                            left: view.leftAnchor,
-                           paddingTop: 32, paddingLeft: 16)
+                           paddingTop: 16, paddingLeft: 16)
         publicSwitch.anchor(right: view.rightAnchor, paddingRight: 16)
         publicSwitch.centerYAnchor.constraint(equalTo: publicLabel.centerYAnchor).isActive = true
         underlineView.anchor(top: publicLabel.bottomAnchor,
@@ -73,7 +87,7 @@ class PrivacyController: UIViewController {
                           right: view.rightAnchor)
     }
     
-    func setUpData() {
+    func setupData() {
         guard let journey = journey else {
             return
         }
@@ -140,23 +154,30 @@ class PrivacyController: UIViewController {
         present(alert, animated: true)
     }
     
+    // MARK: - Selectors
     @objc func switchPublic(sender: UISwitch) {
         guard let journey = journey else { return }
         JourneyManager.shared.switchPublic(id: journey.id!, isPublic: sender.isOn) { [weak self] result in
             switch result {
             case .success:
-                print("Success")
+                break
             case .failure(let error):
                 AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
+    
+    @objc func didTapClose() {
+        navigationController?.dismiss(animated: true)
+    }
 }
 
+// MARK: - UICollectionViewDelegate
 extension PrivacyController: UICollectionViewDelegate {
     
 }
 
+// MARK: - UICollectionViewDataSource
 extension PrivacyController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         users.count

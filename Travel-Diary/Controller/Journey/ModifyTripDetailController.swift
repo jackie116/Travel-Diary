@@ -11,7 +11,7 @@ import Kingfisher
 class ModifyTripDetailController: UIViewController {
     
     // MARK: - Properties
-    lazy var backButton: UIBarButtonItem = {
+    private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                      style: .plain,
                                      target: self,
@@ -20,7 +20,7 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
-    lazy var plusPhotoButton: UIButton = {
+    private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .lightGray
         button.tintColor = .white
@@ -34,13 +34,13 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
-    let titleTextField: UITextField = {
+    private let titleTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Please input name of trip"
         return textField
     }()
     
-    let vStackView: UIStackView = {
+    private let vStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 16
@@ -49,7 +49,7 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let startStackView: UIStackView = {
+    private let startStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 32
@@ -58,7 +58,7 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let endStackView: UIStackView = {
+    private let endStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 32
@@ -67,19 +67,19 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let startDateLabel: UILabel = {
+    private let startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Start Date"
         return label
     }()
     
-    let endDateLabel: UILabel = {
+    private let endDateLabel: UILabel = {
         let label = UILabel()
         label.text = "End Date"
         return label
     }()
     
-    let startDatePicker: UIDatePicker = {
+    private let startDatePicker: UIDatePicker = {
         let dataPicker = UIDatePicker()
         dataPicker.preferredDatePickerStyle = .compact
         dataPicker.datePickerMode = .date
@@ -87,7 +87,7 @@ class ModifyTripDetailController: UIViewController {
         return dataPicker
     }()
     
-    let endDatePicker: UIDatePicker = {
+    private let endDatePicker: UIDatePicker = {
         let dataPicker = UIDatePicker()
         dataPicker.preferredDatePickerStyle = .compact
         dataPicker.datePickerMode = .date
@@ -106,13 +106,22 @@ class ModifyTripDetailController: UIViewController {
     
     private var coverImage: UIImage?
     
-    var journey: Journey?
+    private var journey: Journey?
 
     // MARK: - Lifecycle
+    init(journey: Journey) {
+        self.journey = journey
+        super.init(nibName: nil, bundle: nil)
+        self.setupData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -248,7 +257,6 @@ class ModifyTripDetailController: UIViewController {
 
             let startDate = self.startDatePicker.date.formattedDate
             let endDate = self.endDatePicker.date.formattedDate
-
             let days = daysBetween(start: startDate, end: endDate)
             
             journey.title = title
@@ -286,6 +294,7 @@ class ModifyTripDetailController: UIViewController {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -301,10 +310,12 @@ extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension ModifyTripDetailController: UINavigationControllerDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension ModifyTripDetailController: UIGestureRecognizerDelegate {
 
 }

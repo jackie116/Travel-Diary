@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E502784E40B7978D31DEA86B /* Pods_Travel_Diary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC257D19D1C989DEC533549E /* Pods_Travel_Diary.framework */; };
+		E7085107288BDCB200BF6980 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085106288BDCB200BF6980 /* UIViewController+Extension.swift */; };
 		E70ED9B9285F1079004874B2 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70ED9B8285F1079004874B2 /* CustomAnnotation.swift */; };
 		E70ED9BB285F1F69004874B2 /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70ED9BA285F1F69004874B2 /* Collection+Extension.swift */; };
 		E7131A5C2858F2430034FE12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7131A5B2858F2430034FE12 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		E765F7BF287B105300590BED /* DiscoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E765F7BE287B105300590BED /* DiscoverCell.swift */; };
 		E76814732875272F00487782 /* PulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76814722875272F00487782 /* PulseAnimation.swift */; };
 		E768147928758CAD00487782 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E768147828758CAD00487782 /* intro.mp4 */; };
+		E7791AD8288DAD770035C9B7 /* UINavigationItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7791AD7288DAD770035C9B7 /* UINavigationItem+Extension.swift */; };
 		E781C1BA2862A5990090E5A6 /* ModifyTripDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */; };
 		E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E781C1BB286351570090E5A6 /* EditDetailController.swift */; };
 		E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7874B8C28748DDA00CD2067 /* PrivacyController.swift */; };
@@ -86,6 +88,7 @@
 		3A759FEC04E129153FB0E2E7 /* Pods-Travel-Diary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Travel-Diary.release.xcconfig"; path = "Target Support Files/Pods-Travel-Diary/Pods-Travel-Diary.release.xcconfig"; sourceTree = "<group>"; };
 		C3876D1A55BCAD144E3B6EC5 /* Pods-Travel-Diary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Travel-Diary.debug.xcconfig"; path = "Target Support Files/Pods-Travel-Diary/Pods-Travel-Diary.debug.xcconfig"; sourceTree = "<group>"; };
 		DC257D19D1C989DEC533549E /* Pods_Travel_Diary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Travel_Diary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7085106288BDCB200BF6980 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		E70ED9B8285F1079004874B2 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		E70ED9BA285F1F69004874B2 /* Collection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Extension.swift"; sourceTree = "<group>"; };
 		E7131A582858F2430034FE12 /* Travel-Diary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Travel-Diary.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +120,7 @@
 		E765F7BE287B105300590BED /* DiscoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCell.swift; sourceTree = "<group>"; };
 		E76814722875272F00487782 /* PulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimation.swift; sourceTree = "<group>"; };
 		E768147828758CAD00487782 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
+		E7791AD7288DAD770035C9B7 /* UINavigationItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationItem+Extension.swift"; sourceTree = "<group>"; };
 		E781C1B92862A5990090E5A6 /* ModifyTripDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyTripDetailController.swift; sourceTree = "<group>"; };
 		E781C1BB286351570090E5A6 /* EditDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailController.swift; sourceTree = "<group>"; };
 		E7874B8C28748DDA00CD2067 /* PrivacyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyController.swift; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 				E7DBA1A92870B14A00C08C55 /* NSMutableAttributedString+Extension.swift */,
 				E7DBA1AF2870B58D00C08C55 /* UItapGestureRecognizer+Extension.swift */,
 				E790ABFD2886B0370010ADA9 /* UIAlertAction+Extension.swift */,
+				E7085106288BDCB200BF6980 /* UIViewController+Extension.swift */,
+				E7791AD7288DAD770035C9B7 /* UINavigationItem+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -635,6 +641,7 @@
 				E729CDE5286D7BA800E8FDCE /* JoinGroupController.swift in Sources */,
 				E7DBA1AE2870B39400C08C55 /* WebViewController.swift in Sources */,
 				E7580CD42868BF3800F68168 /* QRcodeGeneratorController.swift in Sources */,
+				E7791AD8288DAD770035C9B7 /* UINavigationItem+Extension.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
 				E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */,
@@ -656,6 +663,7 @@
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
 				E74D67D3285E1C5000700F09 /* SearchBarController.swift in Sources */,
+				E7085107288BDCB200BF6980 /* UIViewController+Extension.swift in Sources */,
 				E7DBA19D286EF7DE00C08C55 /* CommentManager.swift in Sources */,
 				E790ABFC2886A5150010ADA9 /* LoginHelper.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,

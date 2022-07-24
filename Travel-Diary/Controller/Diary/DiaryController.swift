@@ -6,10 +6,10 @@
 //
 
 import UIKit
-import CoreMedia
 
 class DiaryController: UIViewController {
     
+    // MARK: - Properties
     private lazy var tableView: UITableView = {
         let table = UITableView()
         
@@ -79,12 +79,12 @@ class DiaryController: UIViewController {
         }
     }
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
         navigationItem.title = "Diary"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,17 +92,19 @@ class DiaryController: UIViewController {
         fetchJourneys()
     }
     
-    func configureUI() {
+    // MARK: - Helpers
+    func setupUI() {
+        view.backgroundColor = .white
         navigationItem.rightBarButtonItem = qrcodeButton
         backgroundStack.addArrangedSubview(backgroundView)
         backgroundStack.addArrangedSubview(backgroundLabel)
         view.addSubview(backgroundStack)
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
         backgroundStack.center(inView: view)
         tableView.addConstraintsToFillSafeArea(view)
@@ -122,71 +124,71 @@ class DiaryController: UIViewController {
         }
     }
     
+    func showQRcodeScannerController() {
+        let vc = QRcodeScannerController()
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showQRcodeGeneratorController(indexPath: IndexPath) {
+        let vc = QRcodeGeneratorController()
+        vc.id = journeys[indexPath.row].id
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showPDFController(indexPath: IndexPath) {
+        let vc = PDFController()
+        vc.journey = journeys[indexPath.row]
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
+    }
+    
+    func showPrivacyController(indexPath: IndexPath) {
+        let vc = PrivacyController()
+        vc.journey = journeys[indexPath.row]
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
+    }
+    
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         controller.view.tintColor = .customBlue
         
         // Group
-        let groupAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
-                self?.dismiss(animated: false) {
-                    let vc = QRcodeGeneratorController()
-                    vc.id = self?.journeys[indexPath.row].id
-                    let navVC = UINavigationController(rootViewController: vc)
-                    self?.navigationController?.present(navVC, animated: true)
-                }
-            }
-            action.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
-            return action
-        }()
+        let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
+            self?.showQRcodeGeneratorController(indexPath: indexPath)
+        }
+        groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
         controller.addAction(groupAction)
         
         // share pdf
-        let sharePDFAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
-                self?.dismiss(animated: false) {
-                    let vc = PDFController()
-                    vc.journey = self?.journeys[indexPath.row]
-                    let navVC = UINavigationController(rootViewController: vc)
-                    self?.navigationController?.present(navVC, animated: true)
-                }
-            }
-            action.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
-            return action
-        }()
+        let sharePDFAction = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
+            self?.showPDFController(indexPath: indexPath)
+        }
+        sharePDFAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
         controller.addAction(sharePDFAction)
         
         if journeys[indexPath.row].owner == AuthManager.shared.userId {
-            let privacyAction: UIAlertAction = {
-                let action = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
-                    self?.dismiss(animated: false) {
-                        let vc = PrivacyController()
-                        vc.journey = self?.journeys[indexPath.row]
-                        self?.present(vc, animated: true)
-                    }
-                }
-                action.setValue(UIImage(systemName: "person.3"), forKey: "image")
-                return action
-            }()
+            let privacyAction = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
+                self?.showPrivacyController(indexPath: indexPath)
+            }
+            privacyAction.setValue(UIImage(systemName: "person.3"), forKey: "image")
             controller.addAction(privacyAction)
         } else {
-            let leaveAction: UIAlertAction = {
-                let action = UIAlertAction(title: "Leave group", style: .destructive) { [weak self] _ in
-                    self?.showLeaveGroupAlert(indexPath: indexPath)
-                }
-                action.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
-                return action
-            }()
+            let leaveAction = UIAlertAction(title: "Leave group", style: .destructive) { [weak self] _ in
+                self?.showLeaveGroupAlert(indexPath: indexPath)
+            }
+            leaveAction.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
             controller.addAction(leaveAction)
         }
         
         // Cancel
-        let cancelAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Cancel", style: .cancel)
-            action.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
-            return action
-        }()
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
         controller.addAction(cancelAction)
         
         present(controller, animated: true)
@@ -220,13 +222,6 @@ class DiaryController: UIViewController {
         present(alert, animated: true)
     }
     
-    func showQRcodeScannerController() {
-        let vc = QRcodeScannerController()
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
-    }
-    
     // MARK: - selector
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
@@ -250,15 +245,18 @@ class DiaryController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension DiaryController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = EditDiaryController()
         vc.id = journeys[indexPath.row].id
         let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
     }
 }
 
+// MARK: - UITableViewDataSource
 extension DiaryController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         journeys.count
