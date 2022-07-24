@@ -8,11 +8,13 @@
 import UIKit
 
 class ExpertJourneyController: UIViewController {
-    // MARK: - Copy start
-    lazy var switchButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
-        button.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+
+    // MARK: - Properties
+    lazy var switchButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "arrow.left.arrow.right"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(switchMode))
         button.tintColor = .customBlue
         return button
     }()
@@ -33,30 +35,6 @@ class ExpertJourneyController: UIViewController {
                                      action: #selector(didTapComment))
         button.tintColor = .customBlue
         return button
-    }()
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let titleView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 2
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
     }()
     
     lazy var tableView: UITableView = {
@@ -102,81 +80,74 @@ class ExpertJourneyController: UIViewController {
     var journey: Journey?
     var journeyId: String?
     var isComplex: Bool = true
-    // MARK: - Copy End
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureUI()
-        configureData()
+        setupUI()
+        fetchJourney()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        hideTabBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        showTabBar()
     }
     
-    func configureUI() {
+    // MARK: - Helpers
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = commentButton
+        navigationItem.rightBarButtonItems = [commentButton, switchButton]
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-// MARK: - copy start
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(dateLabel)
-        stackView.addArrangedSubview(collectionView)
-        titleView.addSubview(stackView)
-        view.addSubview(titleView)
-        view.addSubview(switchButton)
+        view.addSubview(collectionView)
         view.addSubview(tableView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
-        collectionView.setDimensions(width: UIScreen.width, height: 50)
-        stackView.addConstraintsToFillView(titleView)
-        
-        titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+    func setupConstraint() {
+        collectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                          left: view.leftAnchor,
                          right: view.rightAnchor,
-                         paddingTop: 16,
-                         height: 100)
+                         paddingTop: 8,
+                         height: 50)
         
-        switchButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            switchButton.topAnchor.constraint(equalTo: titleView.topAnchor, constant: 8),
-            switchButton.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: 8),
-            switchButton.rightAnchor.constraint(equalTo: titleView.rightAnchor, constant: -8),
-            switchButton.widthAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        tableView.anchor(top: titleView.bottomAnchor,
+        tableView.anchor(top: collectionView.bottomAnchor,
                          left: view.leftAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                         right: view.rightAnchor)
+                         right: view.rightAnchor,
+                         paddingTop: 8)
     }
     
-    func configureData() {
+    func fetchJourney() {
         guard let journeyId = journeyId else { return }
 
         JourneyManager.shared.fetchSpecificJourney(id: journeyId) { [weak self] result in
             switch result {
             case .success(let journey):
                 self?.journey = journey
-                self?.titleLabel.text = journey.title
-                self?.dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
-                + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+                self?.setupTitleView()
                 self?.tableView.reloadData()
                 self?.collectionView.reloadData()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
 
+    }
+    
+    func setupTitleView() {
+        guard let journey = journey else { return }
+        
+        let title = journey.title
+        let subtitle = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        
+        navigationItem.setTitle(title, subtitle: subtitle)
     }
     
     func showCommentController() {
@@ -185,35 +156,18 @@ class ExpertJourneyController: UIViewController {
         navigationController?.present(vc, animated: true)
     }
     
-    func showLoginController() {
-        let vc = LoginController()
-        navigationController?.present(vc, animated: true)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    // MARK: - selector
-    
+    // MARK: - Selectors
     @objc func switchMode() {
         isComplex.toggle()
         self.tableView.reloadData()
     }
-    // MARK: - copy end
     
     @objc func didTapComment() {
         AuthManager.shared.checkUser { [weak self] bool in
             if bool {
                 self?.showCommentController()
             } else {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
     }
@@ -227,7 +181,7 @@ class ExpertJourneyController: UIViewController {
 extension ExpertJourneyController: UITableViewDelegate {
     
 }
-// MARK: - Copy start
+
 // MARK: - UITableViewDataSource
 extension ExpertJourneyController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -320,12 +274,12 @@ extension ExpertJourneyController: UICollectionViewDataSource {
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.configureData(day: indexPath.item)
+        cell.setupData(day: indexPath.item)
         return cell
     }
 }
-// MARK: - Copy end
 
+// MARK: - UIGestureRecognizerDelegate
 extension ExpertJourneyController: UIGestureRecognizerDelegate {
 
 }

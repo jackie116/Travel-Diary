@@ -97,7 +97,7 @@ class JourneyManager {
                 journey.users = [user.uid]
                 journey.isPublic = false
                 do {
-                    try self?.collectionRef.addDocument(from: journey)
+                    _ = try self?.collectionRef.addDocument(from: journey)
                     completion(.success(true))
                 } catch {
                     completion(.failure(error))

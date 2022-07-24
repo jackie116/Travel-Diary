@@ -105,16 +105,6 @@ class EditProfileController: UIViewController {
         }
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     @objc func addUserPhoto() {
         let actionSheet = UIAlertController(title: "Select Photo",
                                             message: "Where do you want to select a photo?",
@@ -157,12 +147,11 @@ class EditProfileController: UIViewController {
         AuthManager.shared.updateUserInfo(userInfo: userInfo!, userImage: userImage) { [weak self] result in
             switch result {
             case .success:
-                print("upload success")
                 DispatchQueue.main.async {
                     self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }

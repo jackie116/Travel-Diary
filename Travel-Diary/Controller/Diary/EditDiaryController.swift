@@ -9,36 +9,23 @@ import UIKit
 
 class EditDiaryController: UIViewController {
     
-    lazy var switchButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "arrow.left.arrow.right"), for: .normal)
-        button.addTarget(self, action: #selector(switchMode), for: .touchUpInside)
+    // MARK: - Properties
+    lazy var closeButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(didTapClose))
         button.tintColor = .customBlue
         return button
     }()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let titleView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 2
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
+    lazy var switchButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "arrow.left.arrow.right"),
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(switchMode))
+        button.tintColor = .customBlue
+        return button
     }()
     
     lazy var tableView: UITableView = {
@@ -84,26 +71,27 @@ class EditDiaryController: UIViewController {
     var journey: Journey?
     var isComplex: Bool = true
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        hideTabBar()
         fetchJourneys()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        tabBarController?.tabBar.isHidden = false
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        showTabBar()
     }
     
+    // MARK: - Helpers
     func fetchJourneys() {
         guard let id = id else { return }
 
@@ -111,73 +99,56 @@ class EditDiaryController: UIViewController {
             switch result {
             case .success(let journey):
                 self?.journey = journey
-                self?.configureData()
+                self?.setupTitleView()
                 self?.collectionView.reloadData()
                 self?.tableView.reloadData()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
     
-    func configureUI() {
-        stackView.addArrangedSubview(titleLabel)
-        stackView.addArrangedSubview(dateLabel)
-        stackView.addArrangedSubview(collectionView)
-        titleView.addSubview(stackView)
-        view.addSubview(titleView)
-        view.addSubview(switchButton)
+    func setupUI() {
+        navigationItem.leftBarButtonItem = closeButton
+        navigationItem.rightBarButtonItem = switchButton
+        view.backgroundColor = .white
+        view.addSubview(collectionView)
         view.addSubview(tableView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
-        collectionView.setDimensions(width: UIScreen.width, height: 50)
-        stackView.addConstraintsToFillView(titleView)
+    func setupConstraint() {
+        collectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                              left: view.leftAnchor,
+                              right: view.rightAnchor,
+                              paddingTop: 8,
+                              height: 50)
         
-        titleView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+        tableView.anchor(top: collectionView.bottomAnchor,
                          left: view.leftAnchor,
+                         bottom: view.bottomAnchor,
                          right: view.rightAnchor,
-                         paddingTop: 16,
-                         height: 100)
-        
-        switchButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            switchButton.topAnchor.constraint(equalTo: titleView.topAnchor, constant: 8),
-            switchButton.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: 8),
-            switchButton.rightAnchor.constraint(equalTo: titleView.rightAnchor, constant: -8),
-            switchButton.widthAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        tableView.anchor(top: titleView.bottomAnchor,
-                         left: view.leftAnchor,
-                         bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                         right: view.rightAnchor)
+                         paddingTop: 8)
     }
     
-    func configureData() {
+    func setupTitleView() {
         guard let journey = journey else { return }
         
-        titleLabel.text = journey.title
-        dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        let title = journey.title
+        let subtitle = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
         + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
+        
+        navigationItem.setTitle(title, subtitle: subtitle)
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    // MARK: - selector
-    
+    // MARK: - Selectors
     @objc func switchMode() {
         isComplex.toggle()
         self.tableView.reloadData()
+    }
+    
+    @objc func didTapClose() {
+        navigationController?.dismiss(animated: true)
     }
 }
 
@@ -193,7 +164,7 @@ extension EditDiaryController: UITableViewDelegate {
                 vc.journey = self?.journey
                 let navVC = UINavigationController(rootViewController: vc)
                 navVC.modalPresentationStyle = .fullScreen
-                self?.navigationController?.present(navVC, animated: true)
+                self?.present(navVC, animated: true)
                 completionHandler(true)
             }
             action.image = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
@@ -299,7 +270,7 @@ extension EditDiaryController: UICollectionViewDataSource {
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.configureData(day: indexPath.item)
+        cell.setupData(day: indexPath.item)
         return cell
     }
 }

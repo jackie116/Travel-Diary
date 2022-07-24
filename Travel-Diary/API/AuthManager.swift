@@ -193,15 +193,12 @@ class AuthManager {
     }
     
     func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
-        let currentUser = Auth.auth().currentUser
-        guard let user = currentUser else { return }
+        guard let user = Auth.auth().currentUser else { return }
         let data = User()
         
         let journeysRef = Firestore.firestore().collection("Journeys")
         let commentsRef = Firestore.firestore().collection("comments")
-        let usersRef = Firestore.firestore().collection("users")
-                
-        // Get new write batch
+
         let batch = db.batch()
         
         DispatchQueue.global().async {
@@ -228,7 +225,6 @@ class AuthManager {
             }
             
             semaphore.wait()
-            
             commentsRef.whereField("userUID", isEqualTo: user.uid).getDocuments { querySnapshot, error in
                 if let error = error {
                     completion(.failure(error))
@@ -242,14 +238,13 @@ class AuthManager {
             
             semaphore.wait()
             do {
-                try batch.setData(from: data, forDocument: usersRef.document(user.uid))
+                try batch.setData(from: data, forDocument: self.collectionRef.document(user.uid))
                 semaphore.signal()
             } catch {
                 completion(.failure(error))
             }
             
             semaphore.wait()
-            // Commit the batch
             batch.commit { err in
                 if let err = err {
                     completion(.failure(err))

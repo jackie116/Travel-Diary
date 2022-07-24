@@ -11,6 +11,7 @@ import AVFoundation
 
 class DiscoverController: UIViewController {
     
+    // MARK: - Properties
     struct ExpertJourney {
         var id: String
         var title: String
@@ -44,12 +45,13 @@ class DiscoverController: UIViewController {
     
     var expertJourneys = [ExpertJourney]()
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         navigationItem.title = "Discover"
-        configureUI()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,13 +59,14 @@ class DiscoverController: UIViewController {
         fetchJourneys()
     }
     
-    func configureUI() {
+    // MARK: - Helper
+    func setupUI() {
         view.addSubview(tableView)
         tableView.addSubview(refreshControl)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         tableView.addConstraintsToFillSafeArea(view)
     }
     
@@ -81,7 +84,7 @@ class DiscoverController: UIViewController {
                         case .success(let user):
                             filteredJourneys = journeys.filter { !user.blocklist.contains($0.owner) }
                         case .failure(let error):
-                            self?.error404(message: error.localizedDescription)
+                            AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                         }
                         group.leave()
                     }
@@ -99,7 +102,7 @@ class DiscoverController: UIViewController {
                                                                   userInfo: user)
                                 self?.expertJourneys.append(expertJourney)
                             case .failure(let error):
-                                self?.error404(message: error.localizedDescription)
+                                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                             }
                             group.leave()
                         }
@@ -111,7 +114,18 @@ class DiscoverController: UIViewController {
                 }
             case .failure(let error):
                 self?.refreshControl.endRefreshing()
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
+            }
+        }
+    }
+    
+    func sendReport(journeyId: String, message: String) {
+        ReportManager.shared.sendReport(journeyId: journeyId, message: message) { [weak self] result in
+            switch result {
+            case .success:
+                self?.showReportSuccessAlert()
+            case .failure(let error):
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }
@@ -168,10 +182,10 @@ class DiscoverController: UIViewController {
                     if isCopy {
                         print("Success")
                     } else {
-                        self?.error404(message: "Can't find data")
+                        AlertHelper.shared.showErrorAlert(message: "Can't find journey", over: self)
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }
@@ -229,25 +243,10 @@ class DiscoverController: UIViewController {
         present(alert, animated: true)
     }
     
-    func sendReport(journeyId: String, message: String) {
-        ReportManager.shared.sendReport(journeyId: journeyId, message: message) { [weak self] result in
-            switch result {
-            case .success:
-                self?.showReportSuccessAlert()
-            case .failure(let error):
-                self?.error404(message: error.localizedDescription)
-            }
-        }
-    }
-    
     func showReportSuccessAlert() {
-        let alert = UIAlertController(title: "Thanks for reporting this journey",
-                                      message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        AlertHelper.shared.showAlert(title: "Thanks for reporting this journey",
+                                     message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
+                                     over: self)
     }
     
     func showBlockAlert(indexPath: IndexPath) {
@@ -261,12 +260,12 @@ class DiscoverController: UIViewController {
                 switch result {
                 case .success(let isSignIn):
                     if !isSignIn {
-                        self?.error404(message: "Please sign in first")
+                        AlertHelper.shared.showErrorAlert(message: "Please sign in first", over: self)
                     } else {
                         self?.fetchJourneys()
                     }
                 case .failure(let error):
-                    self?.error404(message: error.localizedDescription)
+                    AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }))
@@ -276,18 +275,7 @@ class DiscoverController: UIViewController {
         present(alert, animated: true)
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     // MARK: - selector
-    
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView.indexPathForRow(at: point) {
@@ -300,6 +288,7 @@ class DiscoverController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension DiscoverController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpertJourneyController()
@@ -308,6 +297,7 @@ extension DiscoverController: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension DiscoverController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return expertJourneys.count

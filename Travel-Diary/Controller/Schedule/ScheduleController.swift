@@ -16,20 +16,13 @@ protocol DrawAnnotationDelegate: AnyObject {
 
 class ScheduleController: UIViewController {
     
+    // MARK: - Delegate
     weak var delegate: DrawAnnotationDelegate?
     
-    var tripData: Journey?
-
-    var scheduleMarks: [DailySpot] = [] {
-        didSet {
-            self.tripData?.data = scheduleMarks
-            self.delegate?.redrawMap(placemarks: scheduleMarks)
-        }
-    }
-    
-    lazy var sectionCollectionView: UICollectionView = {
+    // MARK: - Properties
+    lazy var collectionView: UICollectionView = {
+        
         let layout = UICollectionViewFlowLayout()
-        // 方向
         layout.scrollDirection = .horizontal
         
         let rect = CGRect(x: 0, y: 0, width: UIScreen.width, height: 50)
@@ -49,7 +42,7 @@ class ScheduleController: UIViewController {
         return collectionView
     }()
     
-    lazy var scheduleTableView: UITableView = {
+    lazy var tableView: UITableView = {
         let table = UITableView()
         
         table.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.identifier)
@@ -63,47 +56,47 @@ class ScheduleController: UIViewController {
         
         return table
     }()
+
+    var tripData: Journey?
+
+    var scheduleMarks: [DailySpot] = [] {
+        didSet {
+            self.tripData?.data = scheduleMarks
+            self.delegate?.redrawMap(placemarks: scheduleMarks)
+        }
+    }
     
-    let tripTitle: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    // MARK: - Lifecycle
+    init(tripData: Journey) {
+        self.tripData = tripData
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    let tripDuration: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let headerStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 8
-        stack.alignment = .center
-        stack.distribution = .fill
-        return stack
-    }()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initSchedule()
-        setUI()
-        configureData()
         
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
+        setupUI()
+        initSchedule()
+        
+        NotificationCenter.default.addObserver(self,
                                        selector: #selector(appMovedToBackground),
                                        name: UIApplication.didEnterBackgroundNotification,
                                        object: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         uploadSchedule()
     }
-    
+        
+    // MARK: - Helpers
     func initSchedule() {
         guard let tripData = tripData else { return }
-        
+
         if tripData.data.isEmpty {
             for _ in 1...tripData.days {
                 scheduleMarks.append(DailySpot())
@@ -113,69 +106,38 @@ class ScheduleController: UIViewController {
         }
     }
     
-    func setUI() {
-        view.addSubview(sectionCollectionView)
-        sectionCollectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+    func setupUI() {
+        view.addSubview(collectionView)
+        view.addSubview(tableView)
+        
+        setupConstraint()
+    }
+    
+    func setupConstraint() {
+        collectionView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                        left: view.leftAnchor,
                        right: view.rightAnchor,
                        paddingTop: 20,
                        height: 50)
         
-        view.addSubview(scheduleTableView)
-        scheduleTableView.anchor(top: sectionCollectionView.bottomAnchor,
+        tableView.anchor(top: collectionView.bottomAnchor,
                                  left: view.leftAnchor,
                                  bottom: view.bottomAnchor,
                                  right: view.rightAnchor)
-        setScheduleTableHeaderFooter()
     }
-    
-    func setScheduleTableHeaderFooter() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
-        
-        headerStackView.addArrangedSubview(tripTitle)
-        headerStackView.addArrangedSubview(tripDuration)
-        headerView.addSubview(headerStackView)
-        headerStackView.center(inView: headerView)
 
-        scheduleTableView.tableHeaderView = headerView
-    }
-    
-    func configureData() {
-        guard let tripData = tripData else { return }
-
-        tripTitle.text = tripData.title
-        tripDuration.text = Date.dateFormatter.string(from: Date.init(milliseconds: tripData.start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: tripData.end))
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    private func int64ToyMd(_ timestamp: Int64) -> String {
-        let date = Date(milliseconds: timestamp)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: date)
-    }
-    
     private func uploadSchedule() {
         JourneyManager.shared.updateJourney(journey: self.tripData!) { [weak self] result in
             switch result {
             case .success:
-                print("Upload success")
+                break
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showAlert(title: "Upload Failed", message: error.localizedDescription, over: self)
             }
         }
     }
     
+    // MARK: - Selectors
     @objc func searchPlace(_ sender: UIButton) {
         let vc = SearchBarController()
         vc.daySection = sender.tag
@@ -255,7 +217,7 @@ extension ScheduleController: UITableViewDataSource {
             withIdentifier: ScheduleCell.identifier,
             for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
-        cell.configureData(name: scheduleMarks[indexPath.section].spot[indexPath.row].name,
+        cell.setupData(name: scheduleMarks[indexPath.section].spot[indexPath.row].name,
                            address: scheduleMarks[indexPath.section].spot[indexPath.row].address,
                            order: indexPath.row)
         
@@ -273,7 +235,7 @@ extension ScheduleController: UITableViewDataSource {
 extension ScheduleController: HandleScheduleDelegate {
     func returnMark(mark: Spot, section: Int) {
         scheduleMarks[section].spot.append(mark)
-        scheduleTableView.reloadData()
+        tableView.reloadData()
     }
 }
 
@@ -284,7 +246,7 @@ extension ScheduleController: UICollectionViewDelegate {
         cell?.backgroundColor = .customBlue
         cell?.isSelected = true
         let tablePath = IndexPath(row: NSNotFound, section: indexPath.item)
-        scheduleTableView.scrollToRow(at: tablePath, at: .top, animated: true)
+        tableView.scrollToRow(at: tablePath, at: .top, animated: true)
         self.delegate?.zoomSelectedRoute(day: indexPath.item)
     }
     
@@ -328,7 +290,7 @@ extension ScheduleController: UICollectionViewDataSource {
             withReuseIdentifier: DaysCell.identifier,
             for: indexPath) as? DaysCell else { return UICollectionViewCell() }
         
-        cell.configureData(day: indexPath.item)
+        cell.setupData(day: indexPath.item)
         
         return cell
     }

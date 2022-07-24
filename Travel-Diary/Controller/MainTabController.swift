@@ -8,11 +8,8 @@
 import UIKit
 
 class MainTabController: UITabBarController {
-
-    // MARK: - Properties
     
     // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,10 +17,7 @@ class MainTabController: UITabBarController {
         delegate = self
     }
     
-    // MARK: - Selectors
-    
     // MARK: - Helpers
-
     func configureViewControllers() {
         let journey = JourneyController()
         let nav1 = templateNavigationController(image: UIImage.asset(.tab_marker), rootViewController: journey)
@@ -49,24 +43,19 @@ class MainTabController: UITabBarController {
         return nav
     }
     
-    func showLoginController() {
-        let vc = LoginController()
-        // vc.alertMessage.text = "Sign in to edit your profile"
-        self.present(vc, animated: true)
-    }
-    
     func isSignIn() -> Bool {
         var isSignIn = false
         AuthManager.shared.checkUser { [weak self] bool in
             isSignIn = bool
             if !isSignIn {
-                self?.showLoginController()
+                LoginHelper.shared.showLoginController(over: self)
             }
         }
         return isSignIn
     }
 }
 
+// MARK: - UITabBarControllerDelegate
 extension MainTabController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {

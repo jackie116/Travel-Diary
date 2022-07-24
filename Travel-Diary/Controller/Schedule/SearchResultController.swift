@@ -8,22 +8,24 @@
 import UIKit
 import MapKit
 
-// MARK: - search
 protocol HandleMapSearchDelegate: AnyObject {
     func getSearchResult(placemark: Spot)
 }
 
 class SearchResultController: UITableViewController {
     
+    // MARK: - Properties
     var matchingItems: [MKMapItem] = []
     var mapView: MKMapView?
     weak var delegate: HandleMapSearchDelegate?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(SearchPlaceCell.self, forCellReuseIdentifier: SearchPlaceCell.identifier)
     }
     
+    // MARK: - Helpers
     func parseAddress(selectedItem: MKPlacemark) -> String {
         var addressLine: String = ""
         if selectedItem.subThoroughfare != nil {
@@ -51,6 +53,7 @@ class SearchResultController: UITableViewController {
     }
 }
 
+// MARK: - UISearchResultsUpdating
 extension SearchResultController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let mapView = mapView,
@@ -69,8 +72,8 @@ extension SearchResultController: UISearchResultsUpdating {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SearchResultController {
-    // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return matchingItems.count
     }
@@ -92,6 +95,7 @@ extension SearchResultController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SearchResultController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = matchingItems[indexPath.row].placemark

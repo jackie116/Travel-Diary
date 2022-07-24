@@ -71,8 +71,8 @@ class JoinGroupController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        configureData()
+        setupUI()
+        setupData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,7 +80,7 @@ class JoinGroupController: UIViewController {
         popupShowView()
     }
     
-    func configureUI() {
+    func setupUI() {
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         view.addSubview(showView)
         showView.addSubview(coverImage)
@@ -90,10 +90,10 @@ class JoinGroupController: UIViewController {
         vStackView.addArrangedSubview(tripDate)
         vStackView.addArrangedSubview(joinButton)
         showView.addSubview(vStackView)
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         showView.centerX(inView: view)
         showView.setDimensions(width: UIScreen.width * 0.8, height: UIScreen.height * 0.6)
         bottomConstraint = showView.topAnchor.constraint(equalTo: view.bottomAnchor)
@@ -121,7 +121,7 @@ class JoinGroupController: UIViewController {
                           paddingTop: 16, paddingBottom: 16)
     }
     
-    func configureData() {
+    func setupData() {
         guard let journey = journey else { return }
         
         tripName.text = journey.title
@@ -158,16 +158,6 @@ class JoinGroupController: UIViewController {
         }
     }
     
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: "Please check your internet connect!",
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
-    }
-    
     @objc func joinGroup() {
         guard let id = journey?.id else { return }
 
@@ -176,7 +166,7 @@ class JoinGroupController: UIViewController {
             case .success:
                 self?.joinGroupSuccess()
             case .failure(let error):
-                self?.error404(message: error.localizedDescription)
+                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
             }
         }
     }

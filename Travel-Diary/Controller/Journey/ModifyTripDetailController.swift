@@ -10,9 +10,8 @@ import Kingfisher
 
 class ModifyTripDetailController: UIViewController {
     
-    private var coverImage: UIImage?
-    
-    lazy var backButton: UIBarButtonItem = {
+    // MARK: - Properties
+    private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
                                      style: .plain,
                                      target: self,
@@ -21,7 +20,7 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
-    lazy var plusPhotoButton: UIButton = {
+    private lazy var plusPhotoButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .lightGray
         button.tintColor = .white
@@ -35,13 +34,13 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
-    let titleTextField: UITextField = {
+    private let titleTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Please input name of trip"
         return textField
     }()
     
-    let vStackView: UIStackView = {
+    private let vStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 16
@@ -50,7 +49,7 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let startStackView: UIStackView = {
+    private let startStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 32
@@ -59,7 +58,7 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let endStackView: UIStackView = {
+    private let endStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 32
@@ -68,19 +67,19 @@ class ModifyTripDetailController: UIViewController {
         return stack
     }()
     
-    let startDateLabel: UILabel = {
+    private let startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Start Date"
         return label
     }()
     
-    let endDateLabel: UILabel = {
+    private let endDateLabel: UILabel = {
         let label = UILabel()
         label.text = "End Date"
         return label
     }()
     
-    let startDatePicker: UIDatePicker = {
+    private let startDatePicker: UIDatePicker = {
         let dataPicker = UIDatePicker()
         dataPicker.preferredDatePickerStyle = .compact
         dataPicker.datePickerMode = .date
@@ -88,7 +87,7 @@ class ModifyTripDetailController: UIViewController {
         return dataPicker
     }()
     
-    let endDatePicker: UIDatePicker = {
+    private let endDatePicker: UIDatePicker = {
         let dataPicker = UIDatePicker()
         dataPicker.preferredDatePickerStyle = .compact
         dataPicker.datePickerMode = .date
@@ -105,12 +104,24 @@ class ModifyTripDetailController: UIViewController {
         return button
     }()
     
-    var journey: Journey?
+    private var coverImage: UIImage?
+    
+    private var journey: Journey?
 
+    // MARK: - Lifecycle
+    init(journey: Journey) {
+        self.journey = journey
+        super.init(nibName: nil, bundle: nil)
+        self.setupData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        initData()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,7 +134,8 @@ class ModifyTripDetailController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func initData() {
+    // MARK: - Helpers
+    func setupData() {
         guard let journey = journey else { return }
         titleTextField.text = journey.title
         startDatePicker.date = Date(milliseconds: journey.start)
@@ -136,7 +148,7 @@ class ModifyTripDetailController: UIViewController {
         }
     }
     
-    func configureUI() {
+    func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .white
@@ -150,10 +162,10 @@ class ModifyTripDetailController: UIViewController {
         vStackView.addArrangedSubview(endStackView)
         view.addSubview(vStackView)
         view.addSubview(submitButton)
-        setConstraint()
+        setupConstraint()
     }
     
-    func setConstraint() {
+    func setupConstraint() {
         plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                left: view.leftAnchor,
                                right: view.rightAnchor,
@@ -161,6 +173,7 @@ class ModifyTripDetailController: UIViewController {
                                paddingLeft: 16,
                                paddingRight: 16,
                                height: 220)
+        
         vStackView.centerX(inView: view, topAnchor: plusPhotoButton.bottomAnchor, paddingTop: 32)
         
         submitButton.centerX(inView: view, topAnchor: vStackView.bottomAnchor, paddingTop: 32)
@@ -172,24 +185,20 @@ class ModifyTripDetailController: UIViewController {
         return (components.day ?? 0) + 1
     }
     
-    func showAlert(title: String, message: String) {
-        let controller = UIAlertController(title: title,
-                                           message: message,
-                                           preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        okAction.setValue(UIColor.customBlue, forKey: "titleTextColor")
-        controller.addAction(okAction)
-        present(controller, animated: true, completion: nil)
-    }
-    
-    func error404(message: String) {
-        let alert = UIAlertController(title: "Error 404",
-                                      message: message,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
+    func modifyJourneyDays(journey: Journey, days: Int) -> Journey {
+        var journey = journey
+        let dataCount = journey.data.count
+        
+        if days > dataCount {
+            for _ in (dataCount + 1)...days {
+                journey.data.append(DailySpot())
+            }
+        } else if days < dataCount {
+            for _ in (days + 1)...dataCount {
+                journey.data.removeLast()
+            }
         }
+        return journey
     }
     
     // MARK: - Selectors
@@ -231,9 +240,15 @@ class ModifyTripDetailController: UIViewController {
     
     @objc func didSubmit() {
         if self.titleTextField.text?.isEmpty == true {
-            showAlert(title: "Please input name of trip!", message: "Trip name is empty.")
+            
+            AlertHelper.shared.showAlert(title: "Empty title", message: "Please input name of trip!", over: self)
+            
         } else if self.startDatePicker.date > endDatePicker.date {
-            showAlert(title: "Date Error!!!", message: "Trip's end date is before start date.")
+            
+            AlertHelper.shared.showAlert(title: "Date Error!",
+                                         message: "Trip's end date is before start date",
+                                         over: self)
+            
         } else {
             guard let title = self.titleTextField.text else { return }
             guard var journey = journey else { return }
@@ -242,7 +257,6 @@ class ModifyTripDetailController: UIViewController {
 
             let startDate = self.startDatePicker.date.formattedDate
             let endDate = self.endDatePicker.date.formattedDate
-
             let days = daysBetween(start: startDate, end: endDate)
             
             journey.title = title
@@ -250,37 +264,25 @@ class ModifyTripDetailController: UIViewController {
             journey.end = endDate.millisecondsSince1970
             journey.days = days
             
-            let dataCount = journey.data.count
-            
-            if days > dataCount {
-                for _ in (dataCount + 1)...days {
-                    journey.data.append(DailySpot())
-                }
-            } else if days < dataCount {
-                for _ in (days + 1)...dataCount {
-                    journey.data.removeLast()
-                }
-            }
+            journey = modifyJourneyDays(journey: journey, days: days)
             
             if coverImage != nil {
                 JourneyManager.shared.updateJourneyWithCoverImage(
                     journey: journey, coverImage: coverImage) { [weak self] result in
                     switch result {
                     case .success:
-                        print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404(message: error.localizedDescription)
+                        AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                     }
                 }
             } else {
                 JourneyManager.shared.updateJourney(journey: journey) { [weak self] result in
                     switch result {
                     case .success:
-                        print("Update success.")
                         self?.navigationController?.popViewController(animated: true)
                     case .failure(let error):
-                        self?.error404(message: error.localizedDescription)
+                        AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                     }
                 }
             }
@@ -292,6 +294,7 @@ class ModifyTripDetailController: UIViewController {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -307,10 +310,12 @@ extension ModifyTripDetailController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension ModifyTripDetailController: UINavigationControllerDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension ModifyTripDetailController: UIGestureRecognizerDelegate {
 
 }
