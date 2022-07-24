@@ -70,7 +70,6 @@ class ScheduleController: UIViewController {
     init(tripData: Journey) {
         self.tripData = tripData
         super.init(nibName: nil, bundle: nil)
-        initSchedule()
     }
     
     required init?(coder: NSCoder) {
@@ -81,7 +80,8 @@ class ScheduleController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-    
+        initSchedule()
+        
         NotificationCenter.default.addObserver(self,
                                        selector: #selector(appMovedToBackground),
                                        name: UIApplication.didEnterBackgroundNotification,
