@@ -79,33 +79,36 @@ Travel Diary provides users a platform for planning and recording their  journey
 
 
 ## Libraries
-- [Firestore](https://firebase.google.com/products/firestore?gclid=Cj0KCQiA-qGNBhD3ARIsAO_o7ynVqh2xVTgG6WIKFSfdCN4x9lHJrit2kdCT99IfZPNxPPbbtPHr6qsaAv4lEALw_wcB&gclsrc=aw.ds)
+- [Firestore](https://firebase.google.com)
 - [lottie-ios](https://github.com/airbnb/lottie-ios)
 - [IQKeyboardManagerSwift](https://github.com/hackiftekhar/IQKeyboardManager)
 - [SwiftLint](https://github.com/realm/SwiftLint)
-- [Crashlytics](https://firebase.google.com/products/crashlytics?hl=en)
+- [Kingfisher](https://github.com/onevcat/Kingfisher)
+- [FloatingPanel](https://github.com/scenee/FloatingPanel)
 
 
 ## Version
-1.0.1
+1.1.1
 
 
 ## Requirement
 - Xcode 13.0 or later
-- iOS 14.0 or later
+- iOS 15.0 or later
 
 
 ## Release Notes
 | Version | Date | Description                                                                                     |
 | :-------| :----|:------------------------------------------------------------------------------------------------|
-| 1.0.1   | 2021.12.03 | General improvement |
-| 1.0.0   | 2021.11.20 | Launched in App Store|
+| 1.1.1   | 2022.07.25 | Fix Bug |
+| 1.1.0   | 2022.07.16 | Add leave group and copy other's journey mechanism |
+| 1.0.1   | 2022.07.14 | Optimize UI |
+| 1.0.0   | 2022.07.13 | Launched in App Store |
 
 
 ## Contact
 
-Dolores Lin 林宜萱
-[yihsuanlin.dolores@gmail.com](yihsuanlin.dolores@gmail.com)
+Jackie Huang 黃昱崴
+[jackie1wu41@gmail.com](jackie1wu41@gmail.com)
 
 ## License
 
