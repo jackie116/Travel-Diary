@@ -1,25 +1,23 @@
 # Travel-Diary
 
-[App store](https://apps.apple.com/tw/app/travel-diary/id1630665861)
-
-Travel Diary provides users a platform for planning and recording their  journey
-
-
-
 <p align="center">
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/toPetherIconwithName.png" width="160" height="226"/>
+<img src="https://i.imgur.com/ClWXVyE.png" width="160" height="160"/>
 </p>
 
 <p align="center">
-  <b>toPether</b> provides a place for close members to <b>keep records</b> for the <b>pets that they keep together</b>, <br>they could <b>sync the information</b> about the pet with each other in the pet group.
+  <b>Travel Diary</b> provides users a platform for planning and recording their journey
 </p>
 
-<p align="center"><a href="https://apps.apple.com/tw/app/topether/id1591802267">
+<p align="center"><a href="https://apps.apple.com/tw/app/travel-diary/id1630665861">
 <img src="https://i.imgur.com/X9tPvTS.png" width="120" height="40"/>
 </a></p>
 
 
 ## Features
+
+<p align="center">
+<img src="" width="200" height="400"/>
+</p>
 
 ### Hightlights
 - Imported Drag and Drop API for users to easily arrange their journey
