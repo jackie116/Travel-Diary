@@ -74,16 +74,19 @@
 <img src="https://i.imgur.com/UiN0zNC.png" width="200" height="400"/>
 </p>
 
+- Automatically generate journey PDF through **PDFKit**
 
 #### Share on community
 <p align="center">
 <img src="https://i.imgur.com/Nj8iOja.png" width="200" height="400"/>
-</p>
-
-#### Comment journey
-<p align="center">
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 <img src="https://i.imgur.com/zVzLrgY.png" width="200" height="400"/>
 </p>
+
+- Leave comment on others journeys
+- Automatically adjust textView height through listening to keyboard
+- Block other users
+- Report unsuitable journeys
 
 ### Sign up
 #### Sign in with Apple/Google
@@ -91,6 +94,8 @@
 <img src="https://i.imgur.com/nVqo4TU.png" width="200" height="400"/>
 </p>
 
+- Video backgorund through AVFoundation
+- Provide Apple and Google sign up
 
 ## Libraries
 - [Firestore](https://firebase.google.com)
