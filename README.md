@@ -16,7 +16,9 @@
 ## Features
 
 <p align="center">
-<img src="" width="200" height="400"/>
+<img src="https://i.imgur.com/a3SztPV.gif" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/vL8THrj.gif" width="200" height="400"/>
 </p>
 
 ### Hightlights
@@ -26,51 +28,68 @@
 - Implemented QR Code mechanism for sharing and joining the travel groups with AVFoundation
 - Implemented app screen and Auto Layout programmatically
 
-### Pet Group
-#### Create a pet group
-- Create a new pet group by filling in some pet information
+### Plan Journey
 
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/CreatePetGroup.png" width="540" height=""/>
+#### Arrange a schedule
+<p align="center">
+<img src="https://i.imgur.com/OpHpfuw.png" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/b3pIgL8.png" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/IFkTwAi.png" width="200" height="400"/>
+</p>
+
+- Add annotations and draw routes with **MapKit**
+- Search spots with **MapKit**
+- Implement searching table through **UISearchController**
+- Provide easy switching mechanism through **UITableViewDragDelegate**
+- Auto saving while leaving page or moving to background
+- Link to Maps for navigation
+
+#### Invite member/Join into the travel group
+<p align="center">
+<img src="https://i.imgur.com/Ie3bChq.png" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/DdT5wJ4.png" width="200" height="400"/>
+</p>
+
+- Using **CIImage** to generate QR Code
+- Using **AVFoundation** to open camera and **CIDetector** to dicipher QR code
+
+#### Edit journey diary
+<p align="center">
+<img src="https://i.imgur.com/mWpIEeW.png" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/lnBcwkN.png" width="200" height="400"/>
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<img src="https://i.imgur.com/d1LjZjQ.png" width="200" height="400"/>
+</p>
+
+- Add photo from album or camera through **UIImagePicker**
+- Provide both simply and complex schdule table
+
+### Share Journey
+#### Share journey PDF
+<p align="center">
+<img src="https://i.imgur.com/UiN0zNC.png" width="200" height="400"/>
+</p>
 
 
-#### Invite member/Join into the pet group
-- Show QRCode to be scanned
+#### Share on community
+<p align="center">
+<img src="https://i.imgur.com/Nj8iOja.png" width="200" height="400"/>
+</p>
 
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ShowQRCode.png" width="540" height=""/>
+#### Comment journey
+<p align="center">
+<img src="https://i.imgur.com/zVzLrgY.png" width="200" height="400"/>
+</p>
 
-
-- Scan the QRCode of the member to invite him/her to the specific group 
-
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/ScanQRCode.png" width="540" height=""/>
-
-### Records
-#### Food/Medical records
-- Record food/medical notes of the pet with members, and view the history records
-
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/TakeRecord.png" width="540" height=""/>
-
-
-### Messages
-- Text a message to the members for the instant information sync
-
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/Message.png" width="540" height=""/>
-
-### Todos
-- Make a todo list for reminding a member of something that needs to do for the pet
-
-<img src="https://github.com/dolores0105/toPether/blob/main/screenshots/TakeTodo.png" width="540" height=""/>
-
-
-## Technical Highlights
-- Developed readable and maintainable codes in Swift using **OOP** and **MVC** architecture.
-- Implemented **Auto Layout programmatically** to make the app compatible with all the iPhones.
-- **Customized and reused UI components** to optimize maintainability and brevity of codes.
-- Utilized **AVFoundation** for QRCode scanner for inviting members into the pet group with more convenience.
-- Implemented **Firestore Snapshot Listener** to perform real-time data synchronization and interactions **across Collections**.
-- Completed account system via **Sign in with Apple**, and integrated **Firebase Auth** and **Firestore** database. 
-- Applied **User Notifications** for reminding users of their to-do lists.
-- Used **Singleton** to access the single instance centralizing data management.
-- Transformed image into **Base64 encoded string** to increase uploading efficiency.
+### Sign up
+#### Sign in with Apple/Google
+<p align="center">
+<img src="https://i.imgur.com/nVqo4TU.png" width="200" height="400"/>
+</p>
 
 
 ## Libraries
