@@ -12,6 +12,12 @@
 <img src="https://i.imgur.com/X9tPvTS.png" width="120" height="40"/>
 </a></p>
 
+<p align="center">
+	<img src="https://img.shields.io/badge/Swift-5.0-yellow.svg?style=flat">
+  <img src="https://img.shields.io/badge/license-MIT-informational">
+  <img src="https://img.shields.io/badge/release-v1.1.1-orange">
+</p>
+
 
 ## Features
 
