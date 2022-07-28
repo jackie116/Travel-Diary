@@ -41,7 +41,7 @@
 
 - Add annotations and draw routes with **MapKit**
 - Search spots with **MapKit**
-- Implement searching table through **UISearchController**
+- Implement searching feature through **UISearchController**
 - Provide easy switching mechanism through **UITableViewDragDelegate**
 - Auto saving while leaving page or moving to background
 - Link to Maps for navigation
