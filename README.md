@@ -84,9 +84,9 @@
 </p>
 
 - Leave comment on others journeys
-- Automatically adjust textView height through listening to keyboard
+- Automatically adjust textView constraint through listening to keyboard events
 - Block other users
-- Report unsuitable journeys
+- Report inappropriate journeys
 
 ### Sign up
 #### Sign in with Apple/Google
