@@ -48,6 +48,8 @@
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7944B8E287E8EE600478931 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8D287E8EE600478931 /* Report.swift */; };
 		E7944B90287E8F3400478931 /* ReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8F287E8F3400478931 /* ReportManager.swift */; };
+		E7A0AE3E2892314200865728 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0AE3D2892314200865728 /* BaseTableViewController.swift */; };
+		E7A0AE442892DF1C00865728 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0AE432892DF1C00865728 /* Constant.swift */; };
 		E7A63EA72881101A00E1F0B0 /* emptyAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E7A63EA62881101A00E1F0B0 /* emptyAnimation.json */; };
 		E7A63EA928815F4E00E1F0B0 /* emptyBox.json in Resources */ = {isa = PBXBuildFile; fileRef = E7A63EA828815F4E00E1F0B0 /* emptyBox.json */; };
 		E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC44B828670C7800CD836B /* PDFCreator.swift */; };
@@ -131,6 +133,8 @@
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7944B8D287E8EE600478931 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E7944B8F287E8F3400478931 /* ReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportManager.swift; sourceTree = "<group>"; };
+		E7A0AE3D2892314200865728 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
+		E7A0AE432892DF1C00865728 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		E7A63EA62881101A00E1F0B0 /* emptyAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyAnimation.json; sourceTree = "<group>"; };
 		E7A63EA828815F4E00E1F0B0 /* emptyBox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyBox.json; sourceTree = "<group>"; };
 		E7AC44B828670C7800CD836B /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
@@ -217,9 +221,10 @@
 		E7131A5A2858F2430034FE12 /* Travel-Diary */ = {
 			isa = PBXGroup;
 			children = (
+				E7A0AE422892DEC300865728 /* BaseComponent */,
+				E7A0AE412892DE4900865728 /* Utlis */,
 				E7DBA19E28704E3E00C08C55 /* Lottie */,
 				E7390CA72869536C0056D6D9 /* Travel-Diary.entitlements */,
-				E7131A772858F3330034FE12 /* Utlis */,
 				E7131A762858F3280034FE12 /* API */,
 				E790ABFF288704B30010ADA9 /* Helper */,
 				E7131A752858F3220034FE12 /* Extension */,
@@ -314,13 +319,6 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		E7131A772858F3330034FE12 /* Utlis */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utlis;
-			sourceTree = "<group>";
-		};
 		E7390CB22869BA8A0056D6D9 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +364,22 @@
 				E790ABFB2886A5150010ADA9 /* LoginHelper.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		E7A0AE412892DE4900865728 /* Utlis */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0AE432892DF1C00865728 /* Constant.swift */,
+			);
+			path = Utlis;
+			sourceTree = "<group>";
+		};
+		E7A0AE422892DEC300865728 /* BaseComponent */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0AE3D2892314200865728 /* BaseTableViewController.swift */,
+			);
+			path = BaseComponent;
 			sourceTree = "<group>";
 		};
 		E7B975E728640A9400F575DC /* Search */ = {
@@ -644,6 +658,7 @@
 				E7791AD8288DAD770035C9B7 /* UINavigationItem+Extension.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
+				E7A0AE442892DF1C00865728 /* Constant.swift in Sources */,
 				E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */,
 				E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
@@ -659,6 +674,7 @@
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
 				E76814732875272F00487782 /* PulseAnimation.swift in Sources */,
+				E7A0AE3E2892314200865728 /* BaseTableViewController.swift in Sources */,
 				E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,

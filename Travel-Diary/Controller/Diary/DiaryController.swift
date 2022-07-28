@@ -7,26 +7,9 @@
 
 import UIKit
 
-class DiaryController: UIViewController {
+class DiaryController: BaseTableViewController {
     
     // MARK: - Properties
-    private lazy var tableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(DiaryCell.self, forCellReuseIdentifier:
-                        DiaryCell.identifier)
-        
-        table.delegate = self
-        table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 3
-        table.rowHeight = UITableView.automaticDimension
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.backgroundColor = .clear
-        
-        return table
-    }()
-    
     private lazy var qrcodeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
                                          style: .plain, target: self,
@@ -36,45 +19,12 @@ class DiaryController: UIViewController {
         return button
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    private let backgroundStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 32
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
-    }()
-    
-    private let backgroundView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "gy_eat")
-        view.clipsToBounds = true
-        view.contentMode = .scaleAspectFill
-        view.alpha = 0.5
-        return view
-    }()
-    
-    private let backgroundLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Edit diary after add new journey"
-        label.alpha = 0.5
-        return label
-    }()
-    
     var journeys = [Journey]() {
         didSet {
             if journeys.count == 0 {
-                backgroundView.isHidden = false
-                backgroundLabel.isHidden = false
+                backgroundStackView.isHidden = false
             } else {
-                backgroundView.isHidden = true
-                backgroundLabel.isHidden = true
+                backgroundStackView.isHidden = true
             }
         }
     }
@@ -82,35 +32,28 @@ class DiaryController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "Diary"
-        setupUI()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchJourneys()
+        fetchData()
     }
     
     // MARK: - Helpers
-    func setupUI() {
-        view.backgroundColor = .white
+    func setup() {
         navigationItem.rightBarButtonItem = qrcodeButton
-        backgroundStack.addArrangedSubview(backgroundView)
-        backgroundStack.addArrangedSubview(backgroundLabel)
-        view.addSubview(backgroundStack)
-        view.addSubview(tableView)
-        tableView.addSubview(refreshControl)
-        setupConstraint()
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(DiaryCell.self, forCellReuseIdentifier:
+                        DiaryCell.identifier)
+        
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
     }
     
-    func setupConstraint() {
-        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
-        backgroundStack.center(inView: view)
-        tableView.addConstraintsToFillSafeArea(view)
-    }
-    
-    func fetchJourneys() {
+    override func fetchData() {
         JourneyManager.shared.fetchDiarys { [weak self] result in
             switch result {
             case .success(let journeys):
@@ -228,10 +171,6 @@ class DiaryController: UIViewController {
         if let indexPath = tableView.indexPathForRow(at: point) {
             showAlertController(indexPath: indexPath)
         }
-    }
-    
-    @objc func refreshData() {
-        fetchJourneys()
     }
     
     @objc func didTapQR() {

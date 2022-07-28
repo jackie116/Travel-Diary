@@ -318,9 +318,9 @@ extension LoginController: ASAuthorizationControllerDelegate {
         var webVC: WebViewController
 
         if gesture.didTapAttributedTextInLabel(label: licenseLabel, inRange: privacyRange) {
-            webVC = WebViewController(urlString: "https://www.privacypolicies.com/live/136dc899-901b-4179-9769-808b4b3ce703")
+            webVC = WebViewController(urlString: UrlString.privacyUrl.rawValue)
         } else if gesture.didTapAttributedTextInLabel(label: licenseLabel, inRange: standardRange) {
-            webVC = WebViewController(urlString: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
+            webVC = WebViewController(urlString: UrlString.eulaUrl.rawValue)
         } else {
             return
         }

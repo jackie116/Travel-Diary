@@ -7,25 +7,9 @@
 
 import UIKit
 
-class JourneyController: UIViewController {
+class JourneyController: BaseTableViewController {
     
     // MARK: - Properties
-    private lazy var tableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
-        
-        table.delegate = self
-        table.dataSource = self
-        table.estimatedRowHeight = 200
-        table.rowHeight = UITableView.automaticDimension
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.backgroundColor = .clear
-        
-        return table
-    }()
-    
     private lazy var addButton: UIButton = {
         let button = UIButton()
         button.setBackgroundImage(UIImage(named: "add"), for: .normal)
@@ -34,45 +18,12 @@ class JourneyController: UIViewController {
         return button
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    private let backgroundStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 32
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
-    }()
-    
-    private let backgroundImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "gy_photo")
-        view.clipsToBounds = true
-        view.contentMode = .scaleAspectFill
-        view.alpha = 0.5
-        return view
-    }()
-    
-    private let backgroundLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Click '+' to add new journey"
-        label.alpha = 0.5
-        return label
-    }()
-    
-    var journeys = [Journey]() {
+    private var journeys = [Journey]() {
         didSet {
             if journeys.count == 0 {
-                backgroundImageView.isHidden = false
-                backgroundLabel.isHidden = false
+                backgroundStackView.isHidden = false
             } else {
-                backgroundImageView.isHidden = true
-                backgroundLabel.isHidden = true
+                backgroundStackView.isHidden = true
             }
         }
     }
@@ -81,13 +32,12 @@ class JourneyController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Journey"
-        setupUI()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        updateData()
+        fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -103,28 +53,18 @@ class JourneyController: UIViewController {
     }
     
     // MARK: - Helpers
-    func setupUI() {
-        view.backgroundColor = .white
-        backgroundStackView.addArrangedSubview(backgroundImageView)
-        backgroundStackView.addArrangedSubview(backgroundLabel)
-        view.addSubview(backgroundStackView)
-        view.addSubview(tableView)
+    func setup() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
+        
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
+        
+        backgroundImageView.image = UIImage(named: "gy_photo")
+        backgroundLabel.text = "Click '+' to add new journey"
+        
         view.addSubview(addButton)
-        tableView.addSubview(refreshControl)
-    
-        configureConstraint()
-    }
-    
-    func configureConstraint() {
-
-        backgroundImageView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
-        backgroundStackView.center(inView: view)
-        
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                                left: view.leftAnchor,
-                                bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                right: view.rightAnchor)
-        
         addButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
                          right: view.rightAnchor,
                          paddingBottom: 32,
@@ -139,7 +79,7 @@ class JourneyController: UIViewController {
         navigationController?.present(navVC, animated: true)
     }
     
-    func updateData() {
+    override func fetchData() {
         JourneyManager.shared.fetchJourneys { [weak self] result in
             switch result {
             case .success(let journeys):
@@ -234,9 +174,7 @@ class JourneyController: UIViewController {
                 switch result {
                 case .success:
                     self?.journeys.remove(at: indexPath.row)
-                    self?.tableView.beginUpdates()
                     self?.tableView.deleteRows(at: [indexPath], with: .left)
-                    self?.tableView.endUpdates()
                 case .failure(let error):
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
@@ -265,10 +203,6 @@ class JourneyController: UIViewController {
                 LoginHelper.shared.showLoginController(over: self)
             }
         }
-    }
-    
-    @objc func refreshData() {
-        updateData()
     }
 }
 
