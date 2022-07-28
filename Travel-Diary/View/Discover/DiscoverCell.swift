@@ -118,13 +118,12 @@ class DiscoverCell: UITableViewCell {
                           paddingRight: 8)
     }
     
-    func configureCell(name: String, photo: String, title: String, start: Int64, end: Int64, coverPhoto: String) {
+    func setupCell(name: String, photo: String, title: String, date: String, coverPhoto: String) {
         ownerName.text = name
         let photoUrl = URL(string: photo)
         ownerPhoto.kf.setImage(with: photoUrl)
         titleLabel.text = title
-        dateLabel.text = Date.dateFormatter.string(from: Date.init(milliseconds: start))
-        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: end))
+        dateLabel.text = date
         let url = URL(string: coverPhoto)
         coverImageView.kf.setImage(with: url)
     }

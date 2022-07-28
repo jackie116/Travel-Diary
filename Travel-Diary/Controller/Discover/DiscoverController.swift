@@ -6,10 +6,9 @@
 //
 
 import UIKit
-import SwiftUI
 import AVFoundation
 
-class DiscoverController: UIViewController {
+class DiscoverController: BaseTableViewController {
     
     // MARK: - Properties
     struct ExpertJourney {
@@ -21,57 +20,41 @@ class DiscoverController: UIViewController {
         var userInfo: User
     }
     
-    private lazy var tableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(DiscoverCell.self, forCellReuseIdentifier:
-                        DiscoverCell.identifier)
-        
-        table.delegate = self
-        table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 3
-        table.rowHeight = UITableView.automaticDimension
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        
-        return table
-    }()
-    
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    var expertJourneys = [ExpertJourney]()
+    var journeys = [ExpertJourney]() {
+        didSet {
+            if journeys.count == 0 {
+                backgroundStackView.isHidden = false
+            } else {
+                backgroundStackView.isHidden = true
+            }
+        }
+    }
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .white
         navigationItem.title = "Discover"
-        setupUI()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchJourneys()
+        fetchData()
     }
     
     // MARK: - Helper
-    func setupUI() {
-        view.addSubview(tableView)
-        tableView.addSubview(refreshControl)
-        setupConstraint()
+    func setup() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(DiscoverCell.self, forCellReuseIdentifier:
+                        DiscoverCell.identifier)
+        
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
     }
     
-    func setupConstraint() {
-        tableView.addConstraintsToFillSafeArea(view)
-    }
-    
-    func fetchJourneys() {
-        expertJourneys.removeAll()
+    override func fetchData() {
+        journeys.removeAll()
         JourneyManager.shared.fetchPublicJourneys { [weak self] result in
             switch result {
             case .success(let journeys):
@@ -100,7 +83,7 @@ class DiscoverController: UIViewController {
                                                                   end: journey.end,
                                                                   coverImageUrl: journey.coverPhoto,
                                                                   userInfo: user)
-                                self?.expertJourneys.append(expertJourney)
+                                self?.journeys.append(expertJourney)
                             case .failure(let error):
                                 AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                             }
@@ -175,7 +158,7 @@ class DiscoverController: UIViewController {
                                            preferredStyle: .alert)
         controller.view.tintColor = .customBlue
         let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-            guard let id = self?.expertJourneys[indexPath.row].id else { return }
+            guard let id = self?.journeys[indexPath.row].id else { return }
             JourneyManager.shared.copyExpertJourney(journeyId: id) { [weak self] result in
                 switch result {
                 case .success(let isCopy):
@@ -198,10 +181,10 @@ class DiscoverController: UIViewController {
     
     func showReportAlert(indexPath: IndexPath) {
         let alert = UIAlertController(title: "Please select a problem",
-                                      message: "If someone is in immediate danger, get help before report to Travel Diary",
+                                      message: "If someone is in immediate danger, get help before report to us",
                                       preferredStyle: .alert)
         alert.view.tintColor = .customBlue
-        guard let journey = expertJourneys[safe: indexPath.row] else { return }
+        guard let journey = journeys[safe: indexPath.row] else { return }
         alert.addAction(UIAlertAction(title: "Nudity", style: .default, handler: { [weak self] _ in
             self?.sendReport(journeyId: journey.id, message: "Nudity")
         }))
@@ -218,7 +201,9 @@ class DiscoverController: UIViewController {
             self?.sendReport(journeyId: journey.id, message: "Suicide or self-injury")
         }))
         
-        alert.addAction(UIAlertAction(title: "False information", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "False information",
+                                      style: .default,
+                                      handler: { [weak self] _ in
             self?.sendReport(journeyId: journey.id, message: "False information")
         }))
         
@@ -256,13 +241,13 @@ class DiscoverController: UIViewController {
         alert.view.tintColor = .customBlue
         
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            AuthManager.shared.moveIntoBlocklist(id: (self?.expertJourneys[indexPath.row].userInfo.id!)!) { result in
+            AuthManager.shared.moveIntoBlocklist(id: (self?.journeys[indexPath.row].userInfo.id!)!) { result in
                 switch result {
                 case .success(let isSignIn):
                     if !isSignIn {
                         AlertHelper.shared.showErrorAlert(message: "Please sign in first", over: self)
                     } else {
-                        self?.fetchJourneys()
+                        self?.fetchData()
                     }
                 case .failure(let error):
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
@@ -282,17 +267,13 @@ class DiscoverController: UIViewController {
             showAlertController(indexPath: indexPath)
         }
     }
-
-    @objc func refreshData() {
-        fetchJourneys()
-    }
 }
 
 // MARK: - UITableViewDelegate
 extension DiscoverController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = ExpertJourneyController()
-        vc.journeyId = expertJourneys[indexPath.row].id
+        vc.journeyId = journeys[indexPath.row].id
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -300,7 +281,7 @@ extension DiscoverController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension DiscoverController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return expertJourneys.count
+        return journeys.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -308,13 +289,15 @@ extension DiscoverController: UITableViewDataSource {
             withIdentifier: DiscoverCell.identifier,
             for: indexPath) as? DiscoverCell else { return UITableViewCell() }
 
-        guard let journey = expertJourneys[safe: indexPath.row] else { return UITableViewCell()}
+        guard let journey = journeys[safe: indexPath.row] else { return UITableViewCell()}
+        
+        let date = Date.dateFormatter.string(from: Date.init(milliseconds: journey.start))
+        + " - " + Date.dateFormatter.string(from: Date.init(milliseconds: journey.end))
 
-        cell.configureCell(name: journey.userInfo.username,
+        cell.setupCell(name: journey.userInfo.username,
                            photo: journey.userInfo.profileImageUrl,
                            title: journey.title,
-                           start: journey.start,
-                           end: journey.end,
+                           date: date,
                            coverPhoto: journey.coverImageUrl)
         
         if journey.userInfo.id == AuthManager.shared.userId {

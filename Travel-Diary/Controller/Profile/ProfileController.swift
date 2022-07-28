@@ -153,7 +153,7 @@ class ProfileController: UIViewController {
     }
     
     func showPrivacyPolicy() {
-        let webVC = WebViewController(urlString: "https://www.privacypolicies.com/live/136dc899-901b-4179-9769-808b4b3ce703")
+        let webVC = WebViewController(urlString: UrlString.privacyUrl.rawValue)
         self.present(webVC, animated: true, completion: nil)
     }
     
