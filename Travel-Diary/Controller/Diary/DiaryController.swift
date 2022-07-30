@@ -7,26 +7,9 @@
 
 import UIKit
 
-class DiaryController: UIViewController {
+class DiaryController: BaseTableViewController {
     
     // MARK: - Properties
-    private lazy var tableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(DiaryCell.self, forCellReuseIdentifier:
-                        DiaryCell.identifier)
-        
-        table.delegate = self
-        table.dataSource = self
-        table.estimatedRowHeight = UIScreen.height / 3
-        table.rowHeight = UITableView.automaticDimension
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.backgroundColor = .clear
-        
-        return table
-    }()
-    
     private lazy var qrcodeButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
                                          style: .plain, target: self,
@@ -36,45 +19,12 @@ class DiaryController: UIViewController {
         return button
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    private let backgroundStack: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 32
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
-    }()
-    
-    private let backgroundView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "gy_eat")
-        view.clipsToBounds = true
-        view.contentMode = .scaleAspectFill
-        view.alpha = 0.5
-        return view
-    }()
-    
-    private let backgroundLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Edit diary after add new journey"
-        label.alpha = 0.5
-        return label
-    }()
-    
     var journeys = [Journey]() {
         didSet {
             if journeys.count == 0 {
-                backgroundView.isHidden = false
-                backgroundLabel.isHidden = false
+                backgroundStackView.isHidden = false
             } else {
-                backgroundView.isHidden = true
-                backgroundLabel.isHidden = true
+                backgroundStackView.isHidden = true
             }
         }
     }
@@ -82,35 +32,28 @@ class DiaryController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "Diary"
-        setupUI()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchJourneys()
+        fetchData()
     }
     
     // MARK: - Helpers
-    func setupUI() {
-        view.backgroundColor = .white
+    func setup() {
         navigationItem.rightBarButtonItem = qrcodeButton
-        backgroundStack.addArrangedSubview(backgroundView)
-        backgroundStack.addArrangedSubview(backgroundLabel)
-        view.addSubview(backgroundStack)
-        view.addSubview(tableView)
-        tableView.addSubview(refreshControl)
-        setupConstraint()
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(JourneyCell.self, forCellReuseIdentifier:
+                        JourneyCell.identifier)
+        
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
     }
     
-    func setupConstraint() {
-        backgroundView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
-        backgroundStack.center(inView: view)
-        tableView.addConstraintsToFillSafeArea(view)
-    }
-    
-    func fetchJourneys() {
+    override func fetchData() {
         JourneyManager.shared.fetchDiarys { [weak self] result in
             switch result {
             case .success(let journeys):
@@ -155,54 +98,54 @@ class DiaryController: UIViewController {
     
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.view.tintColor = .customBlue
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = .customBlue
         
         // Group
         let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
             self?.showQRcodeGeneratorController(indexPath: indexPath)
         }
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
-        controller.addAction(groupAction)
+        alert.addAction(groupAction)
         
         // share pdf
         let sharePDFAction = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
             self?.showPDFController(indexPath: indexPath)
         }
         sharePDFAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
-        controller.addAction(sharePDFAction)
+        alert.addAction(sharePDFAction)
         
+        // setting
         if journeys[indexPath.row].owner == AuthManager.shared.userId {
             let privacyAction = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
                 self?.showPrivacyController(indexPath: indexPath)
             }
             privacyAction.setValue(UIImage(systemName: "person.3"), forKey: "image")
-            controller.addAction(privacyAction)
+            alert.addAction(privacyAction)
         } else {
             let leaveAction = UIAlertAction(title: "Leave group", style: .destructive) { [weak self] _ in
                 self?.showLeaveGroupAlert(indexPath: indexPath)
             }
             leaveAction.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
-            controller.addAction(leaveAction)
+            alert.addAction(leaveAction)
         }
         
         // Cancel
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
-        controller.addAction(cancelAction)
+        alert.addAction(UIAlertAction().sheetCancel)
         
-        present(controller, animated: true)
+        present(alert, animated: true)
     }
     
     func showLeaveGroupAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Leave group",
-                                      message: "Are your sure you want to leave the group?",
-                                      preferredStyle: .alert)
-        
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            JourneyManager.shared.leaveGroup(journeyId: (self?.journeys[indexPath.row].id)!) { result in
+        AlertHelper.shared.showTFAlert(title: "Leave group",
+                                       message: "Are your sure you want to leave the group?",
+                                       over: self) {
+            
+            guard let id = self.journeys[indexPath.row].id else {
+                return
+            }
+            
+            JourneyManager.shared.leaveGroup(journeyId: id) { [weak self] result in
                 switch result {
                 case .success(let isLeave):
                     if isLeave {
@@ -215,11 +158,7 @@ class DiaryController: UIViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     // MARK: - selector
@@ -228,10 +167,6 @@ class DiaryController: UIViewController {
         if let indexPath = tableView.indexPathForRow(at: point) {
             showAlertController(indexPath: indexPath)
         }
-    }
-    
-    @objc func refreshData() {
-        fetchJourneys()
     }
     
     @objc func didTapQR() {
@@ -263,8 +198,8 @@ extension DiaryController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DiaryCell.identifier,
-                                                       for: indexPath) as? DiaryCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: JourneyCell.identifier,
+                                                       for: indexPath) as? JourneyCell else { return UITableViewCell() }
         
         cell.setupUI(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DiaryCell: UITableViewCell {
+class JourneyCell: UITableViewCell {
     
     let coverImageView: UIImageView = {
         let image = UIImageView()

@@ -7,87 +7,37 @@
 
 import UIKit
 
-class JourneyController: UIViewController {
+class JourneyController: BaseTableViewController {
     
     // MARK: - Properties
-    private lazy var tableView: UITableView = {
-        let table = UITableView()
-        
-        table.register(DiaryCell.self, forCellReuseIdentifier: DiaryCell.identifier)
-        
-        table.delegate = self
-        table.dataSource = self
-        table.estimatedRowHeight = 200
-        table.rowHeight = UITableView.automaticDimension
-        table.separatorStyle = .none
-        table.showsVerticalScrollIndicator = false
-        table.backgroundColor = .clear
-        
-        return table
-    }()
-    
     private lazy var addButton: UIButton = {
         let button = UIButton()
-        button.setBackgroundImage(UIImage(named: "add"), for: .normal)
+        button.setBackgroundImage(UIImage.asset(.add), for: .normal)
         button.addTarget(self, action: #selector(addJourney), for: .touchUpInside)
         button.layer.cornerRadius = 30
         return button
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    private let backgroundStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 32
-        stack.alignment = .center
-        stack.distribution = .equalCentering
-        return stack
-    }()
-    
-    private let backgroundImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "gy_photo")
-        view.clipsToBounds = true
-        view.contentMode = .scaleAspectFill
-        view.alpha = 0.5
-        return view
-    }()
-    
-    private let backgroundLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Click '+' to add new journey"
-        label.alpha = 0.5
-        return label
-    }()
-    
-    var journeys = [Journey]() {
+    private var journeys = [Journey]() {
         didSet {
             if journeys.count == 0 {
-                backgroundImageView.isHidden = false
-                backgroundLabel.isHidden = false
+                backgroundStackView.isHidden = false
             } else {
-                backgroundImageView.isHidden = true
-                backgroundLabel.isHidden = true
+                backgroundStackView.isHidden = true
             }
         }
     }
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Journey"
-        setupUI()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        updateData()
+        fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -103,28 +53,18 @@ class JourneyController: UIViewController {
     }
     
     // MARK: - Helpers
-    func setupUI() {
-        view.backgroundColor = .white
-        backgroundStackView.addArrangedSubview(backgroundImageView)
-        backgroundStackView.addArrangedSubview(backgroundLabel)
-        view.addSubview(backgroundStackView)
-        view.addSubview(tableView)
+    func setup() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(JourneyCell.self, forCellReuseIdentifier: JourneyCell.identifier)
+        
+        refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
+        
+        backgroundImageView.image = UIImage.asset(.gy_photo)
+        backgroundLabel.text = "Click '+' to add new journey"
+        
         view.addSubview(addButton)
-        tableView.addSubview(refreshControl)
-    
-        configureConstraint()
-    }
-    
-    func configureConstraint() {
-
-        backgroundImageView.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
-        backgroundStackView.center(inView: view)
-        
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                                left: view.leftAnchor,
-                                bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                right: view.rightAnchor)
-        
         addButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
                          right: view.rightAnchor,
                          paddingBottom: 32,
@@ -139,7 +79,7 @@ class JourneyController: UIViewController {
         navigationController?.present(navVC, animated: true)
     }
     
-    func updateData() {
+    override func fetchData() {
         JourneyManager.shared.fetchJourneys { [weak self] result in
             switch result {
             case .success(let journeys):
@@ -153,61 +93,52 @@ class JourneyController: UIViewController {
         }
     }
     
+    func showModifyTripDetailController(indexPath: IndexPath) {
+        let vc = ModifyTripDetailController(journey: journeys[indexPath.row])
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.view.tintColor = .customBlue
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = .customBlue
     
         // Detail
         let changeTripAction = UIAlertAction(title: "Change journey detail", style: .default) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            self.dismiss(animated: false) {
-                let vc = ModifyTripDetailController(journey: self.journeys[indexPath.row])
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+            self?.showModifyTripDetailController(indexPath: indexPath)
         }
         changeTripAction.setValue(UIImage(systemName: "square.and.pencil"), forKey: "image")
-        controller.addAction(changeTripAction)
+        alert.addAction(changeTripAction)
         
         // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true) {
-                self?.showCopyAlert(indexPath: indexPath)
-            }
+            self?.showCopyAlert(indexPath: indexPath)
         }
         copyAction.setValue(UIImage(systemName: "doc.on.doc"), forKey: "image")
-        controller.addAction(copyAction)
+        alert.addAction(copyAction)
         
         // Delete
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            self?.dismiss(animated: true) {
-                self?.showDeleteAlert(indexPath: indexPath)
-            }
+            self?.showDeleteAlert(indexPath: indexPath)
         }
         deleteAction.setValue(UIImage(systemName: "trash"), forKey: "image")
-        controller.addAction(deleteAction)
+        alert.addAction(deleteAction)
         
         // Cancel
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
-        controller.addAction(cancelAction)
+        alert.addAction(UIAlertAction().sheetCancel)
         
-        present(controller, animated: true)
+        present(alert, animated: true)
     }
     
     func showCopyAlert(indexPath: IndexPath) {
-        let controller = UIAlertController(title: "Copy",
-                                           message: "Are you sure you want to copy this trip?",
-                                           preferredStyle: .alert)
-        controller.view.tintColor = .customBlue
-        let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+        AlertHelper.shared.showTFAlert(title: "Copy",
+                                       message: "Are you sure you want to copy this trip?",
+                                       over: self) {
             
-            guard var journey = self?.journeys[indexPath.row] else { return }
+            var journey = self.journeys[indexPath.row]
             journey.title += "_copy"
             
-            JourneyManager.shared.copyJourey(journey: journey) { result in
+            JourneyManager.shared.copyJourey(journey: journey) { [weak self] result in
                 switch result {
                 case .success(let journey):
                     self?.journeys.insert(journey, at: 0)
@@ -217,39 +148,30 @@ class JourneyController: UIViewController {
                 }
             }
         }
-        controller.addAction(okAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        controller.addAction(cancelAction)
-        present(controller, animated: true, completion: nil)
     }
     
     func showDeleteAlert(indexPath: IndexPath) {
-        let controller = UIAlertController(title: "Delete",
-                                           message: "Are you sure you want to delete this trip?",
-                                           preferredStyle: .alert)
-        controller.view.tintColor = .customBlue
-        let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            JourneyManager.shared.deleteJourney(id: (self.journeys[indexPath.row].id)!) { [weak self] result in
+        AlertHelper.shared.showTFAlert(title: "Delete",
+                                       message: "Are you sure you want to delete this trip?",
+                                       over: self) {
+            
+            guard let id = self.journeys[indexPath.row].id else {
+                return
+            }
+            
+            JourneyManager.shared.deleteJourney(id: id) { [weak self] result in
                 switch result {
                 case .success:
                     self?.journeys.remove(at: indexPath.row)
-                    self?.tableView.beginUpdates()
                     self?.tableView.deleteRows(at: [indexPath], with: .left)
-                    self?.tableView.endUpdates()
                 case .failure(let error):
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
         }
-        controller.addAction(okAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        controller.addAction(cancelAction)
-        present(controller, animated: true, completion: nil)
     }
     
-    // MARK: - selector
+    // MARK: - Selectors
     @objc func didTapSetting(_ sender: UIButton) {
         let point = sender.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView.indexPathForRow(at: point) {
@@ -265,10 +187,6 @@ class JourneyController: UIViewController {
                 LoginHelper.shared.showLoginController(over: self)
             }
         }
-    }
-    
-    @objc func refreshData() {
-        updateData()
     }
 }
 
@@ -296,8 +214,8 @@ extension JourneyController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: DiaryCell.identifier,
-            for: indexPath) as? DiaryCell else { return UITableViewCell() }
+            withIdentifier: JourneyCell.identifier,
+            for: indexPath) as? JourneyCell else { return UITableViewCell() }
         
         cell.setupUI(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,

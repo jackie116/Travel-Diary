@@ -153,18 +153,15 @@ class ProfileController: UIViewController {
     }
     
     func showPrivacyPolicy() {
-        let webVC = WebViewController(urlString: "https://www.privacypolicies.com/live/136dc899-901b-4179-9769-808b4b3ce703")
+        let webVC = WebViewController(urlString: UrlString.privacyUrl.rawValue)
         self.present(webVC, animated: true, completion: nil)
     }
     
     func showDeleteAccountAlert() {
-        let alert = UIAlertController(title: "Delete Account",
-                                      message: "Are you sure you want to delete account?/nYou will lose all you data",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            AuthManager.shared.deleteAccount { result in
+        AlertHelper.shared.showTFAlert(title: "Delete Account",
+                                       message: "Are you sure you want to delete account? You will lose all you data",
+                                       over: self) {
+            AuthManager.shared.deleteAccount { [weak self] result in
                 switch result {
                 case .success:
                     DispatchQueue.main.async {
@@ -174,20 +171,13 @@ class ProfileController: UIViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     func showSignOutAlert() {
-        let alert = UIAlertController(title: "Sign Out",
-                                      message: "Are you sure you want to sign out?",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
+        AlertHelper.shared.showTFAlert(title: "Sign Out",
+                                       message: "Are you sure you want to sign out?",
+                                       over: self) {
             AuthManager.shared.signOut { [weak self] result in
                 switch result {
                 case .success:
@@ -196,11 +186,7 @@ class ProfileController: UIViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     @objc func signOut() {

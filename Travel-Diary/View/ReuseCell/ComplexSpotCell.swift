@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ComplexDiaryCell: UITableViewCell {
+class ComplexSpotCell: UITableViewCell {
     
     let nameLabel: UILabel = {
         let label = UILabel()

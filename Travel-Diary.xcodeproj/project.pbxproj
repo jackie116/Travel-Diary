@@ -48,17 +48,19 @@
 		E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E793AF84285C748F00606CF7 /* ScheduleCell.swift */; };
 		E7944B8E287E8EE600478931 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8D287E8EE600478931 /* Report.swift */; };
 		E7944B90287E8F3400478931 /* ReportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7944B8F287E8F3400478931 /* ReportManager.swift */; };
+		E7A0AE3E2892314200865728 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0AE3D2892314200865728 /* BaseTableViewController.swift */; };
+		E7A0AE442892DF1C00865728 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0AE432892DF1C00865728 /* Constant.swift */; };
 		E7A63EA72881101A00E1F0B0 /* emptyAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E7A63EA62881101A00E1F0B0 /* emptyAnimation.json */; };
 		E7A63EA928815F4E00E1F0B0 /* emptyBox.json in Resources */ = {isa = PBXBuildFile; fileRef = E7A63EA828815F4E00E1F0B0 /* emptyBox.json */; };
 		E7AC44B928670C7800CD836B /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AC44B828670C7800CD836B /* PDFCreator.swift */; };
 		E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9258528603A0D007F266C /* JourneyManager.swift */; };
 		E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */; };
 		E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EC2864151800F575DC /* EditDiaryController.swift */; };
-		E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EE2864178900F575DC /* DiaryCell.swift */; };
+		E7B975EF2864178900F575DC /* JourneyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975EE2864178900F575DC /* JourneyCell.swift */; };
 		E7B975F12864348B00F575DC /* PDFController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F02864348B00F575DC /* PDFController.swift */; };
 		E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F62864475700F575DC /* ExpertJourneyController.swift */; };
-		E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */; };
-		E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975FA286464AD00F575DC /* ComplexDiaryCell.swift */; };
+		E7B975F92864649A00F575DC /* SimpleSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975F82864649A00F575DC /* SimpleSpotCell.swift */; };
+		E7B975FB286464AD00F575DC /* ComplexSpotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B975FA286464AD00F575DC /* ComplexSpotCell.swift */; };
 		E7B9761D2864C6D500F575DC /* DaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9761C2864C6D500F575DC /* DaysCell.swift */; };
 		E7B9761F2864C70D00F575DC /* UICollectionViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B9761E2864C70D00F575DC /* UICollectionViewCell+Extension.swift */; };
 		E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */; };
@@ -131,17 +133,19 @@
 		E793AF84285C748F00606CF7 /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		E7944B8D287E8EE600478931 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E7944B8F287E8F3400478931 /* ReportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportManager.swift; sourceTree = "<group>"; };
+		E7A0AE3D2892314200865728 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
+		E7A0AE432892DF1C00865728 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		E7A63EA62881101A00E1F0B0 /* emptyAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyAnimation.json; sourceTree = "<group>"; };
 		E7A63EA828815F4E00E1F0B0 /* emptyBox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyBox.json; sourceTree = "<group>"; };
 		E7AC44B828670C7800CD836B /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		E7B9258528603A0D007F266C /* JourneyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyManager.swift; sourceTree = "<group>"; };
 		E7B92587286072C2007F266C /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
 		E7B975EC2864151800F575DC /* EditDiaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryController.swift; sourceTree = "<group>"; };
-		E7B975EE2864178900F575DC /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
+		E7B975EE2864178900F575DC /* JourneyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCell.swift; sourceTree = "<group>"; };
 		E7B975F02864348B00F575DC /* PDFController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFController.swift; sourceTree = "<group>"; };
 		E7B975F62864475700F575DC /* ExpertJourneyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertJourneyController.swift; sourceTree = "<group>"; };
-		E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDiaryCell.swift; sourceTree = "<group>"; };
-		E7B975FA286464AD00F575DC /* ComplexDiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexDiaryCell.swift; sourceTree = "<group>"; };
+		E7B975F82864649A00F575DC /* SimpleSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleSpotCell.swift; sourceTree = "<group>"; };
+		E7B975FA286464AD00F575DC /* ComplexSpotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexSpotCell.swift; sourceTree = "<group>"; };
 		E7B9761C2864C6D500F575DC /* DaysCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysCell.swift; sourceTree = "<group>"; };
 		E7B9761E2864C70D00F575DC /* UICollectionViewCell+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Extension.swift"; sourceTree = "<group>"; };
 		E7C69D2B28597BFD004910AC /* UIScreen+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
@@ -217,12 +221,13 @@
 		E7131A5A2858F2430034FE12 /* Travel-Diary */ = {
 			isa = PBXGroup;
 			children = (
+				E7A0AE412892DE4900865728 /* Utlis */,
 				E7DBA19E28704E3E00C08C55 /* Lottie */,
 				E7390CA72869536C0056D6D9 /* Travel-Diary.entitlements */,
-				E7131A772858F3330034FE12 /* Utlis */,
 				E7131A762858F3280034FE12 /* API */,
 				E790ABFF288704B30010ADA9 /* Helper */,
 				E7131A752858F3220034FE12 /* Extension */,
+				E7A0AE422892DEC300865728 /* BaseController */,
 				E7131A732858F3150034FE12 /* Controller */,
 				E7131A722858F3100034FE12 /* View */,
 				E7131A712858F30A0034FE12 /* Model */,
@@ -252,16 +257,14 @@
 		E7131A722858F3100034FE12 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				E7B975E828640AAE00F575DC /* Journey */,
+				E7B975E928640AB800F575DC /* ReuseCell */,
 				E74D67D6285E403900700F09 /* Schedule */,
 				E7B975E728640A9400F575DC /* Search */,
-				E7B975E928640AB800F575DC /* Diary */,
 				E7B975EA28640AC200F575DC /* Discover */,
 				E7390CB22869BA8A0056D6D9 /* Profile */,
 				E7131A612858F2430034FE12 /* Main.storyboard */,
 				E7131A662858F2430034FE12 /* LaunchScreen.storyboard */,
 				E76814722875272F00487782 /* PulseAnimation.swift */,
-				E765F7BA28797F9500590BED /* UsersCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -314,13 +317,6 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		E7131A772858F3330034FE12 /* Utlis */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utlis;
-			sourceTree = "<group>";
-		};
 		E7390CB22869BA8A0056D6D9 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +364,22 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		E7A0AE412892DE4900865728 /* Utlis */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0AE432892DF1C00865728 /* Constant.swift */,
+			);
+			path = Utlis;
+			sourceTree = "<group>";
+		};
+		E7A0AE422892DEC300865728 /* BaseController */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0AE3D2892314200865728 /* BaseTableViewController.swift */,
+			);
+			path = BaseController;
+			sourceTree = "<group>";
+		};
 		E7B975E728640A9400F575DC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,29 +388,23 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		E7B975E828640AAE00F575DC /* Journey */ = {
+		E7B975E928640AB800F575DC /* ReuseCell */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			path = Journey;
-			sourceTree = "<group>";
-		};
-		E7B975E928640AB800F575DC /* Diary */ = {
-			isa = PBXGroup;
-			children = (
-				E7B975EE2864178900F575DC /* DiaryCell.swift */,
-				E7B975F82864649A00F575DC /* SimpleDiaryCell.swift */,
-				E7B975FA286464AD00F575DC /* ComplexDiaryCell.swift */,
+				E7B975EE2864178900F575DC /* JourneyCell.swift */,
+				E7B975F82864649A00F575DC /* SimpleSpotCell.swift */,
+				E7B975FA286464AD00F575DC /* ComplexSpotCell.swift */,
 				E7B9761C2864C6D500F575DC /* DaysCell.swift */,
+				E765F7BA28797F9500590BED /* UsersCell.swift */,
 			);
-			path = Diary;
+			path = ReuseCell;
 			sourceTree = "<group>";
 		};
 		E7B975EA28640AC200F575DC /* Discover */ = {
 			isa = PBXGroup;
 			children = (
-				E7D1D471286B50EE00483754 /* CommentCell.swift */,
 				E765F7BE287B105300590BED /* DiscoverCell.swift */,
+				E7D1D471286B50EE00483754 /* CommentCell.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -627,7 +633,7 @@
 				E7C69D2C28597BFD004910AC /* UIScreen+Extension.swift in Sources */,
 				E7B975F12864348B00F575DC /* PDFController.swift in Sources */,
 				E765F7BF287B105300590BED /* DiscoverCell.swift in Sources */,
-				E7B975EF2864178900F575DC /* DiaryCell.swift in Sources */,
+				E7B975EF2864178900F575DC /* JourneyCell.swift in Sources */,
 				E7C69D422859B489004910AC /* ProfileController.swift in Sources */,
 				E790ABFE2886B0370010ADA9 /* UIAlertAction+Extension.swift in Sources */,
 				E7390CAF2869B2840056D6D9 /* EditProfileController.swift in Sources */,
@@ -644,8 +650,9 @@
 				E7791AD8288DAD770035C9B7 /* UINavigationItem+Extension.swift in Sources */,
 				E793AF85285C748F00606CF7 /* ScheduleCell.swift in Sources */,
 				E7C69D462859B4DC004910AC /* DiaryController.swift in Sources */,
+				E7A0AE442892DF1C00865728 /* Constant.swift in Sources */,
 				E7874B8D28748DDA00CD2067 /* PrivacyController.swift in Sources */,
-				E7B975FB286464AD00F575DC /* ComplexDiaryCell.swift in Sources */,
+				E7B975FB286464AD00F575DC /* ComplexSpotCell.swift in Sources */,
 				E7C69D2E28597C27004910AC /* UIFont+Extension.swift in Sources */,
 				E7B92588286072C2007F266C /* CLLocationCoordinate2D+Extension.swift in Sources */,
 				E7B9258628603A0D007F266C /* JourneyManager.swift in Sources */,
@@ -659,6 +666,7 @@
 				E7C69D3628597D44004910AC /* UITableViewCell+Extension.swift in Sources */,
 				E74D67DA285E465F00700F09 /* Journey.swift in Sources */,
 				E76814732875272F00487782 /* PulseAnimation.swift in Sources */,
+				E7A0AE3E2892314200865728 /* BaseTableViewController.swift in Sources */,
 				E7D1D472286B50EE00483754 /* CommentCell.swift in Sources */,
 				E7C69D3E2859AAA1004910AC /* UIImage+Extension.swift in Sources */,
 				E781C1BC286351570090E5A6 /* EditDetailController.swift in Sources */,
@@ -668,7 +676,7 @@
 				E790ABFC2886A5150010ADA9 /* LoginHelper.swift in Sources */,
 				E7CFD98A285A0FD2004B5ED5 /* ScheduleMapController.swift in Sources */,
 				E7C69D3228597CDD004910AC /* UIColor+Extension.swift in Sources */,
-				E7B975F92864649A00F575DC /* SimpleDiaryCell.swift in Sources */,
+				E7B975F92864649A00F575DC /* SimpleSpotCell.swift in Sources */,
 				E7C69D482859E0F6004910AC /* NewTripController.swift in Sources */,
 				E7B975F72864475700F575DC /* ExpertJourneyController.swift in Sources */,
 				E7B975ED2864151800F575DC /* EditDiaryController.swift in Sources */,
@@ -822,7 +830,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Travel-Diary/Travel-Diary.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
@@ -841,7 +849,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.YUWEIHUANG.Travel-Diary";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -858,7 +866,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Travel-Diary/Travel-Diary.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = K7CUTZ483T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Travel-Diary/Info.plist";
@@ -877,7 +885,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.YUWEIHUANG.Travel-Diary";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

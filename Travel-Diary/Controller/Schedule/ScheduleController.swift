@@ -181,7 +181,7 @@ extension ScheduleController: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: nil) { [weak self] _, _, completionHandler in
             self?.scheduleMarks[indexPath.section].spot.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .left)
+            tableView.reloadData()
             completionHandler(true)
         }
         deleteAction.image = UIImage(systemName: "trash")

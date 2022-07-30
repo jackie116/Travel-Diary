@@ -130,14 +130,11 @@ class PrivacyController: UIViewController {
     }
     
     func showDeleteAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Delete user",
-                                      message: "Are you sure you want to delete user?",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            JourneyManager.shared.removeFromGroup(journeyId: (self?.journey?.id)!,
-                                                  userId: (self?.users[indexPath.item].id!)!) { result in
+        AlertHelper.shared.showTFAlert(title: "Delete user",
+                                       message: "Are you sure you want to delete user?",
+                                       over: self) {
+            JourneyManager.shared.removeFromGroup(journeyId: (self.journey?.id)!,
+                                                  userId: (self.users[indexPath.item].id!)) { [weak self] result in
                 switch result {
                 case .success:
                     self?.users.remove(at: indexPath.item)
@@ -146,12 +143,7 @@ class PrivacyController: UIViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-            
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     // MARK: - Selectors

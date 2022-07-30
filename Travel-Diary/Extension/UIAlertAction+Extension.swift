@@ -13,4 +13,15 @@ extension UIAlertAction {
         action.setValue(UIColor.customBlue, forKey: "titleTextColor")
         return action
     }
+    
+    var cancel: UIAlertAction {
+        let action = UIAlertAction(title: "Cancel", style: .cancel)
+        return action
+    }
+    
+    var sheetCancel: UIAlertAction {
+        let action = UIAlertAction(title: "Cancel", style: .cancel)
+        action.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
+        return action
+    }
 }
