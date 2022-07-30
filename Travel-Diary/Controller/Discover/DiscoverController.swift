@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import SwiftUI
 
 class DiscoverController: BaseTableViewController {
     
@@ -102,69 +103,47 @@ class DiscoverController: BaseTableViewController {
         }
     }
     
-    func sendReport(journeyId: String, message: String) {
-        ReportManager.shared.sendReport(journeyId: journeyId, message: message) { [weak self] result in
-            switch result {
-            case .success:
-                self?.showReportSuccessAlert()
-            case .failure(let error):
-                AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
-            }
-        }
-    }
-    
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.view.tintColor = .customBlue
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = .customBlue
         
         // Copy
         let copyAction = UIAlertAction(title: "Copy", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true) {
-                self?.showCopyAlert(indexPath: indexPath)
-            }
+            self?.showCopyAlert(indexPath: indexPath)
         }
         copyAction.setValue(UIImage(systemName: "doc.on.doc"), forKey: "image")
-        controller.addAction(copyAction)
+        alert.addAction(copyAction)
         
         // Block
         let blockAction = UIAlertAction(title: "Block user", style: .destructive) { [weak self] _ in
             self?.showBlockAlert(indexPath: indexPath)
         }
         blockAction.setValue(UIImage(systemName: "hand.raised"), forKey: "image")
-        controller.addAction(blockAction)
+        alert.addAction(blockAction)
         
         // Report
         let reportAction = UIAlertAction(title: "Report journey", style: .destructive) { [weak self] _ in
             self?.showReportAlert(indexPath: indexPath)
         }
         reportAction.setValue(UIImage(systemName: "exclamationmark.shield"), forKey: "image")
-        controller.addAction(reportAction)
+        alert.addAction(reportAction)
         
         // Cancel
-        let cancelAction: UIAlertAction = {
-            let action = UIAlertAction(title: "Cancel", style: .cancel)
-            action.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
-            return action
-        }()
-        controller.addAction(cancelAction)
+        alert.addAction(UIAlertAction().sheetCancel)
         
-        present(controller, animated: true)
+        present(alert, animated: true)
     }
     
     func showCopyAlert(indexPath: IndexPath) {
-        let controller = UIAlertController(title: "Copy",
-                                           message: "Are you sure you want to copy this journey?",
-                                           preferredStyle: .alert)
-        controller.view.tintColor = .customBlue
-        let okAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-            guard let id = self?.journeys[indexPath.row].id else { return }
+        AlertHelper.shared.showTFAlert(title: "Copy",
+                                       message: "Are you sure you want to copy this journey?",
+                                       over: self) {
+            let id = self.journeys[indexPath.row].id
             JourneyManager.shared.copyExpertJourney(journeyId: id) { [weak self] result in
                 switch result {
                 case .success(let isCopy):
-                    if isCopy {
-                        print("Success")
-                    } else {
+                    if !isCopy {
                         AlertHelper.shared.showErrorAlert(message: "Can't find journey", over: self)
                     }
                 case .failure(let error):
@@ -172,76 +151,18 @@ class DiscoverController: BaseTableViewController {
                 }
             }
         }
-        controller.addAction(okAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        controller.addAction(cancelAction)
-        present(controller, animated: true, completion: nil)
-    }
-    
-    func showReportAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Please select a problem",
-                                      message: "If someone is in immediate danger, get help before report to us",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        guard let journey = journeys[safe: indexPath.row] else { return }
-        alert.addAction(UIAlertAction(title: "Nudity", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Nudity")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Violence", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Violence")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Harassment", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Harassment")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Suicide or self-injury", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Suicide or self-injury")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "False information",
-                                      style: .default,
-                                      handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "False information")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Spam", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Spam")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Hate speech", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Hate speech")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Terrorism", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Terrorism")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Something else", style: .default, handler: { [weak self] _ in
-            self?.sendReport(journeyId: journey.id, message: "Something else")
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
-    }
-    
-    func showReportSuccessAlert() {
-        AlertHelper.shared.showAlert(title: "Thanks for reporting this journey",
-                                     message: "We will review this journey and remove anything that doesn't follow our standards as quickly as possible",
-                                     over: self)
     }
     
     func showBlockAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Block user",
-                                      message: "Are you sure you want to block this user and all his/her posts?",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            AuthManager.shared.moveIntoBlocklist(id: (self?.journeys[indexPath.row].userInfo.id!)!) { result in
+        AlertHelper.shared.showTFAlert(title: "Block user",
+                                       message: "Are you sure you want to block this user and all his/her posts?",
+                                       over: self) {
+            
+            guard let userId = self.journeys[indexPath.row].userInfo.id else {
+                return
+            }
+            
+            AuthManager.shared.moveIntoBlocklist(id: userId) { [weak self] result in
                 switch result {
                 case .success(let isSignIn):
                     if !isSignIn {
@@ -253,11 +174,13 @@ class DiscoverController: BaseTableViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
+        }
+    }
+    
+    func showReportAlert(indexPath: IndexPath) {
+        let id = journeys[indexPath.row].id
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        AlertHelper.shared.showReportAlert(id: id, over: self)
     }
     
     // MARK: - selector
@@ -280,6 +203,7 @@ extension DiscoverController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension DiscoverController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return journeys.count
     }

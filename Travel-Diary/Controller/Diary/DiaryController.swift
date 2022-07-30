@@ -47,8 +47,8 @@ class DiaryController: BaseTableViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(DiaryCell.self, forCellReuseIdentifier:
-                        DiaryCell.identifier)
+        tableView.register(JourneyCell.self, forCellReuseIdentifier:
+                        JourneyCell.identifier)
         
         refreshControl.addTarget(self, action: #selector(refreshTable), for: .valueChanged)
     }
@@ -98,54 +98,54 @@ class DiaryController: BaseTableViewController {
     
     // MARK: - UIAlertController
     func showAlertController(indexPath: IndexPath) {
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.view.tintColor = .customBlue
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.tintColor = .customBlue
         
         // Group
         let groupAction = UIAlertAction(title: "Travel group", style: .default) { [weak self] _ in
             self?.showQRcodeGeneratorController(indexPath: indexPath)
         }
         groupAction.setValue(UIImage(systemName: "person.badge.plus"), forKey: "image")
-        controller.addAction(groupAction)
+        alert.addAction(groupAction)
         
         // share pdf
         let sharePDFAction = UIAlertAction(title: "Share PDF", style: .default) { [weak self] _ in
             self?.showPDFController(indexPath: indexPath)
         }
         sharePDFAction.setValue(UIImage(systemName: "square.and.arrow.up"), forKey: "image")
-        controller.addAction(sharePDFAction)
+        alert.addAction(sharePDFAction)
         
+        // setting
         if journeys[indexPath.row].owner == AuthManager.shared.userId {
             let privacyAction = UIAlertAction(title: "Privacy setting", style: .default) { [weak self] _ in
                 self?.showPrivacyController(indexPath: indexPath)
             }
             privacyAction.setValue(UIImage(systemName: "person.3"), forKey: "image")
-            controller.addAction(privacyAction)
+            alert.addAction(privacyAction)
         } else {
             let leaveAction = UIAlertAction(title: "Leave group", style: .destructive) { [weak self] _ in
                 self?.showLeaveGroupAlert(indexPath: indexPath)
             }
             leaveAction.setValue(UIImage(systemName: "rectangle.portrait.and.arrow.right"), forKey: "image")
-            controller.addAction(leaveAction)
+            alert.addAction(leaveAction)
         }
         
         // Cancel
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        cancelAction.setValue(UIImage(systemName: "arrow.turn.up.left"), forKey: "image")
-        controller.addAction(cancelAction)
+        alert.addAction(UIAlertAction().sheetCancel)
         
-        present(controller, animated: true)
+        present(alert, animated: true)
     }
     
     func showLeaveGroupAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Leave group",
-                                      message: "Are your sure you want to leave the group?",
-                                      preferredStyle: .alert)
-        
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            JourneyManager.shared.leaveGroup(journeyId: (self?.journeys[indexPath.row].id)!) { result in
+        AlertHelper.shared.showTFAlert(title: "Leave group",
+                                       message: "Are your sure you want to leave the group?",
+                                       over: self) {
+            
+            guard let id = self.journeys[indexPath.row].id else {
+                return
+            }
+            
+            JourneyManager.shared.leaveGroup(journeyId: id) { [weak self] result in
                 switch result {
                 case .success(let isLeave):
                     if isLeave {
@@ -158,11 +158,7 @@ class DiaryController: BaseTableViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     // MARK: - selector
@@ -202,8 +198,8 @@ extension DiaryController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DiaryCell.identifier,
-                                                       for: indexPath) as? DiaryCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: JourneyCell.identifier,
+                                                       for: indexPath) as? JourneyCell else { return UITableViewCell() }
         
         cell.setupUI(title: journeys[indexPath.row].title,
                            start: journeys[indexPath.row].start,

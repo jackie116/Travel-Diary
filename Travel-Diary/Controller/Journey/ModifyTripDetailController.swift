@@ -30,7 +30,7 @@ class ModifyTripDetailController: UIViewController {
         button.imageView?.clipsToBounds = true
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 3
-        button.addTarget(self, action: #selector(handleAddcoverPhoto), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapAddPhoto), for: .touchUpInside)
         return button
     }()
     
@@ -202,40 +202,8 @@ class ModifyTripDetailController: UIViewController {
     }
     
     // MARK: - Selectors
-    @objc func handleAddcoverPhoto() {
-        let actionSheet = UIAlertController(title: "Select Photo",
-                                            message: "Where do you want to select a photo?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = .customBlue
-        
-        let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
-                let photoPicker = UIImagePickerController()
-                photoPicker.delegate = self
-                photoPicker.sourceType = .photoLibrary
-                photoPicker.allowsEditing = true
-                
-                self.present(photoPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(photoAction)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.delegate = self
-                cameraPicker.sourceType = .camera
-                cameraPicker.allowsEditing = true
-                
-                self.present(cameraPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(cameraAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(cancelAction)
-        
-        self.present(actionSheet, animated: true, completion: nil)
+    @objc func didTapAddPhoto() {
+        AlertHelper.shared.showPhotoAlert(over: self)
     }
     
     @objc func didSubmit() {

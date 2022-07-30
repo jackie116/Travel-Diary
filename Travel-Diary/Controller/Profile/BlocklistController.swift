@@ -126,13 +126,10 @@ class BlocklistController: UIViewController {
     }
     
     func showDeleteAlert(indexPath: IndexPath) {
-        let alert = UIAlertController(title: "Delete user",
-                                      message: "Are you sure you want to delete user?",
-                                      preferredStyle: .alert)
-        alert.view.tintColor = .customBlue
-        
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] _ in
-            AuthManager.shared.moveOutBlocklist(id: (self?.blockUsers[indexPath.item].id!)!) { result in
+        AlertHelper.shared.showTFAlert(title: "Delete user",
+                                       message: "Are you sure you want to delete user?",
+                                       over: self) {
+            AuthManager.shared.moveOutBlocklist(id: (self.blockUsers[indexPath.item].id!)) { [weak self] result in
                 switch result {
                 case .success:
                     self?.blockUsers.remove(at: indexPath.item)
@@ -141,11 +138,7 @@ class BlocklistController: UIViewController {
                     AlertHelper.shared.showErrorAlert(message: error.localizedDescription, over: self)
                 }
             }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true)
+        }
     }
     
     @objc func didTapBack() {

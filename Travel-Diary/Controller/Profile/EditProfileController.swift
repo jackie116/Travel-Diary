@@ -9,6 +9,7 @@ import UIKit
 
 class EditProfileController: UIViewController {
     
+    // MARK: - Properties
     lazy var saveButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Save",
                                      style: .plain,
@@ -51,23 +52,25 @@ class EditProfileController: UIViewController {
     private var userImage: UIImage?
     private var userInfo: User?
 
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
-        configureData()
+        setupUI()
+        setupData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        hideTabBar()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        showTabBar()
     }
     
-    func configureUI() {
+    // MARK: - Helpers
+    func setupUI() {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = saveButton
@@ -75,10 +78,10 @@ class EditProfileController: UIViewController {
         view.addSubview(userPhotoButton)
         view.addSubview(usernameText)
         
-        configureConstraint()
+        setupConstraint()
     }
     
-    func configureConstraint() {
+    func setupConstraint() {
         userPhotoButton.centerX(inView: view)
         userPhotoButton.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -32).isActive = true
         userPhotoButton.setDimensions(width: UIScreen.width * 0.6, height: UIScreen.width * 0.6)
@@ -86,7 +89,7 @@ class EditProfileController: UIViewController {
         usernameText.center(inView: view, yConstant: 32)
     }
     
-    func configureData() {
+    func setupData() {
         AuthManager.shared.getUserInfo { [weak self] result in
             switch result {
             case .success(let user):
@@ -105,40 +108,9 @@ class EditProfileController: UIViewController {
         }
     }
     
+    // MARK: - Selectors
     @objc func addUserPhoto() {
-        let actionSheet = UIAlertController(title: "Select Photo",
-                                            message: "Where do you want to select a photo?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = .customBlue
-        
-        let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
-                let photoPicker = UIImagePickerController()
-                photoPicker.delegate = self
-                photoPicker.sourceType = .photoLibrary
-                photoPicker.allowsEditing = true
-                
-                self.present(photoPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(photoAction)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.delegate = self
-                cameraPicker.sourceType = .camera
-                cameraPicker.allowsEditing = true
-                
-                self.present(cameraPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(cameraAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(cancelAction)
-        
-        self.present(actionSheet, animated: true, completion: nil)
+        AlertHelper.shared.showPhotoAlert(over: self)
     }
     
     @objc func saveUserData() {
@@ -161,6 +133,7 @@ class EditProfileController: UIViewController {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension EditProfileController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -176,10 +149,12 @@ extension EditProfileController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension EditProfileController: UINavigationControllerDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension EditProfileController: UIGestureRecognizerDelegate {
 
 }
