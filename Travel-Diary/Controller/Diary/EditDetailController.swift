@@ -8,6 +8,8 @@
 import UIKit
 
 class EditDetailController: UIViewController {
+    
+    // MARK: - Properties
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "arrowshape.turn.up.backward"),
                                      style: .plain, target: self,
@@ -37,7 +39,7 @@ class EditDetailController: UIViewController {
         button.imageView?.clipsToBounds = true
         button.layer.borderColor = UIColor.customBlue.cgColor
         button.layer.borderWidth = 3
-        button.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapAddPhoto), for: .touchUpInside)
         return button
     }()
     
@@ -80,6 +82,7 @@ class EditDetailController: UIViewController {
     var journey: Journey?
     var indexPath: IndexPath?
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -88,14 +91,15 @@ class EditDetailController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        hideTabBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        showTabBar()
     }
     
+    // MARK: - Helpers
     func setupUI() {
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = saveButton
@@ -148,40 +152,8 @@ class EditDetailController: UIViewController {
         navigationController?.dismiss(animated: true)
     }
     
-    @objc func addPhoto() {
-        let actionSheet = UIAlertController(title: "Select Photo",
-                                            message: "Where do you want to select a photo?",
-                                            preferredStyle: .actionSheet)
-        actionSheet.view.tintColor = .customBlue
-        
-        let photoAction = UIAlertAction(title: "Photos", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
-                let photoPicker = UIImagePickerController()
-                photoPicker.delegate = self
-                photoPicker.sourceType = .photoLibrary
-                photoPicker.allowsEditing = true
-                
-                self.present(photoPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(photoAction)
-        
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.delegate = self
-                cameraPicker.sourceType = .camera
-                cameraPicker.allowsEditing = true
-                
-                self.present(cameraPicker, animated: true, completion: nil)
-            }
-        }
-        actionSheet.addAction(cameraAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        actionSheet.addAction(cancelAction)
-        
-        self.present(actionSheet, animated: true, completion: nil)
+    @objc func didTapAddPhoto() {
+        AlertHelper.shared.showPhotoAlert(over: self)
     }
     
     @objc func saveTap() {
@@ -203,6 +175,7 @@ class EditDetailController: UIViewController {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension EditDetailController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -217,10 +190,12 @@ extension EditDetailController: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension EditDetailController: UINavigationControllerDelegate {
     
 }
 
+// MARK: - UIGestureRecognizerDelegate
 extension EditDetailController: UIGestureRecognizerDelegate {
 
 }

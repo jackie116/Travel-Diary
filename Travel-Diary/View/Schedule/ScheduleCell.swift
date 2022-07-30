@@ -14,12 +14,6 @@ class ScheduleCell: UITableViewCell {
         return view
     }()
     
-    let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "停留時間"
-        return label
-    }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
@@ -60,24 +54,18 @@ class ScheduleCell: UITableViewCell {
         contentView.addSubview(pinView)
         contentView.addSubview(labelView)
         contentView.addSubview(orderLabel)
-        
-//        labelView.addSubview(timeLabel)
+
         labelView.addSubview(titleLabel)
         labelView.addSubview(addressLabel)
         
-        pinView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            pinView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            pinView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            pinView.widthAnchor.constraint(equalToConstant: 50),
-            pinView.heightAnchor.constraint(equalToConstant: 40)
-        ])
+        pinView.anchor(left: contentView.leftAnchor,
+                       paddingLeft: 16,
+                       width: 50, height: 40)
+        pinView.centerY(inView: contentView)
         
-        orderLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            orderLabel.centerXAnchor.constraint(equalTo: pinView.centerXAnchor),
-            orderLabel.bottomAnchor.constraint(equalTo: pinView.bottomAnchor, constant: -16)
-        ])
+        orderLabel.centerX(inView: pinView)
+        orderLabel.anchor(bottom: pinView.bottomAnchor,
+                          paddingBottom: 16)
         
         labelView.anchor(top: contentView.topAnchor,
                          left: pinView.rightAnchor,
@@ -85,8 +73,6 @@ class ScheduleCell: UITableViewCell {
                          right: contentView.rightAnchor,
                          paddingTop: 5, paddingLeft: 8,
                          paddingBottom: 5, paddingRight: 16)
-        
-//        timeLabel.anchor(top: labelView.topAnchor, left: labelView.leftAnchor, paddingTop: 5, paddingLeft: 5)
         
         titleLabel.anchor(top: labelView.topAnchor,
                           left: labelView.leftAnchor,

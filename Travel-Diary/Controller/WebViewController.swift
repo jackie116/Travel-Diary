@@ -35,16 +35,12 @@ class WebViewController: UIViewController {
             
             view.addSubview(webView)
             view.sendSubviewToBack(webView)
-            webView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                        left: view.leftAnchor,
-                        bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                        right: view.rightAnchor)
+            webView.addConstraintsToFillSafeArea(view)
         }
     }
 }
 
 // MARK: - WKNavigationDelegate
-
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         print(error.localizedDescription)

@@ -35,7 +35,7 @@ class BaseTableViewController: UIViewController {
 
     let backgroundImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "gy_eat")
+        view.image = UIImage.asset(.gy_eat)
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
         view.alpha = 0.5

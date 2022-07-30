@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SimpleDiaryCell: UITableViewCell {
+class SimpleSpotCell: UITableViewCell {
     let vStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical

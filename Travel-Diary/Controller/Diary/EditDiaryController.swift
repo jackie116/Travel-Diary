@@ -31,9 +31,9 @@ class EditDiaryController: UIViewController {
     lazy var tableView: UITableView = {
         let table = UITableView()
         
-        table.register(SimpleDiaryCell.self, forCellReuseIdentifier: SimpleDiaryCell.identifier)
+        table.register(SimpleSpotCell.self, forCellReuseIdentifier: SimpleSpotCell.identifier)
         
-        table.register(ComplexDiaryCell.self, forCellReuseIdentifier: ComplexDiaryCell.identifier)
+        table.register(ComplexSpotCell.self, forCellReuseIdentifier: ComplexSpotCell.identifier)
         table.delegate = self
         table.dataSource = self
         table.showsVerticalScrollIndicator = false
@@ -188,8 +188,8 @@ extension EditDiaryController: UITableViewDataSource {
         
         if isComplex {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ComplexDiaryCell.identifier,
-                for: indexPath) as? ComplexDiaryCell else { return UITableViewCell() }
+                withIdentifier: ComplexSpotCell.identifier,
+                for: indexPath) as? ComplexSpotCell else { return UITableViewCell() }
             
             if let data = journey?.data[indexPath.section].spot[indexPath.row] {
                 cell.configureData(name: data.name,
@@ -200,8 +200,8 @@ extension EditDiaryController: UITableViewDataSource {
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: SimpleDiaryCell.identifier,
-                for: indexPath) as? SimpleDiaryCell else { return UITableViewCell() }
+                withIdentifier: SimpleSpotCell.identifier,
+                for: indexPath) as? SimpleSpotCell else { return UITableViewCell() }
  
             if let data = journey?.data[indexPath.section].spot[indexPath.row] {
                 cell.configureData(title: data.name, address: data.address, order: indexPath.row)
